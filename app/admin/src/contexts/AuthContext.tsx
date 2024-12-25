@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import AuthService from '@/api/login';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -22,8 +23,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const login = useCallback(async (username: string, password: string) => {
     // 这里实现实际的登录逻辑
     try {
+      await AuthService.login(username, password);
       // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      //   await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (username === 'admin' && password === 'admin') {
         setIsAuthenticated(true);

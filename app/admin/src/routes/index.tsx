@@ -6,11 +6,15 @@ import MainLayout from '@/layouts/MainLayout';
 // 懒加载路由组件
 const Login = React.lazy(() => import('@/pages/Login'));
 const Dashboard = React.lazy(() => import('@/pages/Dashboard'));
-const UserManagement = React.lazy(() => import('@/pages/UserManagement'));
-const NotFound = React.lazy(() => import('@/pages/NotFound'));
+// const NotFound = React.lazy(() => import('@/pages/NotFound'));
 
-// 路由守卫组件
-const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+// 添加类型定义
+interface PrivateRouteProps {
+  children: React.ReactNode;
+}
+
+// 使用类型注解
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
@@ -20,7 +24,8 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const RenderRouter = () => {
+// 添加返回类型
+const RenderRouter: React.FC = () => {
   const routes = useRoutes([
     {
       path: '/login',
@@ -42,16 +47,12 @@ const RenderRouter = () => {
           path: 'dashboard',
           element: <Dashboard />,
         },
-        {
-          path: 'users',
-          element: <UserManagement />,
-        },
       ],
     },
-    {
-      path: '*',
-      element: <NotFound />,
-    },
+    // {
+    //   path: '*',
+    //   element: <NotFound />,
+    // },
   ]);
 
   return routes;
