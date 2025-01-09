@@ -1,25 +1,31 @@
 import type { TokenInfo, TokenService } from './types';
+import Storage, { StorageType } from '../storage';
 
-const TOKEN_KEY = 'auth_token';
+const TOKEN_KEY = 'auth-token';
+
+const storage = new Storage({
+  prefix: 'auth',
+  storage: StorageType.LOCAL,
+});
 
 class LocalTokenService implements TokenService {
   getToken(): TokenInfo | null {
-    const tokenStr = localStorage.getItem(TOKEN_KEY);
+    const tokenStr = storage.get(TOKEN_KEY);
     if (!tokenStr) return null;
 
     try {
-      return JSON.parse(tokenStr);
+      return JSON.parse(tokenStr as string);
     } catch {
       return null;
     }
   }
 
   setToken(token: TokenInfo): void {
-    localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+    storage.set(TOKEN_KEY, JSON.stringify(token));
   }
 
   clearToken(): void {
-    localStorage.removeItem(TOKEN_KEY);
+    storage.remove(TOKEN_KEY);
   }
 }
 

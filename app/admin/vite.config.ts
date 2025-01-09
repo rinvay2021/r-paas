@@ -18,11 +18,15 @@ export default defineConfig({
       less: {
         javascriptEnabled: true,
         modifyVars: {},
+        math: 'always',
+        globalVars: {
+          prefix: `rpaas`,
+        },
       },
     },
   },
   server: {
-    port: 3000,
+    port: 3003,
     cors: true,
     proxy: {
       '/api': {

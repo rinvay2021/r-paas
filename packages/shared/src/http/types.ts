@@ -55,3 +55,10 @@ export interface CreateHttpOptions {
   requestOptions?: RequestOptions;
   axiosConfig?: AxiosRequestConfig;
 }
+
+export interface IResponse<T = any> {
+  code: number;
+  data: T;
+  message: string;
+  success: boolean;
+}

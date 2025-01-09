@@ -12,6 +12,7 @@ import type {
   RequestOptions,
   CreateHttpOptions,
   CustomAxiosRequestConfig,
+  IResponse,
 } from './types';
 
 const DEFAULT_OPTIONS: RequestOptions = {
@@ -80,7 +81,7 @@ class HttpRequest {
       (response: AxiosResponse<Response>) => {
         const { data } = response;
 
-        if (data.code !== 0) {
+        if (data.code !== 200) {
           const error = formatError({
             message: data.message,
             code: data.code,
@@ -91,7 +92,12 @@ class HttpRequest {
           return Promise.reject(error);
         }
 
-        return data.data;
+        return {
+          code: data.code,
+          data: data.data,
+          message: data.message,
+          success: true,
+        } as IResponse<any>;
       },
       async error => {
         // 处理 401 未授权

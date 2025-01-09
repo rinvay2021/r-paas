@@ -1,55 +1,108 @@
 import React from 'react';
-import { Form, Input, Button, Card, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  LoginForm,
+  ProConfigProvider,
+  ProFormCheckbox,
+  ProFormText,
+} from '@ant-design/pro-components';
 import { useAuth } from '@/contexts/AuthContext';
 
+import './index.less';
+
 const Login: React.FC = () => {
+  const { token } = theme.useToken();
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const onFinish = async (values: { username: string; password: string }) => {
     try {
-      await login(values.username, values.password);
-      message.success('Login successful!');
+      await login({ username: values.username, password: values.password });
       navigate('/dashboard');
     } catch (error) {
-      message.error('Invalid username or password');
+      // 处理错误
     }
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: '#f0f2f5',
-      }}
-    >
-      <Card title="R-PaaS Admin Login" style={{ width: 300 }}>
-        <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
-          <Form.Item
+    <ProConfigProvider hashed={false}>
+      <div
+        className="login-container"
+        style={{
+          backgroundColor: token.colorBgContainer,
+        }}
+      >
+        <LoginForm onFinish={onFinish}>
+          <ProFormText
             name="username"
-            rules={[{ required: true, message: 'Please input your Username!' }]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="Username" />
-          </Form.Item>
-          <Form.Item
+            fieldProps={{
+              size: 'large',
+              prefix: <UserOutlined className={'prefixIcon'} />,
+            }}
+            placeholder={'请输入用户名'}
+            rules={[
+              {
+                required: true,
+                message: '请输入用户名!',
+              },
+            ]}
+          />
+          <ProFormText.Password
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            fieldProps={{
+              size: 'large',
+              prefix: <LockOutlined className={'prefixIcon'} />,
+              strengthText: '密码应包含数字、字母和特殊字符，至少8个字符。',
+              statusRender: value => {
+                const getStatus = () => {
+                  if (value && value.length > 12) {
+                    return 'ok';
+                  }
+                  if (value && value.length > 6) {
+                    return 'pass';
+                  }
+                  return 'poor';
+                };
+                const status = getStatus();
+                if (status === 'pass') {
+                  return <div style={{ color: token.colorWarning }}>强度：中</div>;
+                }
+                if (status === 'ok') {
+                  return <div style={{ color: token.colorSuccess }}>强度：强</div>;
+                }
+                return <div style={{ color: token.colorError }}>强度：弱</div>;
+              },
+            }}
+            placeholder={'请输入密码'}
+            rules={[
+              {
+                required: true,
+                message: '请输入密码！',
+              },
+            ]}
+          />
+          <div
+            style={{
+              marginBlockEnd: 24,
+            }}
           >
-            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-              Log in
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+            <ProFormCheckbox noStyle name="autoLogin">
+              自动登录
+            </ProFormCheckbox>
+            <a
+              style={{
+                float: 'right',
+              }}
+            >
+              忘记密码
+            </a>
+          </div>
+        </LoginForm>
+      </div>
+    </ProConfigProvider>
   );
 };
 

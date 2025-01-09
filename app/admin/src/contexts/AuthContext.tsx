@@ -1,16 +1,23 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import AuthService from '@/api/login';
+import React from 'react';
+import AuthService, { LoginRequest } from '@/api/login';
+import Storage, { StorageType } from '@r-paas/shared/storage';
+
+const storage = new Storage({
+  prefix: 'auth',
+  storage: StorageType.LOCAL,
+});
 
 interface AuthContextType {
+  user: any;
   isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (params: LoginRequest) => Promise<void>;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = React.useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
@@ -18,33 +25,41 @@ export const useAuth = () => {
 };
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(() => {
+    return !!storage.get('isAuthenticated');
+  });
 
-  const login = useCallback(async (username: string, password: string) => {
-    // 这里实现实际的登录逻辑
+  const login = React.useCallback(async (params: LoginRequest) => {
     try {
-      await AuthService.login(username, password);
-      // 模拟API调用
-      //   await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await AuthService.login(params);
 
-      if (username === 'admin' && password === 'admin') {
+      if (response) {
+        storage.set('user', response);
+        storage.set('isAuthenticated', true);
+
         setIsAuthenticated(true);
-        localStorage.setItem('token', 'dummy-token');
-      } else {
-        throw new Error('Invalid credentials');
       }
     } catch (error) {
       throw error;
     }
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = React.useCallback(() => {
     setIsAuthenticated(false);
-    localStorage.removeItem('token');
+    storage.remove('isAuthenticated');
+
+    AuthService.logout();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        user: storage.get('user'),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

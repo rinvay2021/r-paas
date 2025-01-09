@@ -11,9 +11,18 @@ importers:
       '@ant-design/icons':
         specifier: 5.0.0
         version: 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-components':
+        specifier: 2.8.2
+        version: 2.8.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      ahooks:
+        specifier: ^3.8.4
+        version: 3.8.4(react@18.2.0)
       antd:
         specifier: 5.22.5
         version: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -105,6 +114,12 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.5.0
         version: 29.7.0
+      less:
+        specifier: ^4.1.3
+        version: 4.2.1
+      less-loader:
+        specifier: ^12.2.0
+        version: 12.2.0(less@4.2.1)
       lint-staged:
         specifier: ^13.2.0
         version: 13.3.0(enquirer@2.4.1)
@@ -280,6 +295,82 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
+
+  '@ant-design/pro-card@2.9.2':
+    resolution: {integrity: sha1-SHkdt/o581LTHx7iAQ2wC2L8mAE=, tarball: http://r.npm.sankuai.com/@ant-design/pro-card/download/@ant-design/pro-card-2.9.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+
+  '@ant-design/pro-components@2.8.2':
+    resolution: {integrity: sha1-SzYRUWJPS+9phXPrf050QnoIUVk=, tarball: http://r.npm.sankuai.com/@ant-design/pro-components/download/@ant-design/pro-components-2.8.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-descriptions@2.6.2':
+    resolution: {integrity: sha1-VCd7bB5ph1gh0MNTX4ONz8t731w=, tarball: http://r.npm.sankuai.com/@ant-design/pro-descriptions/download/@ant-design/pro-descriptions-2.6.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+
+  '@ant-design/pro-field@2.17.2':
+    resolution: {integrity: sha1-QlybzOBa6vkpMt5T8wbd6WL988c=, tarball: http://r.npm.sankuai.com/@ant-design/pro-field/download/@ant-design/pro-field-2.17.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+
+  '@ant-design/pro-form@2.31.2':
+    resolution: {integrity: sha1-T6nyigqRB5oLIo7PwAd3qQeD9i4=, tarball: http://r.npm.sankuai.com/@ant-design/pro-form/download/@ant-design/pro-form-2.31.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      rc-field-form: '>=1.22.0'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-layout@7.21.2':
+    resolution: {integrity: sha1-iswhh8UUzS6FAO/LTkw1wmsWRzU=, tarball: http://r.npm.sankuai.com/@ant-design/pro-layout/download/@ant-design/pro-layout-7.21.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-list@2.6.2':
+    resolution: {integrity: sha1-3N7YEkv8ZDQDtc/Xf2oqP6dFSso=, tarball: http://r.npm.sankuai.com/@ant-design/pro-list/download/@ant-design/pro-list-2.6.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-provider@2.15.2':
+    resolution: {integrity: sha1-llqlQiLupHbuBumx6wwcCBwlLN4=, tarball: http://r.npm.sankuai.com/@ant-design/pro-provider/download/@ant-design/pro-provider-2.15.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-skeleton@2.2.1':
+    resolution: {integrity: sha1-wT08GyeKNUVbcS1tdnRnMhchaEI=, tarball: http://r.npm.sankuai.com/@ant-design/pro-skeleton/download/@ant-design/pro-skeleton-2.2.1.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-table@3.18.2':
+    resolution: {integrity: sha1-4wxNu1O5E2YSwBrXmU7d/QE3hE0=, tarball: http://r.npm.sankuai.com/@ant-design/pro-table/download/@ant-design/pro-table-3.18.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      rc-field-form: '>=1.22.0'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@ant-design/pro-utils@2.16.2':
+    resolution: {integrity: sha1-0jrh4ZJRXLwmpre3qD2iR/XR7NM=, tarball: http://r.npm.sankuai.com/@ant-design/pro-utils/download/@ant-design/pro-utils-2.16.2.tgz}
+    peerDependencies:
+      antd: ^4.24.15 || ^5.11.2
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
 
   '@ant-design/react-slick@1.1.2':
     resolution: {integrity: sha1-+Ezj5NDclB8CsW8dHW16Nx/7tPE=, tarball: http://r.npm.sankuai.com/@ant-design/react-slick/download/@ant-design/react-slick-1.1.2.tgz}
@@ -518,6 +609,11 @@ packages:
   '@changesets/write@0.3.2':
     resolution: {integrity: sha1-vuZOTM3/SAhy310eOPK5E8uUARY=, tarball: http://r.npm.sankuai.com/@changesets/write/download/@changesets/write-0.3.2.tgz}
 
+  '@chenshuai2144/sketch-color@1.0.9':
+    resolution: {integrity: sha1-QRROLZZWv/IUNRbU6OYuUAO9Rmo=, tarball: http://r.npm.sankuai.com/@chenshuai2144/sketch-color/download/@chenshuai2144/sketch-color-1.0.9.tgz}
+    peerDependencies:
+      react: '>=16.12.0'
+
   '@commitlint/cli@17.8.1':
     resolution: {integrity: sha1-EEkhFKAiyR3PsdhNrHc6uz23bTM=, tarball: http://r.npm.sankuai.com/@commitlint/cli/download/@commitlint/cli-17.8.1.tgz}
     engines: {node: '>=v14'}
@@ -637,6 +733,34 @@ packages:
   '@ctrl/tinycolor@3.6.1':
     resolution: {integrity: sha1-tsdaVqGUfMkW6gWHctZmosiTLzE=, tarball: http://r.npm.sankuai.com/@ctrl/tinycolor/download/@ctrl/tinycolor-3.6.1.tgz}
     engines: {node: '>=10'}
+
+  '@dnd-kit/accessibility@3.1.1':
+    resolution: {integrity: sha1-O0ICvWuzcKBzD2c0hneFkZvqxq8=, tarball: http://r.npm.sankuai.com/@dnd-kit/accessibility/download/@dnd-kit/accessibility-3.1.1.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@dnd-kit/core@6.3.1':
+    resolution: {integrity: sha1-TDZAamLHuqxJlyb4mZNfk/Dm0AM=, tarball: http://r.npm.sankuai.com/@dnd-kit/core/download/@dnd-kit/core-6.3.1.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@dnd-kit/modifiers@6.0.1':
+    resolution: {integrity: sha1-njmyX9bjI2WWBMx0SI/gRNMxiMg=, tarball: http://r.npm.sankuai.com/@dnd-kit/modifiers/download/@dnd-kit/modifiers-6.0.1.tgz}
+    peerDependencies:
+      '@dnd-kit/core': ^6.0.6
+      react: '>=16.8.0'
+
+  '@dnd-kit/sortable@7.0.2':
+    resolution: {integrity: sha1-eR1VCHJFfz88hD4A0Vm2QPmCARw=, tarball: http://r.npm.sankuai.com/@dnd-kit/sortable/download/@dnd-kit/sortable-7.0.2.tgz}
+    peerDependencies:
+      '@dnd-kit/core': ^6.0.7
+      react: '>=16.8.0'
+
+  '@dnd-kit/utilities@3.2.2':
+    resolution: {integrity: sha1-WjK2rzVtxfdNYbN9b3EppAQM7Xs=, tarball: http://r.npm.sankuai.com/@dnd-kit/utilities/download/@dnd-kit/utilities-3.2.2.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
 
   '@emotion/hash@0.8.0':
     resolution: {integrity: sha1-u7/2iXj+/b5ozLUzvIy+HRr7VBM=, tarball: http://r.npm.sankuai.com/@emotion/hash/download/@emotion/hash-0.8.0.tgz}
@@ -1484,6 +1608,14 @@ packages:
     resolution: {integrity: sha1-IXQBGRfOWCh1lU/+L2kS1ZMeNT4=, tarball: http://r.npm.sankuai.com/@typescript-eslint/visitor-keys/download/@typescript-eslint/visitor-keys-5.62.0.tgz}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
+  '@umijs/route-utils@4.0.1':
+    resolution: {integrity: sha1-FW31s/IygFlyLT7n3Y9l4Yw83os=, tarball: http://r.npm.sankuai.com/@umijs/route-utils/download/@umijs/route-utils-4.0.1.tgz}
+
+  '@umijs/use-params@1.0.9':
+    resolution: {integrity: sha1-CuSof0ki2Ojj+0SVsPj03pyjjFI=, tarball: http://r.npm.sankuai.com/@umijs/use-params/download/@umijs/use-params-1.0.9.tgz}
+    peerDependencies:
+      react: '*'
+
   '@ungap/structured-clone@1.2.1':
     resolution: {integrity: sha1-KPoYX2far3t6GowdRFEyxdl5+L0=, tarball: http://r.npm.sankuai.com/@ungap/structured-clone/download/@ungap/structured-clone-1.2.1.tgz}
 
@@ -1517,9 +1649,18 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  add-dom-event-listener@1.1.0:
+    resolution: {integrity: sha1-apLbOg3Qq8JU4JXA8dwUrLuq4xA=, tarball: http://r.npm.sankuai.com/add-dom-event-listener/download/add-dom-event-listener-1.1.0.tgz}
+
   agent-base@6.0.2:
     resolution: {integrity: sha1-Sf/1hXfP7j83F2/qtMIuAPhtf3c=, tarball: http://r.npm.sankuai.com/agent-base/download/agent-base-6.0.2.tgz}
     engines: {node: '>= 6.0.0'}
+
+  ahooks@3.8.4:
+    resolution: {integrity: sha1-7ioi1Stu5XdDofarUckafDa818Y=, tarball: http://r.npm.sankuai.com/ahooks/download/ahooks-3.8.4.tgz}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   ajv@6.12.6:
     resolution: {integrity: sha1-uvWmLoArB9l3A0WG+MO69a3ybfQ=, tarball: http://r.npm.sankuai.com/ajv/download/ajv-6.12.6.tgz}
@@ -2188,6 +2329,10 @@ packages:
   delayed-stream@1.0.0:
     resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=, tarball: http://r.npm.sankuai.com/delayed-stream/download/delayed-stream-1.0.0.tgz}
     engines: {node: '>=0.4.0'}
+
+  dequal@2.0.3:
+    resolution: {integrity: sha1-JkQhTxmX057Q7g7OcjNUkKesZ74=, tarball: http://r.npm.sankuai.com/dequal/download/dequal-2.0.3.tgz}
+    engines: {node: '>=6'}
 
   detect-file@1.0.0:
     resolution: {integrity: sha1-8NZtA2cqglyxtzvbP+YjEMjlUrc=, tarball: http://r.npm.sankuai.com/detect-file/download/detect-file-1.0.0.tgz}
@@ -2953,6 +3098,9 @@ packages:
     resolution: {integrity: sha1-HqyRdilH0vcFa8g42T4TsulgSWE=, tarball: http://r.npm.sankuai.com/internal-slot/download/internal-slot-1.1.0.tgz}
     engines: {node: '>= 0.4'}
 
+  intersection-observer@0.12.2:
+    resolution: {integrity: sha1-SkU0nMDNkZFmgrH0TCjX7HN9w3U=, tarball: http://r.npm.sankuai.com/intersection-observer/download/intersection-observer-0.12.2.tgz}
+
   is-arguments@1.2.0:
     resolution: {integrity: sha1-rVjGrs9WO3jvK/BN9UDaj119jhs=, tarball: http://r.npm.sankuai.com/is-arguments/download/is-arguments-1.2.0.tgz}
     engines: {node: '>= 0.4'}
@@ -3326,6 +3474,10 @@ packages:
     resolution: {integrity: sha1-vOhZbWroCPi2gWj1/GkoCZaJTwM=, tarball: http://r.npm.sankuai.com/joycon/download/joycon-3.1.1.tgz}
     engines: {node: '>=10'}
 
+  js-cookie@3.0.5:
+    resolution: {integrity: sha1-C34v0MAVUsWLqG4IQflNwlV9zbw=, tarball: http://r.npm.sankuai.com/js-cookie/download/js-cookie-3.0.5.tgz}
+    engines: {node: '>=14'}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha1-GSA/tZmR35jjoocFDUZHzerzJJk=, tarball: http://r.npm.sankuai.com/js-tokens/download/js-tokens-4.0.0.tgz}
 
@@ -3413,6 +3565,19 @@ packages:
     resolution: {integrity: sha1-H/3NDsD6+0sb5/ixHzBq0PnAh3c=, tarball: http://r.npm.sankuai.com/language-tags/download/language-tags-1.0.9.tgz}
     engines: {node: '>=0.10'}
 
+  less-loader@12.2.0:
+    resolution: {integrity: sha1-4elFIvar6eBk7zlsKaMVG8bBtsw=, tarball: http://r.npm.sankuai.com/less-loader/download/less-loader-12.2.0.tgz}
+    engines: {node: '>= 18.12.0'}
+    peerDependencies:
+      '@rspack/core': 0.x || 1.x
+      less: ^3.5.0 || ^4.0.0
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
+
   less@4.2.1:
     resolution: {integrity: sha1-/kyYSFJatEYUwM8sAKvY0DG7YZo=, tarball: http://r.npm.sankuai.com/less/download/less-4.2.1.tgz}
     engines: {node: '>=6'}
@@ -3466,6 +3631,9 @@ packages:
   locate-path@6.0.0:
     resolution: {integrity: sha1-VTIeswn+u8WcSAHZMackUqaB0oY=, tarball: http://r.npm.sankuai.com/locate-path/download/locate-path-6.0.0.tgz}
     engines: {node: '>=10'}
+
+  lodash-es@4.17.21:
+    resolution: {integrity: sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=, tarball: http://r.npm.sankuai.com/lodash-es/download/lodash-es-4.17.21.tgz}
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=, tarball: http://r.npm.sankuai.com/lodash.camelcase/download/lodash.camelcase-4.3.0.tgz}
@@ -3775,6 +3943,9 @@ packages:
     resolution: {integrity: sha1-3u1SClCAn/f3Wnz9S8ZMegOMYhY=, tarball: http://r.npm.sankuai.com/object.values/download/object.values-1.2.1.tgz}
     engines: {node: '>= 0.4'}
 
+  omit.js@2.0.2:
+    resolution: {integrity: sha1-3ZuENvq5R6Xz/yFMslOGMeMT7C8=, tarball: http://r.npm.sankuai.com/omit.js/download/omit.js-2.0.2.tgz}
+
   once@1.4.0:
     resolution: {integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=, tarball: http://r.npm.sankuai.com/once/download/once-1.4.0.tgz}
 
@@ -3888,6 +4059,10 @@ packages:
   path-scurry@1.11.1:
     resolution: {integrity: sha1-eWCmaIiFlKByCxKpEdGnQqufEdI=, tarball: http://r.npm.sankuai.com/path-scurry/download/path-scurry-1.11.1.tgz}
     engines: {node: '>=16 || 14 >=14.18'}
+
+  path-to-regexp@8.0.0:
+    resolution: {integrity: sha1-kgduxrLq8IvnwyM0hBQsBeiGbPU=, tarball: http://r.npm.sankuai.com/path-to-regexp/download/path-to-regexp-8.0.0.tgz}
+    engines: {node: '>=16'}
 
   path-type@4.0.0:
     resolution: {integrity: sha1-hO0BwKe6OAr+CdkKjBgNzZ0DBDs=, tarball: http://r.npm.sankuai.com/path-type/download/path-type-4.0.0.tgz}
@@ -4364,6 +4539,12 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  rc-resize-observer@0.2.6:
+    resolution: {integrity: sha1-wbZC9tEpPjTE43FfR/aUQ6FnuCU=, tarball: http://r.npm.sankuai.com/rc-resize-observer/download/rc-resize-observer-0.2.6.tgz}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+
   rc-resize-observer@1.4.3:
     resolution: {integrity: sha1-T9QfpWG6UTYrUVWgfDXXyJoepWk=, tarball: http://r.npm.sankuai.com/rc-resize-observer/download/rc-resize-observer-1.4.3.tgz}
     peerDependencies:
@@ -4448,6 +4629,9 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  rc-util@4.21.1:
+    resolution: {integrity: sha1-iGAtDDGFAgqhBT2aHnDqwWG+ywU=, tarball: http://r.npm.sankuai.com/rc-util/download/rc-util-4.21.1.tgz}
+
   rc-util@5.44.2:
     resolution: {integrity: sha1-a8XbDpbr21FetZd6c3GIflQTpvg=, tarball: http://r.npm.sankuai.com/rc-util/download/rc-util-5.44.2.tgz}
     peerDependencies:
@@ -4471,6 +4655,9 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
+  react-fast-compare@3.2.2:
+    resolution: {integrity: sha1-kpqXpTIwTOn+5LyuRCNPHOLCHUk=, tarball: http://r.npm.sankuai.com/react-fast-compare/download/react-fast-compare-3.2.2.tgz}
+
   react-is@16.13.1:
     resolution: {integrity: sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=, tarball: http://r.npm.sankuai.com/react-is/download/react-is-16.13.1.tgz}
 
@@ -4479,6 +4666,9 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha1-6DVX3BLq5jqZ4AOkY4ix3LtE234=, tarball: http://r.npm.sankuai.com/react-is/download/react-is-18.3.1.tgz}
+
+  react-lifecycles-compat@3.0.4:
+    resolution: {integrity: sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=, tarball: http://r.npm.sankuai.com/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz}
 
   react-refresh@0.14.2:
     resolution: {integrity: sha1-ODPaAc4y2kcPH5NrnUd9pccCi/k=, tarball: http://r.npm.sankuai.com/react-refresh/download/react-refresh-0.14.2.tgz}
@@ -4504,6 +4694,11 @@ packages:
   react@18.3.1:
     resolution: {integrity: sha1-SauJIAnFOTNiW9FrJTP8dUyrKJE=, tarball: http://r.npm.sankuai.com/react/download/react-18.3.1.tgz}
     engines: {node: '>=0.10.0'}
+
+  reactcss@1.2.3:
+    resolution: {integrity: sha1-wAATh15Vexzw39mjaKHD2rO1SN0=, tarball: http://r.npm.sankuai.com/reactcss/download/reactcss-1.2.3.tgz}
+    peerDependencies:
+      react: '*'
 
   read-pkg-up@7.0.1:
     resolution: {integrity: sha1-86YTV1hFlzOuK5VjgFbhhU5+9Qc=, tarball: http://r.npm.sankuai.com/read-pkg-up/download/read-pkg-up-7.0.1.tgz}
@@ -4677,6 +4872,10 @@ packages:
     resolution: {integrity: sha1-f4fftnoxUHguqvGFg/9dFxGsEME=, tarball: http://r.npm.sankuai.com/safe-regex-test/download/safe-regex-test-1.1.0.tgz}
     engines: {node: '>= 0.4'}
 
+  safe-stable-stringify@2.5.0:
+    resolution: {integrity: sha1-TKL444XygxxDKnGbEIo7969Cod0=, tarball: http://r.npm.sankuai.com/safe-stable-stringify/download/safe-stable-stringify-2.5.0.tgz}
+    engines: {node: '>=10'}
+
   safer-buffer@2.1.2:
     resolution: {integrity: sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=, tarball: http://r.npm.sankuai.com/safer-buffer/download/safer-buffer-2.1.2.tgz}
 
@@ -4689,6 +4888,10 @@ packages:
 
   scheduler@0.23.2:
     resolution: {integrity: sha1-QUumSjsoKJLpRM8hCOzAeNEVzcM=, tarball: http://r.npm.sankuai.com/scheduler/download/scheduler-0.23.2.tgz}
+
+  screenfull@5.2.0:
+    resolution: {integrity: sha1-ZTPVJNMGIfwSg7lpIUbz8TqT0bo=, tarball: http://r.npm.sankuai.com/screenfull/download/screenfull-5.2.0.tgz}
+    engines: {node: '>=0.10.0'}
 
   scroll-into-view-if-needed@3.1.0:
     resolution: {integrity: sha1-+pUkUYx5m0Wi72u/+5K8rQKW0B8=, tarball: http://r.npm.sankuai.com/scroll-into-view-if-needed/download/scroll-into-view-if-needed-3.1.0.tgz}
@@ -4718,6 +4921,9 @@ packages:
   set-function-name@2.0.2:
     resolution: {integrity: sha1-FqcFxaDcL15jjKltiozU4cK5CYU=, tarball: http://r.npm.sankuai.com/set-function-name/download/set-function-name-2.0.2.tgz}
     engines: {node: '>= 0.4'}
+
+  shallowequal@1.1.0:
+    resolution: {integrity: sha1-GI1SHelbkIdAT9TctosT3wrk5/g=, tarball: http://r.npm.sankuai.com/shallowequal/download/shallowequal-1.1.0.tgz}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha1-zNCvT4g1+9wmW4JGGq8MNmY/NOo=, tarball: http://r.npm.sankuai.com/shebang-command/download/shebang-command-2.0.0.tgz}
@@ -4970,6 +5176,11 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
+  swr@2.3.0:
+    resolution: {integrity: sha1-ZvpFAj79QZn0585gjCVXCaE1lD0=, tarball: http://r.npm.sankuai.com/swr/download/swr-2.3.0.tgz}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   symbol-tree@3.2.4:
     resolution: {integrity: sha1-QwY30ki6d+B4iDlR+5qg7tfGP6I=, tarball: http://r.npm.sankuai.com/symbol-tree/download/symbol-tree-3.2.4.tgz}
 
@@ -5017,6 +5228,9 @@ packages:
 
   through@2.3.8:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=, tarball: http://r.npm.sankuai.com/through/download/through-2.3.8.tgz}
+
+  tinycolor2@1.6.0:
+    resolution: {integrity: sha1-+YAHRgFpsCY7lwcsWukkhM4C0J4=, tarball: http://r.npm.sankuai.com/tinycolor2/download/tinycolor2-1.6.0.tgz}
 
   tmp@0.0.33:
     resolution: {integrity: sha1-bTQzWIl2jSGyvNoKonfO07G/rfk=, tarball: http://r.npm.sankuai.com/tmp/download/tmp-0.0.33.tgz}
@@ -5212,6 +5426,11 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha1-nTwvc2wddd070r5QfcwRHx4uqcE=, tarball: http://r.npm.sankuai.com/url-parse/download/url-parse-1.5.10.tgz}
 
+  use-sync-external-store@1.4.0:
+    resolution: {integrity: sha1-rbx5XY7rRwKZYwFs79+J3Hmfzrw=, tarball: http://r.npm.sankuai.com/use-sync-external-store/download/use-sync-external-store-1.4.0.tgz}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=, tarball: http://r.npm.sankuai.com/util-deprecate/download/util-deprecate-1.0.2.tgz}
 
@@ -5259,6 +5478,9 @@ packages:
 
   walker@1.0.8:
     resolution: {integrity: sha1-vUmNtHev5XPcBBhfAR06uKjXZT8=, tarball: http://r.npm.sankuai.com/walker/download/walker-1.0.8.tgz}
+
+  warning@4.0.3:
+    resolution: {integrity: sha1-Fungd+uKhtavfWSqHgX9hbRnjKM=, tarball: http://r.npm.sankuai.com/warning/download/warning-4.0.3.tgz}
 
   wcwidth@1.0.1:
     resolution: {integrity: sha1-8LDc+RW8X/FSivrbLA4XtTLaL+g=, tarball: http://r.npm.sankuai.com/wcwidth/download/wcwidth-1.0.1.tgz}
@@ -5483,6 +5705,199 @@ snapshots:
       rc-util: 5.44.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  '@ant-design/pro-card@2.9.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/cssinjs': 1.22.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      omit.js: 2.0.2
+      rc-resize-observer: 1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+    transitivePeerDependencies:
+      - react-dom
+
+  '@ant-design/pro-components@2.8.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/pro-card': 2.9.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-descriptions': 2.6.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-field': 2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-form': 2.31.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-layout': 7.21.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-list': 2.6.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-skeleton': 2.2.1(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-table': 3.18.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - rc-field-form
+
+  '@ant-design/pro-descriptions@2.6.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/pro-field': 2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-form': 2.31.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-skeleton': 2.2.1(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-resize-observer: 0.2.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+    transitivePeerDependencies:
+      - rc-field-form
+      - react-dom
+
+  '@ant-design/pro-field@2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      '@chenshuai2144/sketch-color': 1.0.9(react@18.2.0)
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      omit.js: 2.0.2
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      swr: 2.3.0(react@18.2.0)
+    transitivePeerDependencies:
+      - react-dom
+
+  '@ant-design/pro-form@2.31.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-field': 2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      '@chenshuai2144/sketch-color': 1.0.9(react@18.2.0)
+      '@umijs/use-params': 1.0.9(react@18.2.0)
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      omit.js: 2.0.2
+      rc-field-form: 2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-resize-observer: 1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@ant-design/pro-layout@7.21.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/cssinjs': 1.22.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      '@umijs/route-utils': 4.0.1
+      '@umijs/use-params': 1.0.9(react@18.2.0)
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      omit.js: 2.0.2
+      path-to-regexp: 8.0.0
+      rc-resize-observer: 1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      swr: 2.3.0(react@18.2.0)
+      warning: 4.0.3
+
+  '@ant-design/pro-list@2.6.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/cssinjs': 1.22.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-card': 2.9.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-field': 2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-table': 3.18.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      rc-resize-observer: 1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 4.21.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - rc-field-form
+
+  '@ant-design/pro-provider@2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/cssinjs': 1.22.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      '@ctrl/tinycolor': 3.6.1
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      dayjs: 1.11.13
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      swr: 2.3.0(react@18.2.0)
+
+  '@ant-design/pro-skeleton@2.2.1(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@ant-design/pro-table@3.18.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/cssinjs': 1.22.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-card': 2.9.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-field': 2.17.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-form': 2.31.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-utils': 2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      '@dnd-kit/core': 6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@dnd-kit/modifiers': 6.0.1(@dnd-kit/core@6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
+      '@dnd-kit/sortable': 7.0.2(@dnd-kit/core@6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      omit.js: 2.0.2
+      rc-field-form: 2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-resize-observer: 1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@ant-design/pro-utils@2.16.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ant-design/icons': 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ant-design/pro-provider': 2.15.2(antd@5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@babel/runtime': 7.26.0
+      antd: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      safe-stable-stringify: 2.5.0
+      swr: 2.3.0(react@18.2.0)
 
   '@ant-design/react-slick@1.1.2(react@18.2.0)':
     dependencies:
@@ -5845,6 +6260,12 @@ snapshots:
       human-id: 1.0.2
       prettier: 2.8.8
 
+  '@chenshuai2144/sketch-color@1.0.9(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
+      reactcss: 1.2.3(react@18.2.0)
+      tinycolor2: 1.6.0
+
   '@commitlint/cli@17.8.1':
     dependencies:
       '@commitlint/format': 17.8.1
@@ -6023,6 +6444,38 @@ snapshots:
       postcss-selector-parser: 6.1.2
 
   '@ctrl/tinycolor@3.6.1': {}
+
+  '@dnd-kit/accessibility@3.1.1(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.8.1
+
+  '@dnd-kit/modifiers@6.0.1(@dnd-kit/core@6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      react: 18.2.0
+      tslib: 2.8.1
+
+  '@dnd-kit/sortable@7.0.2(@dnd-kit/core@6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      react: 18.2.0
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
+      tslib: 2.8.1
 
   '@emotion/hash@0.8.0': {}
 
@@ -6919,6 +7372,12 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
+  '@umijs/route-utils@4.0.1': {}
+
+  '@umijs/use-params@1.0.9(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
+
   '@ungap/structured-clone@1.2.1': {}
 
   '@vitejs/plugin-react@3.1.0(vite@4.5.5(@types/node@18.19.68)(less@4.2.1)(terser@5.37.0))':
@@ -6965,11 +7424,28 @@ snapshots:
 
   acorn@8.14.0: {}
 
+  add-dom-event-listener@1.1.0:
+    dependencies:
+      object-assign: 4.1.1
+
   agent-base@6.0.2:
     dependencies:
       debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
+
+  ahooks@3.8.4(react@18.2.0):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      dayjs: 1.11.13
+      intersection-observer: 0.12.2
+      js-cookie: 3.0.5
+      lodash: 4.17.21
+      react: 18.2.0
+      react-fast-compare: 3.2.2
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.8.1
 
   ajv@6.12.6:
     dependencies:
@@ -7842,6 +8318,8 @@ snapshots:
       object-keys: 1.1.1
 
   delayed-stream@1.0.0: {}
+
+  dequal@2.0.3: {}
 
   detect-file@1.0.0: {}
 
@@ -8817,6 +9295,8 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.1.0
 
+  intersection-observer@0.12.2: {}
+
   is-arguments@1.2.0:
     dependencies:
       call-bound: 1.0.3
@@ -9372,6 +9852,8 @@ snapshots:
 
   joycon@3.1.1: {}
 
+  js-cookie@3.0.5: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.1:
@@ -9473,6 +9955,10 @@ snapshots:
     dependencies:
       language-subtag-registry: 0.3.23
 
+  less-loader@12.2.0(less@4.2.1):
+    dependencies:
+      less: 4.2.1
+
   less@4.2.1:
     dependencies:
       copy-anything: 2.0.6
@@ -9538,6 +10024,8 @@ snapshots:
   locate-path@6.0.0:
     dependencies:
       p-locate: 5.0.0
+
+  lodash-es@4.17.21: {}
 
   lodash.camelcase@4.3.0: {}
 
@@ -9836,6 +10324,8 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.0.0
 
+  omit.js@2.0.2: {}
+
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -9945,6 +10435,8 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
       minipass: 7.1.2
+
+  path-to-regexp@8.0.0: {}
 
   path-type@4.0.0: {}
 
@@ -10605,6 +11097,15 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  rc-resize-observer@0.2.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      classnames: 2.5.1
+      rc-util: 5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      resize-observer-polyfill: 1.5.1
+
   rc-resize-observer@1.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.26.0
@@ -10851,6 +11352,14 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  rc-util@4.21.1:
+    dependencies:
+      add-dom-event-listener: 1.1.0
+      prop-types: 15.8.1
+      react-is: 16.13.1
+      react-lifecycles-compat: 3.0.4
+      shallowequal: 1.1.0
+
   rc-util@5.44.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.26.0
@@ -10895,11 +11404,15 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
+  react-fast-compare@3.2.2: {}
+
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-lifecycles-compat@3.0.4: {}
 
   react-refresh@0.14.2: {}
 
@@ -10922,6 +11435,11 @@ snapshots:
   react@18.3.1:
     dependencies:
       loose-envify: 1.4.0
+
+  reactcss@1.2.3(react@18.2.0):
+    dependencies:
+      lodash: 4.17.21
+      react: 18.2.0
 
   read-pkg-up@7.0.1:
     dependencies:
@@ -11147,6 +11665,8 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.2.1
 
+  safe-stable-stringify@2.5.0: {}
+
   safer-buffer@2.1.2: {}
 
   sax@1.4.1:
@@ -11159,6 +11679,8 @@ snapshots:
   scheduler@0.23.2:
     dependencies:
       loose-envify: 1.4.0
+
+  screenfull@5.2.0: {}
 
   scroll-into-view-if-needed@3.1.0:
     dependencies:
@@ -11189,6 +11711,8 @@ snapshots:
       es-errors: 1.3.0
       functions-have-names: 1.2.3
       has-property-descriptors: 1.0.2
+
+  shallowequal@1.1.0: {}
 
   shebang-command@2.0.0:
     dependencies:
@@ -11512,6 +12036,12 @@ snapshots:
       picocolors: 1.1.1
       stable: 0.1.8
 
+  swr@2.3.0(react@18.2.0):
+    dependencies:
+      dequal: 2.0.3
+      react: 18.2.0
+      use-sync-external-store: 1.4.0(react@18.2.0)
+
   symbol-tree@3.2.4: {}
 
   table@6.9.0:
@@ -11558,6 +12088,8 @@ snapshots:
       readable-stream: 3.6.2
 
   through@2.3.8: {}
+
+  tinycolor2@1.6.0: {}
 
   tmp@0.0.33:
     dependencies:
@@ -11772,6 +12304,10 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
+  use-sync-external-store@1.4.0(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+
   util-deprecate@1.0.2: {}
 
   v8-compile-cache-lib@3.0.1: {}
@@ -11816,6 +12352,10 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  warning@4.0.3:
+    dependencies:
+      loose-envify: 1.4.0
 
   wcwidth@1.0.1:
     dependencies:

@@ -1,12 +1,19 @@
 import React from 'react';
 import { useRoutes, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import MainLayout from '@/layouts/MainLayout';
 
-// 懒加载路由组件
-const Login = React.lazy(() => import('@/pages/Login'));
-const Dashboard = React.lazy(() => import('@/pages/Dashboard'));
-// const NotFound = React.lazy(() => import('@/pages/NotFound'));
+// 登录页面
+const Login = React.lazy(() => import('@/pages/login'));
+// 布局页面
+const Layout = React.lazy(() => import('@/pages/layouts'));
+// 控制台
+const Dashboard = React.lazy(() => import('@/pages/dashboard'));
+// 对象配置
+const Meta = React.lazy(() => import('@/pages/configurable/meta'));
+// 菜单配置
+const Menu = React.lazy(() => import('@/pages/configurable/menu'));
+// 数据源配置
+const Datasource = React.lazy(() => import('@/pages/configurable/datasource'));
 
 // 添加类型定义
 interface PrivateRouteProps {
@@ -17,6 +24,7 @@ interface PrivateRouteProps {
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
+  // 如果未认证，重定向到登录页面
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -35,7 +43,7 @@ const RenderRouter: React.FC = () => {
       path: '/',
       element: (
         <PrivateRoute>
-          <MainLayout />
+          <Layout />
         </PrivateRoute>
       ),
       children: [
@@ -47,12 +55,25 @@ const RenderRouter: React.FC = () => {
           path: 'dashboard',
           element: <Dashboard />,
         },
+        {
+          path: ':appId',
+          children: [
+            {
+              path: 'meta',
+              element: <Meta />,
+            },
+            {
+              path: 'menu',
+              element: <Menu />,
+            },
+            {
+              path: 'datasource',
+              element: <Datasource />,
+            },
+          ],
+        },
       ],
     },
-    // {
-    //   path: '*',
-    //   element: <NotFound />,
-    // },
   ]);
 
   return routes;

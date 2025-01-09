@@ -7,10 +7,10 @@
       "import": "./dist/http/index.mjs",
       "require": "./dist/http/index.js"
     },
-    "./tools": {
-      "types": "./dist/tools/index.d.ts",
-      "import": "./dist/tools/index.mjs",
-      "require": "./dist/tools/index.js"
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "import": "./dist/storage/index.mjs",
+      "require": "./dist/storage/index.js"
     }
   },
   "files": [
