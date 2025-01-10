@@ -2,6 +2,7 @@
 export enum META_CONFIG {
   BaseField = 'BaseField',
   BaseForm = 'BaseForm',
+  BaseDetail = 'BaseDetail',
   BaseList = 'BaseList',
   SearchForm = 'SearchForm',
   FunctionButton = 'FunctionButton',
@@ -10,7 +11,6 @@ export enum META_CONFIG {
 
 /**
  * 可配置类型
- *
  */
 export const META_CONFIG_TYPE = [
   {
@@ -20,6 +20,10 @@ export const META_CONFIG_TYPE = [
   {
     label: '基础表单',
     value: META_CONFIG.BaseForm,
+  },
+  {
+    label: '基础详情页',
+    value: META_CONFIG.BaseDetail,
   },
   {
     label: '基础列表',
