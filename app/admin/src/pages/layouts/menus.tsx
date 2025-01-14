@@ -2,8 +2,9 @@ import React from 'react';
 import { map, forEach } from 'lodash';
 import { useRequest } from 'ahooks';
 import { CrownFilled } from '@ant-design/icons';
-import { getAppList, AppListItem } from '@/api/layouts'; // 假设这是获取应用列表的 API
+import { metaService } from '@/api/meta';
 import { SUB_MENU_TYPES } from '@/constant';
+import { AppDto } from '@/api/meta/interface';
 
 interface RouteItem {
   path: string;
@@ -13,17 +14,16 @@ interface RouteItem {
   icon?: React.ReactNode;
 }
 
-function generateRoutes(appList: AppListItem[]): RouteItem[] {
+function generateRoutes(appList: AppDto[]): RouteItem[] {
   return [
     {
       path: '/dashboard',
       name: '控制台',
       icon: <CrownFilled />,
-      component: './Welcome',
     },
     ...map(appList, app => {
       const parentRoute: RouteItem = {
-        path: `/${app.appId}`,
+        path: `/${app.appCode}`,
         name: app.appName,
         icon: <CrownFilled />,
         routes: [],
@@ -31,7 +31,7 @@ function generateRoutes(appList: AppListItem[]): RouteItem[] {
 
       forEach(SUB_MENU_TYPES, ({ name, route }) => {
         parentRoute.routes!.push({
-          path: `/${app.appId}/${route}`,
+          path: `/${app.appCode}/${route}`,
           name: name,
           icon: <CrownFilled />,
         });
@@ -43,14 +43,14 @@ function generateRoutes(appList: AppListItem[]): RouteItem[] {
 }
 
 export function useMenus() {
-  const { data, loading } = useRequest(getAppList, {
+  const { data, loading } = useRequest(metaService.queryApps, {
     manual: false,
     refreshDeps: [],
     cacheKey: 'menu-app-list',
   });
 
   const routes = React.useMemo(() => {
-    return generateRoutes(data?.data);
+    return generateRoutes(data?.data?.list);
   }, [data]);
 
   return {

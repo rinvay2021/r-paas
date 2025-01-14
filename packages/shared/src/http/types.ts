@@ -47,13 +47,25 @@ export interface HttpConfig extends AxiosRequestConfig {
   requestOptions?: RequestOptions;
 }
 
+// 新增拦截器配置类型
+export interface InterceptorHandler<T = any> {
+  onFulfilled?: (value: T) => T | Promise<T>;
+  onRejected?: (error: any) => any;
+}
+
+export interface HttpInterceptors {
+  request?: InterceptorHandler<InternalAxiosRequestConfig>[];
+  response?: InterceptorHandler<AxiosResponse>[];
+}
+
 // 新增默认配置类型
 export interface CreateHttpOptions {
-  baseURL: string;
+  baseURL?: string;
   timeout?: number;
   headers?: Record<string, string>;
   requestOptions?: RequestOptions;
   axiosConfig?: AxiosRequestConfig;
+  interceptors?: HttpInterceptors;
 }
 
 export interface IResponse<T = any> {
@@ -62,3 +74,10 @@ export interface IResponse<T = any> {
   message: string;
   success: boolean;
 }
+
+export type {
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+  RawAxiosRequestHeaders,
+};

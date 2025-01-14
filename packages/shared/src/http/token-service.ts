@@ -4,7 +4,7 @@ import Storage, { StorageType } from '../storage';
 const TOKEN_KEY = 'auth-token';
 
 const storage = new Storage({
-  prefix: 'auth',
+  prefix: 'rpaas-auth',
   storage: StorageType.LOCAL,
 });
 

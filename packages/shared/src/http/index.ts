@@ -17,13 +17,10 @@
  */
 import HttpRequest from './request';
 import tokenService from './token-service';
-import { getBaseUrl } from './utils';
 import type { CreateHttpOptions } from './types';
 
 // 默认配置
-const defaultConfig: CreateHttpOptions = {
-  baseURL: getBaseUrl(),
-};
+const defaultConfig: CreateHttpOptions = {};
 
 // 创建默认实例
 const http = new HttpRequest(defaultConfig, tokenService);

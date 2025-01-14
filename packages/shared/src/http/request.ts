@@ -13,6 +13,7 @@ import type {
   CreateHttpOptions,
   CustomAxiosRequestConfig,
   IResponse,
+  HttpInterceptors,
 } from './types';
 
 const DEFAULT_OPTIONS: RequestOptions = {
@@ -21,7 +22,6 @@ const DEFAULT_OPTIONS: RequestOptions = {
 };
 
 const DEFAULT_CONFIG: CreateHttpOptions = {
-  baseURL: '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -50,11 +50,16 @@ class HttpRequest {
 
     this.baseOptions = { ...DEFAULT_OPTIONS, ...requestOptions };
     this.tokenService = tokenService;
-    this.setupInterceptors();
+    this.setupInterceptors(options.interceptors);
   }
 
-  private setupInterceptors() {
-    // 请求拦截器
+  private setupInterceptors(customInterceptors?: HttpInterceptors) {
+    // 添加自定义请求拦截器
+    customInterceptors?.request?.forEach(interceptor => {
+      this.instance.interceptors.request.use(interceptor.onFulfilled, interceptor.onRejected);
+    });
+
+    // 默认请求拦截器（token 处理）
     this.instance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
         const customConfig = config as CustomAxiosRequestConfig;
@@ -76,7 +81,12 @@ class HttpRequest {
       error => Promise.reject(formatError(error))
     );
 
-    // 响应拦截器
+    // 添加自定义响应拦截器
+    customInterceptors?.response?.forEach(interceptor => {
+      this.instance.interceptors.response.use(interceptor.onFulfilled, interceptor.onRejected);
+    });
+
+    // 默认响应拦截器
     this.instance.interceptors.response.use(
       (response: AxiosResponse<Response>) => {
         const { data } = response;

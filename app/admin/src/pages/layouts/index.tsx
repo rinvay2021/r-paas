@@ -1,9 +1,10 @@
 import React from 'react';
 import { Dropdown, Spin } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
 import type { ProSettings } from '@ant-design/pro-components';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { LogoutOutlined } from '@ant-design/icons';
+import { useQueryParams, StringParam } from 'use-query-params';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMenus } from './menus';
 import './index.less';
@@ -20,6 +21,10 @@ const logo =
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [query] = useQueryParams({
+    configurableType: StringParam,
+    metaObjectCode: StringParam,
+  });
 
   const { logout } = useAuth();
   const { route, loading } = useMenus();
@@ -27,7 +32,21 @@ const Layout: React.FC = () => {
   // 处理菜单点击
   const handleMenuClick = (item: any) => {
     if (item.path) {
-      navigate(item.path);
+      // 判断是否是同一路由
+      const isSameRoute = location.pathname === item.path;
+
+      // 同一路由需要保持参数
+      if (isSameRoute) {
+        const searchParams = new URLSearchParams();
+        Object.entries(query).forEach(([key, value]) => {
+          if (value) {
+            searchParams.append(key, value);
+          }
+        });
+        navigate(`${item.path}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`);
+      } else {
+        navigate(item.path);
+      }
     }
   };
 

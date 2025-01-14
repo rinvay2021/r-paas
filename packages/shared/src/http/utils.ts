@@ -28,7 +28,3 @@ export const formatError = (error: unknown): RequestError => {
     message: '未知错误',
   };
 };
-
-export const getBaseUrl = () => {
-  return '/api';
-};

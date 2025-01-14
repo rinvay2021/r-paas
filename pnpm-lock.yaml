@@ -32,6 +32,9 @@ importers:
       react-router-dom:
         specifier: 6.10.0
         version: 6.10.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      use-query-params:
+        specifier: ^2.1.1
+        version: 2.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.2
@@ -4914,6 +4917,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  serialize-query-params@2.0.2:
+    resolution: {integrity: sha1-WYo/ueE/TqHBmS+9ICMaoWsx24E=, tarball: http://r.npm.sankuai.com/serialize-query-params/download/serialize-query-params-2.0.2.tgz}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha1-qscjFBmOrtl1z3eyw7a4gGleVEk=, tarball: http://r.npm.sankuai.com/set-function-length/download/set-function-length-1.2.2.tgz}
     engines: {node: '>= 0.4'}
@@ -5425,6 +5431,12 @@ packages:
 
   url-parse@1.5.10:
     resolution: {integrity: sha1-nTwvc2wddd070r5QfcwRHx4uqcE=, tarball: http://r.npm.sankuai.com/url-parse/download/url-parse-1.5.10.tgz}
+
+  use-query-params@2.1.1:
+    resolution: {integrity: sha1-a5q8m5au1fRHaiipHpLE2YwoOmY=, tarball: http://r.npm.sankuai.com/use-query-params/download/use-query-params-2.1.1.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   use-sync-external-store@1.4.0:
     resolution: {integrity: sha1-rbx5XY7rRwKZYwFs79+J3Hmfzrw=, tarball: http://r.npm.sankuai.com/use-sync-external-store/download/use-sync-external-store-1.4.0.tgz}
@@ -11696,6 +11708,8 @@ snapshots:
 
   semver@7.6.3: {}
 
+  serialize-query-params@2.0.2: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -12303,6 +12317,12 @@ snapshots:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
+
+  use-query-params@2.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      serialize-query-params: 2.0.2
 
   use-sync-external-store@1.4.0(react@18.2.0):
     dependencies:

@@ -3,7 +3,7 @@ import AuthService, { LoginRequest } from '@/api/login';
 import Storage, { StorageType } from '@r-paas/shared/storage';
 
 const storage = new Storage({
-  prefix: 'auth',
+  prefix: 'rpaas-auth',
   storage: StorageType.LOCAL,
 });
 
