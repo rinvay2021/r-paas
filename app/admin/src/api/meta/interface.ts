@@ -2,23 +2,25 @@
  * 分页查询参数
  */
 export interface PaginationQuery {
+  page: number;
   pageSize: number;
-  current: number;
 }
 
 /**
  * 应用 DTO
  */
 export interface AppDto {
+  id?: string;
   appCode: string;
-  appName: string;
-  description?: string;
+  appName?: string;
+  appDesc?: string;
 }
 
 /**
  * 元对象 DTO
  */
 export interface MetaObjectDto {
+  id?: string;
   appCode: string;
   metaObjectCode: string;
   metaObjectName: string;
@@ -26,14 +28,29 @@ export interface MetaObjectDto {
 }
 
 /**
+ * 查询元对象 DTO
+ */
+export type QueryMetaObjectDto = Partial<MetaObjectDto & PaginationQuery>;
+
+/**
  * 字段 DTO
  */
 export interface FieldDto {
-  fieldCode: string;
-  fieldName: string;
-  fieldType: string;
-  objectCode: string;
-  description?: string;
+  id?: string;
+  fieldCode?: string;
+  fieldName?: string;
+  fieldType?: string;
+  fieldDesc?: string;
+  appCode: string;
+  metaObjectCode: string;
+  keyword?: string;
+}
+
+/**
+ * 查询字段 DTO
+ */
+export interface QueryFieldDto extends Partial<FieldDto & PaginationQuery> {
+  keyword?: string;
 }
 
 /**
@@ -52,6 +69,11 @@ export interface FormDto {
 }
 
 /**
+ * 查询表单 DTO
+ */
+export type QueryFormDto = Partial<FormDto & PaginationQuery>;
+
+/**
  * 列表 DTO
  */
 export interface ListDto {
@@ -64,6 +86,11 @@ export interface ListDto {
   }>;
   description?: string;
 }
+
+/**
+ * 查询列表 DTO
+ */
+export type QueryListDto = Partial<ListDto & PaginationQuery>;
 
 /**
  * 详情页 DTO
@@ -84,6 +111,11 @@ export interface DetailPageDto {
 }
 
 /**
+ * 查询详情页 DTO
+ */
+export type QueryDetailPageDto = Partial<DetailPageDto & PaginationQuery>;
+
+/**
  * 搜索表单 DTO
  */
 export interface SearchFormDto {
@@ -98,6 +130,11 @@ export interface SearchFormDto {
 }
 
 /**
+ * 查询搜索表单 DTO
+ */
+export type QuerySearchFormDto = Partial<SearchFormDto & PaginationQuery>;
+
+/**
  * 视图 DTO
  */
 export interface ViewDto {
@@ -110,6 +147,11 @@ export interface ViewDto {
 }
 
 /**
+ * 查询视图 DTO
+ */
+export type QueryViewDto = Partial<ViewDto & PaginationQuery>;
+
+/**
  * 操作按钮 DTO
  */
 export interface ActionButtonDto {
@@ -120,4 +162,11 @@ export interface ActionButtonDto {
   position: 'LIST' | 'DETAIL';
   config: any;
   description?: string;
+}
+
+/**
+ * 查询操作按钮 DTO
+ */
+export interface QueryActionButtonDto extends Partial<ActionButtonDto & PaginationQuery> {
+  keyword?: string;
 }

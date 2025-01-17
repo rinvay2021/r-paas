@@ -11,6 +11,11 @@
       "types": "./dist/storage/index.d.ts",
       "import": "./dist/storage/index.mjs",
       "require": "./dist/storage/index.js"
+    },
+    "./moment": {
+      "types": "./dist/moment/index.d.ts",
+      "import": "./dist/moment/index.mjs",
+      "require": "./dist/moment/index.js"
     }
   },
   "files": [

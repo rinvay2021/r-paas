@@ -1,0 +1,22 @@
+.ant-modal-wrap {
+  display: flex;
+  align-items: center;
+
+  .ant-modal {
+    top: 0;
+    padding: 0;
+
+    .ant-modal-body {
+      max-height: calc(100vh - 200px);
+      /* Firefox */
+      scrollbar-width: none;
+      /* IE and Edge */
+      -ms-overflow-style: none;
+      /* Chrome, Safari, Opera */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      overflow: auto;
+    }
+  }
+}

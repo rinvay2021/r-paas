@@ -1,3 +1,5 @@
+import type { ProSettings } from '@ant-design/pro-components';
+
 /**
  * 子菜单类型
  */
@@ -15,3 +17,14 @@ export const SUB_MENU_TYPES = [
     route: 'datasource',
   },
 ];
+
+export const LAYOUT_SETTING: ProSettings = {
+  layout: 'mix',
+};
+
+export const TITLE = 'R-PaaS';
+
+export const LOGO =
+  'https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*1NHAQYduQiQAAAAAAAAAAABkARQnAQ';
+
+export const prefix = 'rpaas';

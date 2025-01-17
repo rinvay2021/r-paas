@@ -2,25 +2,17 @@ import React from 'react';
 import { Dropdown, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
-import type { ProSettings } from '@ant-design/pro-components';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useQueryParams, StringParam } from 'use-query-params';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { prefix, LAYOUT_SETTING, TITLE, LOGO } from '@/constant';
 import { useMenus } from './menus';
 import './index.less';
-
-const layoutSetting: ProSettings = {
-  layout: 'mix',
-};
-
-const title = 'R-PaaS';
-
-const logo =
-  'https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*1NHAQYduQiQAAAAAAAAAAABkARQnAQ';
 
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [query] = useQueryParams({
     configurableType: StringParam,
     metaObjectCode: StringParam,
@@ -53,15 +45,16 @@ const Layout: React.FC = () => {
   return (
     <Spin spinning={loading} style={{ height: '100vh' }}>
       <ProLayout
-        logo={logo}
-        title={title}
+        {...LAYOUT_SETTING}
+        logo={LOGO}
+        title={TITLE}
         route={route}
-        {...layoutSetting}
         location={location}
-        className="rpaas-layout"
+        className={`${prefix}-layout`}
         menuItemRender={(item, dom) => {
           return <div onClick={() => handleMenuClick(item)}>{dom}</div>;
         }}
+        // TODO: 对接用户真实数据
         avatarProps={{
           title: '贝贝',
           src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',

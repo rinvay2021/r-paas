@@ -10,6 +10,14 @@ import type {
   ViewDto,
   ActionButtonDto,
   PaginationQuery,
+  QueryMetaObjectDto,
+  QueryFieldDto,
+  QueryFormDto,
+  QueryListDto,
+  QueryDetailPageDto,
+  QuerySearchFormDto,
+  QueryViewDto,
+  QueryActionButtonDto,
 } from './interface';
 
 /**
@@ -34,7 +42,7 @@ export class MetaService {
     return http.post<MetaObjectDto>('/meta/object/create', data);
   }
 
-  async queryMetaObjects(params: Partial<MetaObjectDto & PaginationQuery>) {
+  async queryMetaObjects(params: QueryMetaObjectDto) {
     return http.post<{ list: MetaObjectDto[]; total: number }>('/meta/object/list', params);
   }
 
@@ -45,7 +53,7 @@ export class MetaService {
     return http.post<FieldDto>('/meta/field/create', data);
   }
 
-  async queryFields(params: PaginationQuery) {
+  async queryFields(params: QueryFieldDto) {
     return http.post<{ list: FieldDto[]; total: number }>('/meta/field/list', params);
   }
 
@@ -56,7 +64,7 @@ export class MetaService {
     return http.post<FormDto>('/meta/form/create', data);
   }
 
-  async queryForms(params: PaginationQuery) {
+  async queryForms(params: QueryFormDto) {
     return http.post<{ list: FormDto[]; total: number }>('/meta/form/list', params);
   }
 
@@ -67,7 +75,7 @@ export class MetaService {
     return http.post<ListDto>('/meta/list/create', data);
   }
 
-  async queryLists(params: PaginationQuery) {
+  async queryLists(params: QueryListDto) {
     return http.post<{ list: ListDto[]; total: number }>('/meta/list/list', params);
   }
 
@@ -78,7 +86,7 @@ export class MetaService {
     return http.post<DetailPageDto>('/meta/detail-page/create', data);
   }
 
-  async queryDetailPages(params: PaginationQuery) {
+  async queryDetailPages(params: QueryDetailPageDto) {
     return http.post<{ list: DetailPageDto[]; total: number }>('/meta/detail-page/list', params);
   }
 
@@ -89,7 +97,7 @@ export class MetaService {
     return http.post<SearchFormDto>('/meta/search-form/create', data);
   }
 
-  async querySearchForms(params: PaginationQuery) {
+  async querySearchForms(params: QuerySearchFormDto) {
     return http.post<{ list: SearchFormDto[]; total: number }>('/meta/search-form/list', params);
   }
 
@@ -100,7 +108,7 @@ export class MetaService {
     return http.post<ViewDto>('/meta/view/create', data);
   }
 
-  async queryViews(params: PaginationQuery) {
+  async queryViews(params: QueryViewDto) {
     return http.post<{ list: ViewDto[]; total: number }>('/meta/view/list', params);
   }
 
@@ -111,7 +119,7 @@ export class MetaService {
     return http.post<ActionButtonDto>('/meta/action-button/create', data);
   }
 
-  async queryActionButtons(params: PaginationQuery) {
+  async queryActionButtons(params: QueryActionButtonDto) {
     return http.post<{ list: ActionButtonDto[]; total: number }>(
       '/meta/action-button/list',
       params

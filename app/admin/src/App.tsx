@@ -1,8 +1,8 @@
-import React, { Suspense } from 'react';
+import React from 'react';
+import { Spin, ConfigProvider } from 'antd';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import { Spin, ConfigProvider } from 'antd';
 import RenderRouter from './routes';
 import AuthProvider from './contexts/AuthContext';
 
@@ -12,7 +12,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <QueryParamProvider adapter={ReactRouter6Adapter}>
-            <Suspense
+            <React.Suspense
               fallback={
                 <div
                   style={{
@@ -27,7 +27,7 @@ function App() {
               }
             >
               <RenderRouter />
-            </Suspense>
+            </React.Suspense>
           </QueryParamProvider>
         </BrowserRouter>
       </AuthProvider>

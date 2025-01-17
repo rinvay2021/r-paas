@@ -10,6 +10,8 @@ import {
 } from '@ant-design/pro-components';
 import { useAuth } from '@/contexts/AuthContext';
 
+import { prefix } from '@/constant';
+
 import './index.less';
 
 const Login: React.FC = () => {
@@ -30,7 +32,7 @@ const Login: React.FC = () => {
   return (
     <ProConfigProvider hashed={false}>
       <div
-        className="login-container"
+        className={`${prefix}-login-container`}
         style={{
           backgroundColor: token.colorBgContainer,
         }}

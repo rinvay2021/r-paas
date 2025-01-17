@@ -4,76 +4,97 @@ import { useRequest } from 'ahooks';
 import { useParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { useQueryParam, StringParam } from 'use-query-params';
-import { Flex, Select, Switch, Button, Table, Segmented, message } from 'antd';
+import { Flex, Select, Button, message, Segmented, Divider } from 'antd';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 import { metaService } from '@/api/meta';
-import { META_CONFIG_TYPE } from '@/constant';
 import type { MetaObjectDto } from '@/api/meta/interface';
-
+import { META_CONFIG_TYPE, META_CONFIG, NUMBER_CONSTANTS, prefix } from '@/constant';
+import {
+  BaseField,
+  BaseForm,
+  BaseDetail,
+  BaseList,
+  SearchForm,
+  FunctionButton,
+  BaseView,
+} from './components';
 import './index.less';
 
 const Dashboard: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
 
-  const [configurableType, setConfigurableType] = useQueryParam('configurableType', StringParam);
+  // 获取查询参数
   const [metaObjectCode, setMetaObjectCode] = useQueryParam('metaObjectCode', StringParam);
+  const [configurableType, setConfigurableType] = useQueryParam('configurableType', StringParam);
 
   // 新增创建对象的模态框状态
   const [createModalOpen, setCreateModalOpen] = React.useState<boolean>(false);
   const [metaObjectList, setMetaObjectList] = React.useState<MetaObjectDto[]>([]);
 
-  const { loading: objectLoading, refresh: refreshObjects } = useRequest(
-    () => metaService.queryMetaObjects({ appCode }),
-    {
-      onSuccess: res => {
-        const list = map(res?.data?.list, (item: MetaObjectDto) => {
-          return {
-            label: item.metaObjectName,
-            value: item.metaObjectCode,
-          };
-        });
+  const { refresh: refreshObjects } = useRequest(() => metaService.queryMetaObjects({ appCode }), {
+    onSuccess: res => {
+      const list = map(res?.data?.list, (item: MetaObjectDto) => {
+        return {
+          label: item.metaObjectName,
+          value: item.metaObjectCode,
+        };
+      });
 
-        // 如果没有选中对象且列表不为空，默认选中第一个
-        if (!metaObjectCode && list.length > 0) {
-          setMetaObjectCode(list[0].value);
-        }
+      // 如果没有选中对象且列表不为空，默认选中第一个
+      if (!metaObjectCode && list.length > 0) {
+        setMetaObjectCode(list[0].value);
+      }
 
-        // 如果没有选中配置类型，默认选中第一个
-        if (!configurableType) {
-          setConfigurableType(META_CONFIG_TYPE[0].value);
-        }
+      // 如果没有选中配置类型，默认选中第一个
+      if (!configurableType) {
+        setConfigurableType(META_CONFIG_TYPE[0].value);
+      }
 
-        setMetaObjectList(list);
-      },
-      refreshDeps: [appCode],
-    }
-  );
-
-  // 表格列定义
-  const columns = [
-    { title: '对象名称', dataIndex: 'metaObjectName', key: 'metaObjectName' },
-    { title: '对象编码', dataIndex: 'metaObjectCode', key: 'metaObjectCode' },
-    { title: '描述', dataIndex: 'metaObjectDesc', key: 'metaObjectDesc' },
-    {
-      key: 'isEnabled',
-      title: '状态',
-      dataIndex: 'isEnabled',
-      render: (isEnabled: boolean) => <Switch checked={isEnabled} />,
+      setMetaObjectList(list);
     },
-  ];
+    refreshDeps: [appCode],
+  });
+
+  const renderConfigComponent = () => {
+    switch (configurableType) {
+      // 基础字段
+      case META_CONFIG.BaseField:
+        return <BaseField />;
+      // 基础表单
+      case META_CONFIG.BaseForm:
+        return <BaseForm />;
+      // 基础详情
+      case META_CONFIG.BaseDetail:
+        return <BaseDetail />;
+      // 基础列表
+      case META_CONFIG.BaseList:
+        return <BaseList />;
+      // 基础搜索表单
+      case META_CONFIG.SearchForm:
+        return <SearchForm />;
+      // 基础功能按钮
+      case META_CONFIG.FunctionButton:
+        return <FunctionButton />;
+      // 基础视图
+      case META_CONFIG.BaseView:
+        return <BaseView />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <Flex className="rpaas-dashboard" vertical gap="middle">
+    <Flex className={`${prefix}-configurable-meta`} vertical gap="middle">
       {/* 顶部操作区 */}
       <Flex justify="space-between" align="center">
         {/* 选择对象 */}
         <Select
-          style={{ width: 200 }}
           placeholder="请选择对象"
           options={metaObjectList}
           value={metaObjectCode}
           onChange={value => setMetaObjectCode(value)}
+          style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}
         />
         {/* 选择配置类型 */}
         <Segmented
@@ -86,9 +107,10 @@ const Dashboard: React.FC = () => {
           新建对象
         </Button>
       </Flex>
+      <Divider dashed style={{ margin: '12px 0' }} />
 
-      {/* 底部表格 */}
-      <Table dataSource={[]} columns={columns} rowKey="metaObjectCode" loading={objectLoading} />
+      {/* 配置组件模块 */}
+      {renderConfigComponent()}
 
       {/* 新增创建对象的表单 */}
       <ModalForm<MetaObjectDto>
