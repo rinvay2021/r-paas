@@ -7,7 +7,6 @@ import axios, {
 } from 'axios';
 import { formatError } from './utils';
 import type {
-  Response,
   TokenService,
   RequestOptions,
   CreateHttpOptions,
@@ -88,7 +87,7 @@ class HttpRequest {
 
     // 默认响应拦截器
     this.instance.interceptors.response.use(
-      (response: AxiosResponse<Response>) => {
+      (response: AxiosResponse<IResponse>) => {
         const { data } = response;
 
         if (data.code !== 200) {

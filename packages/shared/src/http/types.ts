@@ -10,12 +10,6 @@ export interface RequestOptions {
   errorTip?: boolean;
 }
 
-export interface Response<T = any> {
-  code: number;
-  data: T;
-  message: string;
-}
-
 export interface RequestError extends Error {
   code?: number;
   config?: AxiosRequestConfig;
@@ -68,11 +62,11 @@ export interface CreateHttpOptions {
   interceptors?: HttpInterceptors;
 }
 
-export interface IResponse<T = any> {
+export interface IResponse<T = any> extends AxiosResponse<T> {
   code: number;
   data: T;
   message: string;
-  success: boolean;
+  success?: boolean;
 }
 
 export type {

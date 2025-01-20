@@ -4,10 +4,12 @@
   "scripts": {
     "prepare": "husky install",
     "dev:admin": "pnpm --filter @r-paas/admin dev",
+    "dev:portal": "pnpm --filter @r-paas/portal dev",
     "dev:renderer": "pnpm --filter @r-paas/renderer dev",
-    "build:components": "pnpm --filter @r-paas/components build",
+    "build:meta": "pnpm --filter @r-paas/meta build",
     "build:shared": "pnpm --filter @r-paas/shared build",
     "build:admin": "pnpm --filter @r-paas/admin build",
+    "build:portal": "pnpm --filter @r-paas/portal build",
     "build:renderer": "pnpm --filter @r-paas/renderer build",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
