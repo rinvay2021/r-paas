@@ -8,6 +8,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { metaService } from '@/api/meta';
 import { UpdateFieldDto } from '@/api/meta/interface';
 import { NUMBER_CONSTANTS } from '@/constant';
+import { useElementHeight } from '@/hooks';
 import FiledModal from './field-form';
 import { useColumns } from './columns';
 import { BaseFieldListItem, BooleanEnum } from './type';
@@ -18,20 +19,20 @@ const BaseField: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
   const [metaObjectCode] = useQueryParam('metaObjectCode', StringParam);
 
-  const [fieldId, setFieldId] = React.useState<string>('');
+  const filedIdRef = React.useRef<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
   const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
 
   const paginationRef = React.useRef({
     current: 1,
-    pageSize: 10,
+    pageSize: 50,
     total: 0,
   });
 
   const {
     data,
-    run: queryFields,
     loading,
+    run: queryFields,
   } = useRequest(metaService.queryFields, {
     manual: true,
     onSuccess: ({ data }) => {
@@ -83,8 +84,15 @@ const BaseField: React.FC = () => {
   };
 
   const handleEdit = (record: BaseFieldListItem) => {
-    setFieldId(record._id);
+    filedIdRef.current = record._id;
     setFieldModalVisible(true);
+  };
+
+  const handleVisibleChange = (visible: boolean) => {
+    if (!visible) {
+      filedIdRef.current = '';
+    }
+    setFieldModalVisible(visible);
   };
 
   // 监听 metaObjectCode 变化
@@ -98,6 +106,8 @@ const BaseField: React.FC = () => {
   }, [metaObjectCode]);
 
   const columns = useColumns({ handleEdit, handleEnable });
+
+  const height = useElementHeight({ elementId: 'baseField', offset: 126 });
 
   return (
     <Flex vertical gap="middle" className="field-container">
@@ -129,6 +139,7 @@ const BaseField: React.FC = () => {
       <Table
         rowKey="_id"
         size="small"
+        id="baseField"
         loading={loading}
         columns={columns}
         dataSource={get(data, 'data.list', [])}
@@ -136,18 +147,20 @@ const BaseField: React.FC = () => {
           ...paginationRef.current,
           showQuickJumper: true,
           showSizeChanger: true,
+          pageSizeOptions: [20, 50, 100],
           showTotal: total => `共 ${total} 条`,
         }}
         onChange={handleTableChange}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: 'max-content', y: height }}
       />
       {/* 字段创建/编辑弹窗 */}
       <FiledModal
-        id={fieldId}
+        key={filedIdRef.current}
+        id={filedIdRef.current}
+        visible={fieldModalVisible}
         appCode={appCode}
         metaObjectCode={metaObjectCode}
-        visible={fieldModalVisible}
-        onVisibleChange={setFieldModalVisible}
+        onVisibleChange={handleVisibleChange}
         onFinish={() => fetchFields({ keyword })}
       />
     </Flex>

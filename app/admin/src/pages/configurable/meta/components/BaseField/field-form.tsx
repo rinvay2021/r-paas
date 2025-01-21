@@ -36,13 +36,21 @@ const FiledModal: React.FC<FieldModalProps> = params => {
     FieldTypeEnum.Text
   );
 
-  const { run: fetchField } = useRequest(metaService.getFieldById, {
-    manual: true,
+  // 是否是编辑
+  const isEdit = Boolean(id);
+  // 公共配置
+  const commonConfigs = useCommonConfigs(isEdit);
+  // 各个类型独有的配置
+  const configs = TYPE_CONFIGS[activeTab]?.properties;
+
+  // 编辑时获取字段信息
+  useRequest(() => metaService.getFieldById(id), {
+    manual: false,
     onSuccess: resp => {
-      // console.log('resp ====', resp.data);
       setActiveTab(resp?.data?.fieldType);
       formInstance?.current?.setFieldsValue(resp?.data);
     },
+    ready: isEdit,
   });
 
   const handleTabChange = (newTab: FieldTypeEnum) => {
@@ -70,37 +78,15 @@ const FiledModal: React.FC<FieldModalProps> = params => {
     });
   };
 
-  React.useEffect(() => {
-    // 如果弹窗关闭，则清空表单
-    if (!visible) {
-      formInstance?.current?.resetFields();
-      return;
-    }
-
-    // 如果弹窗打开，则根据id获取字段信息 或者设置默认类型
-    if (id) {
-      fetchField(id);
-    } else {
-      // 设置默认类型
-      formInstance?.current?.setFieldsValue({
-        fieldType: FieldTypeEnum.Text,
-      });
-    }
-  }, [id, visible]);
-
-  // 是否是编辑
-  const isEdit = Boolean(id);
-  // 公共配置
-  const commonConfigs = useCommonConfigs(isEdit);
-  // 各个类型独有的配置
-  const configs = TYPE_CONFIGS[activeTab]?.properties;
-
   return (
     <ModalForm
       open={visible}
       title={isEdit ? '编辑字段' : '新建字段'}
       formRef={formInstance}
       onOpenChange={onVisibleChange}
+      initialValues={{
+        fieldType: FieldTypeEnum.Text,
+      }}
       modalProps={{
         destroyOnClose: true,
       }}
