@@ -97,7 +97,7 @@ export const FIELD_TYPE_GROUPS = [
 ];
 
 // 公共配置
-export const COMMON_CONFIGS: FieldConfigItem[] = [
+export const useCommonConfigs = (isEdit?: boolean): FieldConfigItem[] => [
   {
     type: 'ProFormText',
     label: '字段名称',
@@ -113,6 +113,7 @@ export const COMMON_CONFIGS: FieldConfigItem[] = [
     name: 'fieldCode',
     'x-component-props': {
       placeholder: '请输入字段编码',
+      disabled: isEdit,
       rules: [
         { required: true, message: '请输入字段编码' },
         {

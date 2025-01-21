@@ -1,31 +1,32 @@
 import React from 'react';
-import { debounce } from 'lodash';
 import { useRequest } from 'ahooks';
+import { debounce, get } from 'lodash';
 import { useParams } from 'react-router-dom';
-import { ModalForm } from '@ant-design/pro-components';
 import { StringParam, useQueryParam } from 'use-query-params';
+import { Button, Input, Flex, Table, message } from 'antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Flex, Table, FormInstance, message } from 'antd';
 import { metaService } from '@/api/meta';
+import { UpdateFieldDto } from '@/api/meta/interface';
 import { NUMBER_CONSTANTS } from '@/constant';
-import BaseFieldForm from './field-form';
+import FiledModal from './field-form';
 import { useColumns } from './columns';
+import { BaseFieldListItem, BooleanEnum } from './type';
 
 import './index.less';
 
 const BaseField: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
   const [metaObjectCode] = useQueryParam('metaObjectCode', StringParam);
-  const fieldFormRef = React.useRef<FormInstance>();
+
+  const [fieldId, setFieldId] = React.useState<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
-  const [createModalVisible, setCreateModalVisible] = React.useState(false);
-  const [pagination, setPagination] = React.useState({
+  const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
+
+  const paginationRef = React.useRef({
     current: 1,
     pageSize: 10,
     total: 0,
   });
-
-  const columns = useColumns();
 
   const {
     data,
@@ -34,109 +35,121 @@ const BaseField: React.FC = () => {
   } = useRequest(metaService.queryFields, {
     manual: true,
     onSuccess: ({ data }) => {
-      setPagination(prev => ({
-        ...prev,
-        total: data.total,
-      }));
+      paginationRef.current.total = data.total;
     },
   });
 
-  const handleSearch = React.useCallback(
-    debounce((searchKeyword: string) => {
-      if (!appCode || !metaObjectCode) return;
+  const fetchFields = React.useCallback(
+    debounce(
+      (params: { keyword?: string }) => {
+        if (!appCode || !metaObjectCode) {
+          message.info('应用和元数据对象参数缺失');
+          return;
+        }
 
-      queryFields({
-        keyword: searchKeyword,
-        appCode,
-        metaObjectCode,
-        pageSize: pagination.pageSize,
-        page: pagination.current,
-      });
-    }, 300),
-    [appCode, metaObjectCode, pagination.pageSize, pagination.current]
+        queryFields({
+          appCode,
+          metaObjectCode,
+          keyword: params?.keyword,
+          page: paginationRef.current.current,
+          pageSize: paginationRef.current.pageSize,
+        });
+      },
+      300,
+      { leading: true }
+    ),
+    [appCode, metaObjectCode, keyword]
   );
 
-  // 处理表格分页变化
   const handleTableChange = newPagination => {
-    setPagination({
-      ...pagination,
+    paginationRef.current = {
+      ...paginationRef.current,
       current: newPagination.current,
       pageSize: newPagination.pageSize,
-    });
-    handleSearch(keyword);
+    };
+    fetchFields({ keyword });
+  };
+
+  const handleEnable = async (record: BaseFieldListItem) => {
+    const params = {
+      _id: record._id,
+      isEnabled: record.isEnabled === BooleanEnum.YES ? BooleanEnum.NO : BooleanEnum.YES,
+    } as UpdateFieldDto;
+
+    const result = await metaService.updateField(params);
+    message.success(result?.message);
+
+    fetchFields({ keyword });
+  };
+
+  const handleEdit = (record: BaseFieldListItem) => {
+    setFieldId(record._id);
+    setFieldModalVisible(true);
   };
 
   // 监听 metaObjectCode 变化
   React.useEffect(() => {
+    // 清空搜索框
     setKeyword('');
-    setPagination({
-      current: 1,
-      pageSize: 10,
-      total: 0,
-    });
-    handleSearch('');
+
+    // 重置页码到第一页
+    paginationRef.current.current = 1;
+    fetchFields({ keyword: '' });
   }, [metaObjectCode]);
+
+  const columns = useColumns({ handleEdit, handleEnable });
 
   return (
     <Flex vertical gap="middle" className="field-container">
       <Flex justify="space-between" align="center" className="field-header">
         <Input
           style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}
-          placeholder="请输入字段名称或编码搜索"
+          placeholder="输入名称或编码后回车搜索"
           prefix={<SearchOutlined />}
           allowClear
           value={keyword}
           onChange={e => {
-            const newKeyword = e.target.value;
-            setKeyword(newKeyword);
-            setPagination(prev => ({ ...prev, current: 1 }));
-            handleSearch(newKeyword);
+            const value = e.target.value;
+            setKeyword(value);
+            // 如果输入框为空，则重置页码到第一页
+            if (!value) {
+              paginationRef.current.current = 1;
+              fetchFields({ keyword: '' });
+            }
+          }}
+          onPressEnter={() => {
+            paginationRef.current.current = 1;
+            fetchFields({ keyword });
           }}
         />
-        <Button type="dashed" icon={<PlusOutlined />} onClick={() => setCreateModalVisible(true)}>
+        <Button type="dashed" icon={<PlusOutlined />} onClick={() => setFieldModalVisible(true)}>
           新建字段
         </Button>
       </Flex>
-
       <Table
         rowKey="_id"
         size="small"
         loading={loading}
         columns={columns}
-        dataSource={data?.data?.list}
+        dataSource={get(data, 'data.list', [])}
         pagination={{
-          ...pagination,
+          ...paginationRef.current,
           showQuickJumper: true,
           showSizeChanger: true,
           showTotal: total => `共 ${total} 条`,
         }}
         onChange={handleTableChange}
-        scroll={{ x: 'max-content', y: 'calc(100vh - 280px)' }}
-        sticky
-        className="field-table"
+        scroll={{ x: 'max-content' }}
       />
-
-      <ModalForm
-        title="新建字段"
-        formRef={fieldFormRef}
-        open={createModalVisible}
-        onOpenChange={setCreateModalVisible}
-        modalProps={{
-          destroyOnClose: true,
-        }}
-        onFinish={async values => {
-          const result = await metaService.createField({
-            ...values,
-            appCode,
-            metaObjectCode,
-          });
-          message.success(result?.message);
-          handleSearch();
-          return true;
-        }}
-      >
-        <BaseFieldForm formInstance={fieldFormRef} />
-      </ModalForm>
+      {/* 字段创建/编辑弹窗 */}
+      <FiledModal
+        id={fieldId}
+        appCode={appCode}
+        metaObjectCode={metaObjectCode}
+        visible={fieldModalVisible}
+        onVisibleChange={setFieldModalVisible}
+        onFinish={() => fetchFields({ keyword })}
+      />
     </Flex>
   );
 };

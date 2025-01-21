@@ -43,7 +43,6 @@ export interface FieldDto {
   fieldDesc?: string;
   appCode: string;
   metaObjectCode: string;
-  keyword?: string;
 }
 
 /**
@@ -52,6 +51,11 @@ export interface FieldDto {
 export interface QueryFieldDto extends Partial<FieldDto & PaginationQuery> {
   keyword?: string;
 }
+
+/**
+ * 更新字段 DTO
+ */
+export type UpdateFieldDto = Partial<FieldDto>;
 
 /**
  * 表单 DTO

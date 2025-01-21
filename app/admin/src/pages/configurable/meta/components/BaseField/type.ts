@@ -107,7 +107,7 @@ export interface CommonFieldProps {
 
 // 系统字段
 export interface SystemFieldProps {
-  id: string | number; // 唯一标识
+  _id: string; // 唯一标识
   createdAt?: string; // 创建时间
   updatedAt?: string; // 更新时间
   creator?: string; // 创建人
@@ -122,3 +122,20 @@ export type BaseFieldListItem = BaseFieldBase &
   SelectFieldProps &
   CommonFieldProps &
   SystemFieldProps;
+
+// 列操作函数
+export type ColumnsOprators = {
+  handleEdit?: (record: BaseFieldListItem) => void;
+  handleDelete?: (record: BaseFieldListItem) => void;
+  handleEnable?: (record: BaseFieldListItem) => void;
+};
+
+//字段ModalProps
+export interface FieldModalProps {
+  id?: string;
+  appCode: string;
+  metaObjectCode: string;
+  visible?: boolean;
+  onVisibleChange?: (visible: boolean) => void;
+  onFinish?: (values: BaseFieldListItem) => void;
+}

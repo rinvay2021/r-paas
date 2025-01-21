@@ -18,6 +18,7 @@ import type {
   QuerySearchFormDto,
   QueryViewDto,
   QueryActionButtonDto,
+  UpdateFieldDto,
 } from './interface';
 
 /**
@@ -55,6 +56,14 @@ export class MetaService {
 
   async queryFields(params: QueryFieldDto) {
     return http.post<{ list: FieldDto[]; total: number }>('/meta/field/list', params);
+  }
+
+  async updateField(data: UpdateFieldDto) {
+    return http.post<FieldDto>('/meta/field/update', data);
+  }
+
+  async getFieldById(id: string) {
+    return http.post<FieldDto>('/meta/field/detail', { id });
   }
 
   /**
