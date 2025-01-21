@@ -19,13 +19,13 @@ const BaseField: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
   const [metaObjectCode] = useQueryParam('metaObjectCode', StringParam);
 
-  const filedIdRef = React.useRef<string>('');
+  const idRef = React.useRef<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
   const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
 
   const paginationRef = React.useRef({
     current: 1,
-    pageSize: 50,
+    pageSize: 20,
     total: 0,
   });
 
@@ -84,13 +84,13 @@ const BaseField: React.FC = () => {
   };
 
   const handleEdit = (record: BaseFieldListItem) => {
-    filedIdRef.current = record._id;
+    idRef.current = record._id;
     setFieldModalVisible(true);
   };
 
   const handleVisibleChange = (visible: boolean) => {
     if (!visible) {
-      filedIdRef.current = '';
+      idRef.current = '';
     }
     setFieldModalVisible(visible);
   };
@@ -154,15 +154,16 @@ const BaseField: React.FC = () => {
         scroll={{ x: 'max-content', y: height }}
       />
       {/* 字段创建/编辑弹窗 */}
-      <FiledModal
-        key={filedIdRef.current}
-        id={filedIdRef.current}
-        visible={fieldModalVisible}
-        appCode={appCode}
-        metaObjectCode={metaObjectCode}
-        onVisibleChange={handleVisibleChange}
-        onFinish={() => fetchFields({ keyword })}
-      />
+      {fieldModalVisible && (
+        <FiledModal
+          id={idRef.current}
+          appCode={appCode}
+          metaObjectCode={metaObjectCode}
+          visible={fieldModalVisible}
+          onVisibleChange={handleVisibleChange}
+          onFinish={() => fetchFields({ keyword })}
+        />
+      )}
     </Flex>
   );
 };
