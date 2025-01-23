@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
           新建对象
         </Button>
       </Flex>
-      <Divider dashed style={{ margin: '12px 0' }} />
+      <Divider dashed style={{ margin: 0 }} />
 
       {/* 配置组件模块 */}
       {renderConfigComponent()}

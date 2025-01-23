@@ -13,8 +13,8 @@ import {
   ModalForm,
 } from '@ant-design/pro-components';
 import { prefix } from '@/constant';
-import { FIELD_TYPE_GROUPS, useCommonConfigs, TYPE_CONFIGS, JSON_CONFIG } from './constant';
-import { FieldConfigItem, FieldModalProps, FieldTypeEnum } from './type';
+import { FIELD_TYPE_GROUPS, useCommonConfigs, TYPE_CONFIGS, JSON_CONFIG } from '../constant';
+import { FieldConfigItem, FieldModalProps, FieldTypeEnum } from '../type';
 import { metaService } from '@/api/meta';
 
 const ComponentMap = {

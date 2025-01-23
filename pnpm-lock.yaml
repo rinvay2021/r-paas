@@ -14,12 +14,18 @@ importers:
       '@ant-design/pro-components':
         specifier: 2.8.2
         version: 2.8.2(antd@5.22.5(moment@2.30.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/sortablejs':
+        specifier: ^1.15.8
+        version: 1.15.8
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@18.2.0)
       antd:
         specifier: 5.22.5
         version: 5.22.5(moment@2.30.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames:
+        specifier: ^2.3.2
+        version: 2.5.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -29,15 +35,27 @@ importers:
       react:
         specifier: 18.2.0
         version: 18.2.0
+      react-dnd:
+        specifier: ^16.0.1
+        version: 16.0.1(@types/node@18.19.68)(@types/react@18.0.0)(react@18.2.0)
+      react-dnd-html5-backend:
+        specifier: ^16.0.1
+        version: 16.0.1
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-router-dom:
         specifier: 6.10.0
         version: 6.10.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      sortablejs:
+        specifier: ^1.15.6
+        version: 1.15.6
       use-query-params:
         specifier: ^2.1.1
         version: 2.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      uuid:
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.2
@@ -212,6 +230,52 @@ importers:
       react-dom:
         specifier: ^18.0.0
         version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^24.1.0
+        version: 24.1.0(rollup@3.29.5)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.0.2
+        version: 15.3.1(rollup@3.29.5)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.0
+        version: 11.1.6(rollup@3.29.5)(tslib@2.8.1)(typescript@5.7.2)
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.20(postcss@8.4.49)
+      less:
+        specifier: ^4.1.3
+        version: 4.2.1
+      postcss:
+        specifier: ^8.4.21
+        version: 8.4.49
+      rollup:
+        specifier: ^3.20.2
+        version: 3.29.5
+      rollup-plugin-dts:
+        specifier: ^5.3.0
+        version: 5.3.1(rollup@3.29.5)(typescript@5.7.2)
+      rollup-plugin-postcss:
+        specifier: ^4.0.2
+        version: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))
+
+  packages/meta:
+    dependencies:
+      '@ant-design/icons':
+        specifier: ^5.0.0
+        version: 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      antd:
+        specifier: ^5.0.0
+        version: 5.22.5(moment@2.30.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      classnames:
+        specifier: ^2.3.2
+        version: 2.5.1
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^24.1.0
@@ -1256,6 +1320,15 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  '@react-dnd/asap@5.0.2':
+    resolution: {integrity: sha1-H4HxJMHNbzlRHBGogc+w9xU0NIg=, tarball: http://r.npm.sankuai.com/@react-dnd/asap/download/@react-dnd/asap-5.0.2.tgz}
+
+  '@react-dnd/invariant@4.0.2':
+    resolution: {integrity: sha1-uS7f/KEKJkZmQzSfrHzfuHmXad8=, tarball: http://r.npm.sankuai.com/@react-dnd/invariant/download/@react-dnd/invariant-4.0.2.tgz}
+
+  '@react-dnd/shallowequal@4.0.2':
+    resolution: {integrity: sha1-0bS++kI/aS+kq/HHkglwLn2K5LQ=, tarball: http://r.npm.sankuai.com/@react-dnd/shallowequal/download/@react-dnd/shallowequal-4.0.2.tgz}
+
   '@remix-run/router@1.5.0':
     resolution: {integrity: sha1-V2GOV5QqXwExN0qf2wFn4loRf9w=, tarball: http://r.npm.sankuai.com/@remix-run/router/download/@remix-run/router-1.5.0.tgz}
     engines: {node: '>=14'}
@@ -1540,6 +1613,9 @@ packages:
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha1-gmioxXo+Sr0lwWXs02I323lIpV4=, tarball: http://r.npm.sankuai.com/@types/semver/download/@types/semver-7.5.8.tgz}
+
+  '@types/sortablejs@1.15.8':
+    resolution: {integrity: sha1-Ee1VUHYEbgCGml74XR52UeembvY=, tarball: http://r.npm.sankuai.com/@types/sortablejs/download/@types/sortablejs-1.15.8.tgz}
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha1-YgkyHrLBcSp+dGZCK4yx/A2d1dg=, tarball: http://r.npm.sankuai.com/@types/stack-utils/download/@types/stack-utils-2.0.3.tgz}
@@ -2364,6 +2440,9 @@ packages:
     resolution: {integrity: sha1-Vtv3PZkqSpO6FYT0U0Bj/S5BcX8=, tarball: http://r.npm.sankuai.com/dir-glob/download/dir-glob-3.0.1.tgz}
     engines: {node: '>=8'}
 
+  dnd-core@16.0.1:
+    resolution: {integrity: sha1-ocIT7QiWH2vRlZoou3bxqGg2DRk=, tarball: http://r.npm.sankuai.com/dnd-core/download/dnd-core-16.0.1.tgz}
+
   doctrine@2.1.0:
     resolution: {integrity: sha1-XNAfwQFiG0LEzX9dGmYkNxbT850=, tarball: http://r.npm.sankuai.com/doctrine/download/doctrine-2.1.0.tgz}
     engines: {node: '>=0.10.0'}
@@ -2971,6 +3050,9 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha1-AD6vkb563DcuhOxZ3DclLO24AAM=, tarball: http://r.npm.sankuai.com/hasown/download/hasown-2.0.2.tgz}
     engines: {node: '>= 0.4'}
+
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha1-7OCsr3HWLClpwuxZ/v9CpLGoW0U=, tarball: http://r.npm.sankuai.com/hoist-non-react-statics/download/hoist-non-react-statics-3.3.2.tgz}
 
   homedir-polyfill@1.0.3:
     resolution: {integrity: sha1-dDKYzvTlrz4ZQWH7rcwhUdOgWOg=, tarball: http://r.npm.sankuai.com/homedir-polyfill/download/homedir-polyfill-1.0.3.tgz}
@@ -4654,6 +4736,24 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  react-dnd-html5-backend@16.0.1:
+    resolution: {integrity: sha1-h/rvFYRdUSojs8CNKez9NIcWiLY=, tarball: http://r.npm.sankuai.com/react-dnd-html5-backend/download/react-dnd-html5-backend-16.0.1.tgz}
+
+  react-dnd@16.0.1:
+    resolution: {integrity: sha1-JEKj7GeJLGDUChVZ7vRUmLom+jc=, tarball: http://r.npm.sankuai.com/react-dnd/download/react-dnd-16.0.1.tgz}
+    peerDependencies:
+      '@types/hoist-non-react-statics': '>= 3.3.1'
+      '@types/node': '>= 12'
+      '@types/react': '>= 16'
+      react: '>= 16.14'
+    peerDependenciesMeta:
+      '@types/hoist-non-react-statics':
+        optional: true
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
+
   react-dom@18.2.0:
     resolution: {integrity: sha1-IqrzhwjbJnTtmtoiTKSqcI2CHj0=, tarball: http://r.npm.sankuai.com/react-dom/download/react-dom-18.2.0.tgz}
     peerDependencies:
@@ -4744,6 +4844,9 @@ packages:
   redent@4.0.0:
     resolution: {integrity: sha1-DAunyquyQlerO7ek/ZXdHVxWgfk=, tarball: http://r.npm.sankuai.com/redent/download/redent-4.0.0.tgz}
     engines: {node: '>=12'}
+
+  redux@4.2.1:
+    resolution: {integrity: sha1-wI9DBoJsSbXp3JAd7gRS6o/OYZc=, tarball: http://r.npm.sankuai.com/redux/download/redux-4.2.1.tgz}
 
   reflect.getprototypeof@1.0.9:
     resolution: {integrity: sha1-yQXzOGAI3pWmIxXz6oYwQEvhni8=, tarball: http://r.npm.sankuai.com/reflect.getprototypeof/download/reflect.getprototypeof-1.0.9.tgz}
@@ -4982,6 +5085,9 @@ packages:
   slice-ansi@5.0.0:
     resolution: {integrity: sha1-tzBjxXqpb5zYgWVLFSlNldKFxCo=, tarball: http://r.npm.sankuai.com/slice-ansi/download/slice-ansi-5.0.0.tgz}
     engines: {node: '>=12'}
+
+  sortablejs@1.15.6:
+    resolution: {integrity: sha1-/5NplJP1uKuNgo+TMie0mI3x05M=, tarball: http://r.npm.sankuai.com/sortablejs/download/sortablejs-1.15.6.tgz}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha1-HOVlD93YerwJnto33P8CTCZnrkY=, tarball: http://r.npm.sankuai.com/source-map-js/download/source-map-js-1.2.1.tgz}
@@ -5451,6 +5557,10 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=, tarball: http://r.npm.sankuai.com/util-deprecate/download/util-deprecate-1.0.2.tgz}
+
+  uuid@11.0.5:
+    resolution: {integrity: sha1-B7Rr36YxDJLD+zlTqHIPFwQn/GI=, tarball: http://r.npm.sankuai.com/uuid/download/uuid-11.0.5.tgz}
+    hasBin: true
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha1-Yzbo1xllyz01obu3hoRFp8BSZL8=, tarball: http://r.npm.sankuai.com/v8-compile-cache-lib/download/v8-compile-cache-lib-3.0.1.tgz}
@@ -7040,6 +7150,12 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@react-dnd/asap@5.0.2': {}
+
+  '@react-dnd/invariant@4.0.2': {}
+
+  '@react-dnd/shallowequal@4.0.2': {}
+
   '@remix-run/router@1.5.0': {}
 
   '@rollup/plugin-commonjs@24.1.0(rollup@3.29.5)':
@@ -7291,6 +7407,8 @@ snapshots:
   '@types/scheduler@0.23.0': {}
 
   '@types/semver@7.5.8': {}
+
+  '@types/sortablejs@1.15.8': {}
 
   '@types/stack-utils@2.0.3': {}
 
@@ -8353,6 +8471,12 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
+  dnd-core@16.0.1:
+    dependencies:
+      '@react-dnd/asap': 5.0.2
+      '@react-dnd/invariant': 4.0.2
+      redux: 4.2.1
+
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
@@ -9185,6 +9309,10 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
 
   homedir-polyfill@1.0.3:
     dependencies:
@@ -11414,6 +11542,22 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  react-dnd-html5-backend@16.0.1:
+    dependencies:
+      dnd-core: 16.0.1
+
+  react-dnd@16.0.1(@types/node@18.19.68)(@types/react@18.0.0)(react@18.2.0):
+    dependencies:
+      '@react-dnd/invariant': 4.0.2
+      '@react-dnd/shallowequal': 4.0.2
+      dnd-core: 16.0.1
+      fast-deep-equal: 3.1.3
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+    optionalDependencies:
+      '@types/node': 18.19.68
+      '@types/react': 18.0.0
+
   react-dom@18.2.0(react@18.2.0):
     dependencies:
       loose-envify: 1.4.0
@@ -11515,6 +11659,10 @@ snapshots:
     dependencies:
       indent-string: 5.0.0
       strip-indent: 4.0.0
+
+  redux@4.2.1:
+    dependencies:
+      '@babel/runtime': 7.26.0
 
   reflect.getprototypeof@1.0.9:
     dependencies:
@@ -11790,6 +11938,8 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 4.0.0
+
+  sortablejs@1.15.6: {}
 
   source-map-js@1.2.1: {}
 
@@ -12339,6 +12489,8 @@ snapshots:
       react: 18.2.0
 
   util-deprecate@1.0.2: {}
+
+  uuid@11.0.5: {}
 
   v8-compile-cache-lib@3.0.1: {}
 

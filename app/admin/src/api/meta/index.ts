@@ -19,6 +19,7 @@ import type {
   QueryViewDto,
   QueryActionButtonDto,
   UpdateFieldDto,
+  UpdateFormDto,
 } from './interface';
 
 /**
@@ -75,6 +76,10 @@ export class MetaService {
 
   async queryForms(params: QueryFormDto) {
     return http.post<{ list: FormDto[]; total: number }>('/meta/form/list', params);
+  }
+
+  async updateForm(data: UpdateFormDto) {
+    return http.post<FormDto>('/meta/form/update', data);
   }
 
   /**

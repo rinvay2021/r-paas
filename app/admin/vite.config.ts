@@ -22,6 +22,8 @@ export default defineConfig({
         globalVars: {
           prefix: `rpaas`,
         },
+        // // 全局注入 common.less
+        additionalData: `@import "@/styles/mixins.less";`,
       },
     },
   },

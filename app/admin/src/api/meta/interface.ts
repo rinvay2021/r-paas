@@ -63,19 +63,23 @@ export type UpdateFieldDto = Partial<FieldDto>;
 export interface FormDto {
   formCode: string;
   formName: string;
-  objectCode: string;
-  fields: Array<{
-    fieldCode: string;
-    required: boolean;
-    order: number;
-  }>;
-  description?: string;
+  formDesc?: string;
+  appCode: string;
+  metaObjectCode: string;
+  fields: any[];
+  rules: any[];
+  layout: Record<string, any>;
 }
 
 /**
  * 查询表单 DTO
  */
 export type QueryFormDto = Partial<FormDto & PaginationQuery>;
+
+/**
+ * 更新表单 DTO
+ */
+export type UpdateFormDto = Partial<FormDto>;
 
 /**
  * 列表 DTO

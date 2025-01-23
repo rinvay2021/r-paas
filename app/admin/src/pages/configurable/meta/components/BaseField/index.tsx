@@ -9,7 +9,7 @@ import { metaService } from '@/api/meta';
 import { UpdateFieldDto } from '@/api/meta/interface';
 import { NUMBER_CONSTANTS } from '@/constant';
 import { useElementHeight } from '@/hooks';
-import FiledModal from './field-form';
+import FiledModal from './FiledModal';
 import { useColumns } from './columns';
 import { BaseFieldListItem, BooleanEnum } from './type';
 
@@ -107,11 +107,11 @@ const BaseField: React.FC = () => {
 
   const columns = useColumns({ handleEdit, handleEnable });
 
-  const height = useElementHeight({ elementId: 'baseField', offset: 126 });
+  const height = useElementHeight({ elementId: 'baseField', offset: 112 });
 
   return (
-    <Flex vertical gap="middle" className="field-container">
-      <Flex justify="space-between" align="center" className="field-header">
+    <Flex vertical gap="middle">
+      <Flex justify="space-between" align="center">
         <Input
           style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}
           placeholder="输入名称或编码后回车搜索"
