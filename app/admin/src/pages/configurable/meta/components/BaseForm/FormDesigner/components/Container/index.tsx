@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { filter } from 'lodash';
 import classNames from 'classnames';
 import { useDrop, useDrag } from 'react-dnd';
-import { DeleteOutlined, PlusOutlined, MenuOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, MenuOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { FieldDto } from '@/api/meta/interface';
 import { FieldSelector } from '../FieldSelector';
 import { ContainerProps, FieldProps } from '../../types';
@@ -81,10 +81,9 @@ const Field: React.FC<FieldProps> = props => {
       <MenuOutlined className="field-drag" />
       <div className="field-content">{field.fieldName}</div>
       <Button
-        type="text"
-        danger
+        type="link"
         size="small"
-        icon={<DeleteOutlined />}
+        icon={<CloseCircleOutlined />}
         onClick={e => {
           e.stopPropagation();
           onDeleteField();
@@ -202,23 +201,15 @@ export const Container: React.FC<ContainerProps> = props => {
               onUpdateField(container.id, newFields);
             }}
           >
-            <Button
-              color="primary"
-              variant="filled"
-              icon={<PlusOutlined />}
-              onClick={e => e.stopPropagation()}
-            />
+            <Button type="link" icon={<PlusOutlined />} onClick={e => e.stopPropagation()} />
           </FieldSelector>
           {containers.length > 1 && (
-            <Button
-              color="primary"
-              variant="filled"
-              icon={<DeleteOutlined />}
-              onClick={e => {
-                e.stopPropagation();
-                onRemoveContainer(container.id);
-              }}
-            />
+            <Popconfirm
+              title="确定要删除该区块吗？"
+              onConfirm={() => onRemoveContainer(container.id)}
+            >
+              <Button type="link" icon={<DeleteOutlined />} onClick={e => e.stopPropagation()} />
+            </Popconfirm>
           )}
         </div>
       </div>
