@@ -29,16 +29,22 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
       columns: 1,
     },
   ]);
-  const [selectedForm, setSelectedForm] = React.useState<boolean>(false);
+  const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
   const [selectedContainer, setSelectedContainer] = React.useState<string | null>(null);
   const [selectedField, setSelectedField] = React.useState<{
-    containerId: string;
     fieldId: string;
+    containerId: string;
   } | null>(null);
 
   const [formConfig, setFormConfig] = React.useState<FormBaseConfig>({
-    columns: 1,
     title: '',
+    columns: 1,
+    colon: true,
+    size: 'middle',
+    layout: 'horizontal',
+    variant: 'outlined',
+    labelWrap: true,
+    labelAlign: 'left',
   });
 
   // 保存表单配置
@@ -117,6 +123,35 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
     });
   };
 
+  // config处理
+
+  const handleFormConfigChange = (values: Partial<FormBaseConfig>) => {
+    setFormConfig(prev => ({ ...prev, ...values }));
+  };
+
+  const handleContainerChange = (containerId: string, values: Partial<ContainerType>) => {
+    setContainers(prev =>
+      map(prev, container =>
+        container.id === containerId ? { ...container, ...values } : container
+      )
+    );
+  };
+
+  const handleFieldChange = (containerId: string, fieldId: string, values: Partial<FieldDto>) => {
+    setContainers(prev =>
+      map(prev, container =>
+        container.id === containerId
+          ? {
+              ...container,
+              fields: map(container.fields, field =>
+                field._id === fieldId ? { ...field, ...values } : field
+              ),
+            }
+          : container
+      )
+    );
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div id="form-designer" className="form-designer" style={{ height: contentHeight }}>
@@ -162,45 +197,23 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
         <div className="form-designer-right">
           <div className="form-designer-content">
             <ConfigPanel
-              selectedField={selectedField}
-              selectedContainer={selectedContainer}
-              containers={containers}
               formConfig={formConfig}
-              onFormConfigChange={values => setFormConfig(prev => ({ ...prev, ...values }))}
-              onContainerChange={(containerId, values) => {
-                setContainers(prev =>
-                  prev.map(container =>
-                    container.id === containerId ? { ...container, ...values } : container
-                  )
-                );
-              }}
-              onFieldChange={(containerId, fieldId, values) => {
-                setContainers(prev =>
-                  prev.map(container =>
-                    container.id === containerId
-                      ? {
-                          ...container,
-                          fields: container.fields.map(field =>
-                            field._id === fieldId ? { ...field, ...values } : field
-                          ),
-                        }
-                      : container
-                  )
-                );
-              }}
+              containers={containers}
+              selectedForm={selectedForm}
+              selectedContainer={selectedContainer}
+              selectedField={selectedField}
+              onFormConfigChange={handleFormConfigChange}
+              onContainerChange={handleContainerChange}
+              onFieldChange={handleFieldChange}
             />
           </div>
           <div className="form-designer-footer">
-            <Button
-              type="primary"
-              block
-              style={{ marginBottom: 8 }}
-              loading={saveLoading}
-              onClick={saveForm}
-            >
+            <Button style={{ flex: 1 }} onClick={() => {}}>
+              取消
+            </Button>
+            <Button type="primary" style={{ flex: 1 }} loading={saveLoading} onClick={saveForm}>
               保存
             </Button>
-            <Button block>取消</Button>
           </div>
         </div>
       </div>

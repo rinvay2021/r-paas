@@ -2,32 +2,24 @@ import React from 'react';
 import { FormConfigPanel } from './FormConfig';
 import { BlockConfigPanel } from './BlockConfig';
 import { FieldConfigPanel } from './FieldConfig';
-import type { Container, Field, FormConfig } from '../../types';
+import type { ConfigPanelProps } from '../../types';
 
-export interface ConfigPanelProps {
-  selectedField: { containerId: string; fieldId: string } | null;
-  selectedContainer: string | null;
-  isMainContainerSelected: boolean;
-  containers: Container[];
-  formConfig: FormConfig;
-  onFormConfigChange: (values: Partial<FormConfig>) => void;
-  onContainerChange: (containerId: string, values: Partial<Container>) => void;
-  onFieldChange: (containerId: string, fieldId: string, values: Partial<Field>) => void;
-}
+export const ConfigPanel: React.FC<ConfigPanelProps> = props => {
+  const {
+    formConfig,
+    containers,
+    selectedForm,
+    selectedField,
+    selectedContainer,
+    onFieldChange,
+    onContainerChange,
+    onFormConfigChange,
+  } = props;
 
-export const ConfigPanel: React.FC<ConfigPanelProps> = ({
-  selectedField,
-  selectedContainer,
-  isMainContainerSelected,
-  containers,
-  formConfig,
-  onFormConfigChange,
-  onContainerChange,
-  onFieldChange,
-}) => {
   if (selectedField) {
     const container = containers.find(c => c.id === selectedField.containerId);
-    const field = container?.fields.find(f => f.id === selectedField.fieldId);
+    const field = container?.fields.find(f => f._id === selectedField.fieldId);
+
     if (field) {
       return (
         <FieldConfigPanel
@@ -52,7 +44,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
     }
   }
 
-  if (isMainContainerSelected) {
+  if (selectedForm) {
     return <FormConfigPanel config={formConfig} onChange={onFormConfigChange} />;
   }
 
