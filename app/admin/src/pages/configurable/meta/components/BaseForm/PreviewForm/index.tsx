@@ -1,16 +1,18 @@
 import React from 'react';
-import { Button, Form, Input, Space } from 'antd';
-import { EditOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Popconfirm, Space } from 'antd';
+import { DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { prefix } from '@/constant';
 import { useElementHeight } from '@/hooks';
 import './index.less';
 
 interface PreviewFormProps {
   onEdit?: () => void;
+  onDelete?: () => void;
   onSetting?: () => void;
 }
 
-const PreviewForm: React.FC<PreviewFormProps> = ({ onEdit, onSetting }) => {
+const PreviewForm: React.FC<PreviewFormProps> = props => {
+  const { onEdit, onDelete, onSetting } = props;
   const height = useElementHeight({ elementId: 'form-preview', offset: 16 });
 
   return (
@@ -23,6 +25,15 @@ const PreviewForm: React.FC<PreviewFormProps> = ({ onEdit, onSetting }) => {
       <Space direction="vertical" size="middle" className={`${prefix}-action-buttons`}>
         <Button shape="circle" icon={<EditOutlined />} size="large" onClick={onEdit} />
         <Button shape="circle" icon={<SettingOutlined />} size="large" onClick={onSetting} />
+        <Popconfirm
+          title="确定要删除吗？"
+          onConfirm={onDelete}
+          okText="确定"
+          cancelText="取消"
+          placement="right"
+        >
+          <Button shape="circle" icon={<DeleteOutlined />} size="large" />
+        </Popconfirm>
       </Space>
 
       {/* 表单内容区域 */}

@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { map, find } from 'lodash';
+import { useRequest } from 'ahooks';
 import { Tabs, Button, message } from 'antd';
-import { useBoolean, useRequest } from 'ahooks';
-import { useParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
-import { StringParam, useQueryParam } from 'use-query-params';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { prefix } from '@/constant';
 import { metaService } from '@/api/meta';
+import { MetaContext } from '@/pages/configurable/meta';
 import PreviewForm from './PreviewForm';
 import FormDesigner from './FormDesigner';
+
 import './index.less';
 
 interface FormItem {
@@ -20,12 +20,11 @@ interface FormItem {
 }
 
 const BaseForm: React.FC = () => {
-  const { appCode } = useParams<{ appCode: string }>();
-  const [metaObjectCode] = useQueryParam('metaObjectCode', StringParam);
-  const [activeFormCode, setActiveFormCode] = useState<string>();
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [formModalOpen, setFormModalOpen] = useState<boolean>(false);
-  const editingFormRef = useRef<FormItem | null>(null);
+  const { appCode, metaObjectCode } = React.useContext(MetaContext);
+  const editingFormRef = React.useRef<FormItem | null>(null);
+  const [isEditing, setIsEditing] = React.useState<boolean>(false);
+  const [activeFormCode, setActiveFormCode] = React.useState<string>();
+  const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
 
   const { data, loading, refresh } = useRequest(
     () =>
@@ -56,15 +55,25 @@ const BaseForm: React.FC = () => {
     }
   };
 
+  const handleDeleteForm = () => {
+    console.log('handleDeleteForm');
+  };
+
+  const onActiveFormChange = (formCode: string) => {
+    setActiveFormCode(formCode);
+    setIsEditing(false);
+  };
+
   const items = map(data?.data?.list || [], form => ({
     key: form.formCode,
     label: form.formName,
     children: null,
   }));
 
-  const onActiveFormChange = (formCode: string) => {
-    setActiveFormCode(formCode);
-    setIsEditing(false);
+  const designerProps = {
+    appCode,
+    metaObjectCode,
+    formCode: activeFormCode,
   };
 
   return (
@@ -92,9 +101,13 @@ const BaseForm: React.FC = () => {
       {!loading && (
         <>
           {isEditing ? (
-            <FormDesigner />
+            <FormDesigner {...designerProps} />
           ) : (
-            <PreviewForm onEdit={() => setIsEditing(true)} onSetting={handleSettingForm} />
+            <PreviewForm
+              onDelete={handleDeleteForm}
+              onSetting={handleSettingForm}
+              onEdit={() => setIsEditing(true)}
+            />
           )}
         </>
       )}

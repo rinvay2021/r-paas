@@ -36,7 +36,7 @@ export type QueryMetaObjectDto = Partial<MetaObjectDto & PaginationQuery>;
  * 字段 DTO
  */
 export interface FieldDto {
-  id?: string;
+  _id?: string;
   fieldCode?: string;
   fieldName?: string;
   fieldType?: string;

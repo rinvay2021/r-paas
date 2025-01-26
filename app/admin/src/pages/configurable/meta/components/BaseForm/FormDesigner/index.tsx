@@ -1,232 +1,210 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React from 'react';
 import classNames from 'classnames';
-import Sortable from 'sortablejs';
+import { useRequest } from 'ahooks';
+import { v4 as uuidv4 } from 'uuid';
+import { filter, map } from 'lodash';
+import { Button, message } from 'antd';
+import { DndProvider } from 'react-dnd';
+import { PlusOutlined } from '@ant-design/icons';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import { metaService } from '@/api/meta';
+import { useElementHeight } from '@/hooks/useElementHeight';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
-import { useElementHeight } from '@/hooks/useElementHeight';
-import type { Container as ContainerType, FormConfig } from './types';
+import type { ContainerType, FieldDto, FormBaseConfig, FormDesignerProps } from './types';
+
 import './index.less';
 
-// 模拟字段树数据
-const treeData = [
-  {
-    title: '基础字段',
-    key: 'basic',
-    children: [
-      {
-        title: '单行文本',
-        key: 'text_name',
-        appCode: 'demo',
-        metaObjectCode: 'user',
-        fieldCode: 'name',
-        type: 'text',
-      },
-      {
-        title: '多行文本',
-        key: 'textarea_desc',
-        appCode: 'demo',
-        metaObjectCode: 'user',
-        fieldCode: 'description',
-        type: 'textarea',
-      },
-      {
-        title: '数字输入',
-        key: 'number_age',
-        appCode: 'demo',
-        metaObjectCode: 'user',
-        fieldCode: 'age',
-        type: 'number',
-      },
-    ],
-  },
-  {
-    title: '高级字段',
-    key: 'advanced',
-    children: [
-      {
-        title: '日期选择',
-        key: 'date_birth',
-        appCode: 'demo',
-        metaObjectCode: 'user',
-        fieldCode: 'birthDate',
-        type: 'date',
-      },
-      {
-        title: '下拉选择',
-        key: 'select_status',
-        appCode: 'demo',
-        metaObjectCode: 'user',
-        fieldCode: 'status',
-        type: 'select',
-      },
-    ],
-  },
-];
+const FormDesigner: React.FC<FormDesignerProps> = props => {
+  const { formCode, appCode, metaObjectCode } = props;
+  const contentHeight = useElementHeight({ elementId: 'form-designer', offset: 16 });
 
-const FormDesigner: React.FC = () => {
-  const [containers, setContainers] = useState<ContainerType[]>([]);
-  const [selectedContainer, setSelectedContainer] = useState<string | null>(null);
-  const [selectedField, setSelectedField] = useState<{
+  // 状态管理
+  const [containers, setContainers] = React.useState<ContainerType[]>(() => [
+    {
+      id: `container-${uuidv4()}`,
+      title: '未命名区块',
+      fields: [],
+      columns: 1,
+    },
+  ]);
+  const [selectedForm, setSelectedForm] = React.useState<boolean>(false);
+  const [selectedContainer, setSelectedContainer] = React.useState<string | null>(null);
+  const [selectedField, setSelectedField] = React.useState<{
     containerId: string;
     fieldId: string;
   } | null>(null);
-  const [isMainContainerSelected, setIsMainContainerSelected] = useState(true);
-  const [formConfig, setFormConfig] = useState<FormConfig>({
+
+  const [formConfig, setFormConfig] = React.useState<FormBaseConfig>({
     columns: 1,
-    name: '',
+    title: '',
   });
 
-  const containersRef = useRef<HTMLDivElement>(null);
+  // 保存表单配置
+  const { loading: saveLoading, run: saveForm } = useRequest(
+    async () => {
+      if (!appCode || !metaObjectCode) {
+        throw new Error('缺少必要参数');
+      }
 
-  // 使用 useElementHeight 获取内容区域高度
-  const contentHeight = useElementHeight({
-    elementId: 'form-designer',
-    offset: 16, // 如果有其他固定元素，需要调整这个值
-  });
-
-  useEffect(() => {
-    if (containersRef.current) {
-      const sortable = Sortable.create(containersRef.current, {
-        animation: 150,
-        handle: '.container-header',
-        draggable: '.container',
-        group: 'containers',
-        ghostClass: 'sortable-ghost',
-        onEnd: evt => {
-          const { oldIndex, newIndex } = evt;
-          if (oldIndex !== undefined && newIndex !== undefined && oldIndex !== newIndex) {
-            setContainers(prevContainers => {
-              const newContainers = [...prevContainers];
-              const [removed] = newContainers.splice(oldIndex, 1);
-              newContainers.splice(newIndex, 0, removed);
-              return newContainers;
-            });
-          }
+      const formData = {
+        appCode,
+        metaObjectCode,
+        formCode,
+        config: {
+          ...formConfig,
+          containers,
         },
-      });
-
-      return () => {
-        sortable.destroy();
       };
-    }
-  }, []);
 
+      return metaService.saveFormConfig(formData);
+    },
+    {
+      manual: true,
+      onSuccess: () => {
+        message.success('保存成功');
+      },
+      onError: error => {
+        message.error(`保存失败: ${error.message}`);
+      },
+    }
+  );
+
+  // 处理函数
   const handleAddContainer = () => {
     const newContainer: ContainerType = {
-      id: `container_${Date.now()}`,
-      title: '新区块',
+      id: `container-${uuidv4()}`,
+      title: '未命名区块',
       fields: [],
       columns: formConfig.columns,
     };
-    setContainers([...containers, newContainer]);
+    setContainers(prev => [...prev, newContainer]);
+  };
+
+  const handleRemoveContainer = (containerId: string) => {
+    setContainers(prev => filter(prev, c => c.id !== containerId));
+    if (selectedContainer === containerId) {
+      setSelectedContainer(null);
+    }
+  };
+
+  const handleUpdateField = (containerId: string, fields: FieldDto[]) => {
+    setContainers(prev =>
+      map(prev, container => (container.id === containerId ? { ...container, fields } : container))
+    );
+  };
+
+  const handleSelectContainer = (containerId: string) => {
+    setSelectedContainer(containerId);
+    setSelectedField(null);
+    setSelectedForm(false);
+  };
+
+  const handleSelectField = (params: { containerId: string; fieldId: string }) => {
+    setSelectedField(params);
+    setSelectedContainer(null);
+    setSelectedForm(false);
+  };
+
+  // 处理容器排序
+  const handleMoveContainer = (dragIndex: number, hoverIndex: number) => {
+    setContainers(prev => {
+      const newContainers = [...prev];
+      const [removed] = newContainers.splice(dragIndex, 1);
+      newContainers.splice(hoverIndex, 0, removed);
+      return newContainers;
+    });
   };
 
   return (
-    <div id="form-designer" className="form-designer" style={{ height: contentHeight }}>
-      <div className="form-designer-left">
-        <div
-          onClick={() => {
-            setSelectedContainer(null);
-            setSelectedField(null);
-            setIsMainContainerSelected(true);
-          }}
-          className={classNames('containers-wrapper', {
-            selected: isMainContainerSelected,
-          })}
-        >
-          <div ref={containersRef} className="containers">
-            {containers.map(container => (
-              <Container
-                key={container.id}
-                container={container}
-                onRemove={id => {
-                  setContainers(containers.filter(c => c.id !== id));
-                  if (selectedContainer === id) {
-                    setSelectedContainer(null);
-                  }
-                }}
-                onAddField={(containerId, fields) => {
-                  setContainers(prevContainers => {
-                    const newContainers = [...prevContainers];
-                    const targetContainer = newContainers.find(c => c.id === containerId);
-                    if (targetContainer) {
-                      targetContainer.fields = fields;
-                    }
-                    return newContainers;
-                  });
-                }}
-                onSelect={() => {
-                  setSelectedContainer(container.id);
-                  setIsMainContainerSelected(false);
-                  setSelectedField(null);
-                }}
-                onFieldSelect={fieldId => {
-                  setSelectedField({ containerId: container.id, fieldId });
-                  setSelectedContainer(null);
-                  setIsMainContainerSelected(false);
-                }}
-                isSelected={selectedContainer === container.id}
-                selectedFieldId={
-                  selectedField?.containerId === container.id ? selectedField.fieldId : undefined
-                }
-              />
-            ))}
-          </div>
-          <Button
-            type="dashed"
-            block
-            icon={<PlusOutlined />}
-            onClick={handleAddContainer}
-            style={{ marginTop: 16 }}
+    <DndProvider backend={HTML5Backend}>
+      <div id="form-designer" className="form-designer" style={{ height: contentHeight }}>
+        <div className="form-designer-left">
+          <div
+            onClick={() => {
+              setSelectedContainer(null);
+              setSelectedField(null);
+              setSelectedForm(true);
+            }}
+            className={classNames('containers-wrapper', {
+              selected: selectedForm,
+            })}
           >
-            添加区块
-          </Button>
+            <div className="containers">
+              {containers.map((container, index) => (
+                <Container
+                  index={index}
+                  key={container.id}
+                  container={container}
+                  containers={containers}
+                  selectedField={selectedField}
+                  isSelectedContainer={selectedContainer === container.id}
+                  onSelectField={handleSelectField}
+                  onUpdateField={handleUpdateField}
+                  onMoveContainer={handleMoveContainer}
+                  onSelectContainer={handleSelectContainer}
+                  onRemoveContainer={handleRemoveContainer}
+                />
+              ))}
+            </div>
+            <Button
+              type="dashed"
+              block
+              icon={<PlusOutlined />}
+              onClick={handleAddContainer}
+              style={{ marginTop: 16 }}
+            >
+              添加区块
+            </Button>
+          </div>
+        </div>
+        <div className="form-designer-right">
+          <div className="form-designer-content">
+            <ConfigPanel
+              selectedField={selectedField}
+              selectedContainer={selectedContainer}
+              containers={containers}
+              formConfig={formConfig}
+              onFormConfigChange={values => setFormConfig(prev => ({ ...prev, ...values }))}
+              onContainerChange={(containerId, values) => {
+                setContainers(prev =>
+                  prev.map(container =>
+                    container.id === containerId ? { ...container, ...values } : container
+                  )
+                );
+              }}
+              onFieldChange={(containerId, fieldId, values) => {
+                setContainers(prev =>
+                  prev.map(container =>
+                    container.id === containerId
+                      ? {
+                          ...container,
+                          fields: container.fields.map(field =>
+                            field._id === fieldId ? { ...field, ...values } : field
+                          ),
+                        }
+                      : container
+                  )
+                );
+              }}
+            />
+          </div>
+          <div className="form-designer-footer">
+            <Button
+              type="primary"
+              block
+              style={{ marginBottom: 8 }}
+              loading={saveLoading}
+              onClick={saveForm}
+            >
+              保存
+            </Button>
+            <Button block>取消</Button>
+          </div>
         </div>
       </div>
-      <div className="form-designer-right">
-        <div className="form-designer-content">
-          <ConfigPanel
-            selectedField={selectedField}
-            selectedContainer={selectedContainer}
-            isMainContainerSelected={isMainContainerSelected}
-            containers={containers}
-            formConfig={formConfig}
-            onFormConfigChange={values => setFormConfig({ ...formConfig, ...values })}
-            onContainerChange={(containerId, values) => {
-              setContainers(prevContainers => {
-                const newContainers = [...prevContainers];
-                const targetContainer = newContainers.find(c => c.id === containerId);
-                if (targetContainer) {
-                  Object.assign(targetContainer, values);
-                }
-                return newContainers;
-              });
-            }}
-            onFieldChange={(containerId, fieldId, values) => {
-              setContainers(prevContainers => {
-                const newContainers = [...prevContainers];
-                const targetContainer = newContainers.find(c => c.id === containerId);
-                if (targetContainer) {
-                  const targetField = targetContainer.fields.find(f => f.id === fieldId);
-                  if (targetField) {
-                    Object.assign(targetField, values);
-                  }
-                }
-                return newContainers;
-              });
-            }}
-          />
-        </div>
-        <div className="form-designer-footer">
-          <Button type="primary" block style={{ marginBottom: 8 }}>
-            保存
-          </Button>
-          <Button block>取消</Button>
-        </div>
-      </div>
-    </div>
+    </DndProvider>
   );
 };
 

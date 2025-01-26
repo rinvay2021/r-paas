@@ -21,9 +21,18 @@ import {
 } from './components';
 import './index.less';
 
+export const MetaContext = React.createContext<{
+  appCode: string;
+  metaObjectCode: string;
+  configurableType: string;
+}>({
+  appCode: '',
+  metaObjectCode: '',
+  configurableType: '',
+});
+
 const Dashboard: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
-
   // 获取查询参数
   const [metaObjectCode, setMetaObjectCode] = useQueryParam('metaObjectCode', StringParam);
   const [configurableType, setConfigurableType] = useQueryParam('configurableType', StringParam);
@@ -85,74 +94,82 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <Flex className={`${prefix}-configurable-meta`} vertical gap="middle">
-      {/* 顶部操作区 */}
-      <Flex justify="space-between" align="center">
-        {/* 选择对象 */}
-        <Select
-          placeholder="请选择对象"
-          options={metaObjectList}
-          value={metaObjectCode}
-          onChange={value => setMetaObjectCode(value)}
-          style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}
-        />
-        {/* 选择配置类型 */}
-        <Segmented
-          options={META_CONFIG_TYPE}
-          value={configurableType}
-          onChange={value => setConfigurableType(value)}
-        />
-        {/* 新建对象 */}
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateModalOpen(true)}>
-          新建对象
-        </Button>
+    <MetaContext.Provider
+      value={{
+        metaObjectCode,
+        appCode,
+        configurableType,
+      }}
+    >
+      <Flex className={`${prefix}-configurable-meta`} vertical gap="middle">
+        {/* 顶部操作区 */}
+        <Flex justify="space-between" align="center">
+          {/* 选择对象 */}
+          <Select
+            placeholder="请选择对象"
+            options={metaObjectList}
+            value={metaObjectCode}
+            onChange={value => setMetaObjectCode(value)}
+            style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}
+          />
+          {/* 选择配置类型 */}
+          <Segmented
+            options={META_CONFIG_TYPE}
+            value={configurableType}
+            onChange={value => setConfigurableType(value)}
+          />
+          {/* 新建对象 */}
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateModalOpen(true)}>
+            新建对象
+          </Button>
+        </Flex>
+        <Divider dashed style={{ margin: 0 }} />
+
+        {/* 配置组件模块 */}
+        {renderConfigComponent()}
+
+        {/* 新增创建对象的表单 */}
+        <ModalForm<MetaObjectDto>
+          title="新建对象"
+          open={createModalOpen}
+          onOpenChange={setCreateModalOpen}
+          modalProps={{
+            destroyOnClose: true,
+          }}
+          onFinish={async values => {
+            const result = await metaService.createMetaObject({
+              ...values,
+              appCode,
+            });
+
+            message.success(result?.message);
+            refreshObjects();
+
+            return true;
+          }}
+        >
+          <ProFormText
+            name="metaObjectName"
+            label="对象名称"
+            placeholder="请输入对象名称"
+            rules={[{ required: true, message: '请输入对象名称' }]}
+          />
+          <ProFormText
+            name="metaObjectCode"
+            label="对象编码"
+            placeholder="请输入对象编码"
+            rules={[
+              { required: true, message: '请输入对象编码' },
+              {
+                pattern: /^[A-Z][a-zA-Z]*$/,
+                message: '以大写字母开头，只能包含英文字母',
+              },
+            ]}
+          />
+          <ProFormTextArea name="metaObjectDesc" label="描述" placeholder="请输入描述信息" />
+        </ModalForm>
       </Flex>
-      <Divider dashed style={{ margin: 0 }} />
-
-      {/* 配置组件模块 */}
-      {renderConfigComponent()}
-
-      {/* 新增创建对象的表单 */}
-      <ModalForm<MetaObjectDto>
-        title="新建对象"
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-        modalProps={{
-          destroyOnClose: true,
-        }}
-        onFinish={async values => {
-          const result = await metaService.createMetaObject({
-            ...values,
-            appCode,
-          });
-
-          message.success(result?.message);
-          refreshObjects();
-
-          return true;
-        }}
-      >
-        <ProFormText
-          name="metaObjectName"
-          label="对象名称"
-          placeholder="请输入对象名称"
-          rules={[{ required: true, message: '请输入对象名称' }]}
-        />
-        <ProFormText
-          name="metaObjectCode"
-          label="对象编码"
-          placeholder="请输入对象编码"
-          rules={[
-            { required: true, message: '请输入对象编码' },
-            {
-              pattern: /^[A-Z][a-zA-Z]*$/,
-              message: '以大写字母开头，只能包含英文字母',
-            },
-          ]}
-        />
-        <ProFormTextArea name="metaObjectDesc" label="描述" placeholder="请输入描述信息" />
-      </ModalForm>
-    </Flex>
+    </MetaContext.Provider>
   );
 };
 

@@ -1,0 +1,45 @@
+.field-selector {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+
+  &-search {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &-content {
+    padding: 12px;
+    height: 300px;
+    overflow-y: auto;
+  }
+
+  &-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+
+  &-footer {
+    padding: 12px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .field-disabled {
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  // 自定义树节点样式
+  .ant-tree-treenode {
+    width: 100%;
+
+    &.ant-tree-treenode-disabled {
+      .ant-tree-node-content-wrapper {
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}

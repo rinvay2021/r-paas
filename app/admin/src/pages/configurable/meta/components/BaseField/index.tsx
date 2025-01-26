@@ -1,14 +1,13 @@
 import React from 'react';
 import { useRequest } from 'ahooks';
 import { debounce, get } from 'lodash';
-import { useParams } from 'react-router-dom';
-import { StringParam, useQueryParam } from 'use-query-params';
 import { Button, Input, Flex, Table, message } from 'antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { metaService } from '@/api/meta';
-import { UpdateFieldDto } from '@/api/meta/interface';
-import { NUMBER_CONSTANTS } from '@/constant';
 import { useElementHeight } from '@/hooks';
+import { NUMBER_CONSTANTS } from '@/constant';
+import { MetaContext } from '@/pages/configurable/meta';
+import type { UpdateFieldDto } from '@/api/meta/interface';
 import FiledModal from './FiledModal';
 import { useColumns } from './columns';
 import { BaseFieldListItem, BooleanEnum } from './type';
@@ -16,12 +15,10 @@ import { BaseFieldListItem, BooleanEnum } from './type';
 import './index.less';
 
 const BaseField: React.FC = () => {
-  const { appCode } = useParams<{ appCode: string }>();
-  const [metaObjectCode] = useQueryParam('metaObjectCode', StringParam);
-
   const idRef = React.useRef<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
   const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
+  const { appCode, metaObjectCode } = React.useContext(MetaContext);
 
   const paginationRef = React.useRef({
     current: 1,
