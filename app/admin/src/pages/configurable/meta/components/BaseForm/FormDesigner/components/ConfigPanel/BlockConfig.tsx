@@ -1,32 +1,29 @@
 import React from 'react';
-import { Form, Input, Radio } from 'antd';
-import type { Container } from '../../types';
+import { ProForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import type { FormBlockConfig } from '../../types';
 
-interface BlockConfigProps {
-  container: Container;
-  onChange: (values: Partial<Container>) => void;
-}
+export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
+  const { container, onChange } = props;
 
-export const BlockConfigPanel: React.FC<BlockConfigProps> = ({ container, onChange }) => {
   return (
-    <Form layout="vertical">
-      <Form.Item label="区块名称">
-        <Input
-          value={container.title}
-          onChange={e => onChange({ title: e.target.value })}
-          placeholder="请输入区块名称"
-        />
-      </Form.Item>
-      <Form.Item label="列数">
-        <Radio.Group
-          value={container.columns}
-          onChange={e => onChange({ columns: e.target.value })}
-        >
-          <Radio.Button value={1}>1列</Radio.Button>
-          <Radio.Button value={2}>2列</Radio.Button>
-          <Radio.Button value={3}>3列</Radio.Button>
-        </Radio.Group>
-      </Form.Item>
-    </Form>
+    <ProForm
+      layout="vertical"
+      submitter={false}
+      initialValues={container}
+      onValuesChange={onChange}
+    >
+      <ProFormText name="title" label="区块名称" placeholder="请输入区块名称" />
+
+      <ProFormRadio.Group
+        name="columns"
+        label="显示列数"
+        radioType="button"
+        options={[
+          { label: '单列', value: 1 },
+          { label: '双列', value: 2 },
+          { label: '三列', value: 3 },
+        ]}
+      />
+    </ProForm>
   );
 };

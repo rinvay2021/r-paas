@@ -214,7 +214,12 @@ export const Container: React.FC<ContainerProps> = props => {
         </div>
       </div>
       <div className="container-content">
-        <div className={`fields columns-${container.columns}`}>
+        <div
+          className={classNames({
+            fields: true,
+            [`columns-${container.columns}`]: !!container.fields?.length,
+          })}
+        >
           {!container.fields?.length ? (
             <div className="fields-empty">请点击右上角 + 添加字段</div>
           ) : (

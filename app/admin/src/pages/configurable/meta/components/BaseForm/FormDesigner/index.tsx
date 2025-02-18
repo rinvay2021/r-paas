@@ -26,7 +26,7 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
       id: `container-${uuidv4()}`,
       title: '未命名区块',
       fields: [],
-      columns: 1,
+      columns: 2,
     },
   ]);
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
@@ -63,6 +63,8 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
           containers,
         },
       };
+
+      console.log(formData, '=====++++');
 
       return metaService.saveFormConfig(formData);
     },

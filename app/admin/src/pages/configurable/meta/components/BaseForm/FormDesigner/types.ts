@@ -11,23 +11,9 @@ export interface FormBaseConfig {
   labelAlign?: 'left' | 'right';
 }
 
-// TODO
-export interface FormBlockConfig {
-  id: string;
-  title?: string;
-  fields?: FieldDto[];
-  columns?: number;
-}
-
-// TODO
-export interface FormFieldConfig {
-  field: FieldDto;
-  onChange: (values: Partial<FieldDto>) => void;
-}
-
-export interface FieldSelected {
-  containerId: string;
-  fieldId: string;
+export interface FormConfigProps {
+  config: FormBaseConfig;
+  onChange: (values: Partial<FormBaseConfig>) => void;
 }
 
 export interface ContainerType {
@@ -35,6 +21,27 @@ export interface ContainerType {
   title?: string;
   fields?: FieldDto[];
   columns?: number;
+}
+
+export interface FormBlockConfig {
+  container: ContainerType;
+  onChange: (values: Partial<Omit<ContainerType, 'fields'>>) => void;
+}
+
+export interface FormFieldConfig {
+  label: string;
+  displayModes: string[];
+  required: boolean;
+}
+
+export interface FieldConfigProps {
+  field: FormFieldConfig;
+  onChange: (values: Partial<FormFieldConfig>) => void;
+}
+
+export interface FieldSelected {
+  containerId: string;
+  fieldId: string;
 }
 
 export interface ConfigPanelProps {

@@ -30,7 +30,7 @@ const PreviewForm: React.FC<PreviewFormProps> = props => {
           onConfirm={onDelete}
           okText="确定"
           cancelText="取消"
-          placement="right"
+          placement="bottom"
         >
           <Button shape="circle" icon={<DeleteOutlined />} size="large" />
         </Popconfirm>
