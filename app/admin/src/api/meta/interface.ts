@@ -1,3 +1,5 @@
+import { Form } from 'antd';
+
 /**
  * 分页查询参数
  */
@@ -58,17 +60,32 @@ export interface QueryFieldDto extends Partial<FieldDto & PaginationQuery> {
 export type UpdateFieldDto = Partial<FieldDto>;
 
 /**
+ * 表单布局
+ */
+export type FormLayout = Parameters<typeof Form>[0] & { columns: number };
+
+/**
+ * 表单容器
+ */
+export type ContainerType = {
+  id: string;
+  title?: string;
+  columns?: number;
+  fields?: FieldDto[];
+};
+
+/**
  * 表单 DTO
  */
 export interface FormDto {
+  _id?: string;
   formCode: string;
   formName: string;
   formDesc?: string;
   appCode: string;
   metaObjectCode: string;
-  fields: any[];
-  rules: any[];
-  layout: Record<string, any>;
+  formConfig?: FormLayout;
+  containers?: ContainerType[];
 }
 
 /**

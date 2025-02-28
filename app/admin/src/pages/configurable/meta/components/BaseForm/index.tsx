@@ -1,30 +1,24 @@
 import React from 'react';
-import { map, find } from 'lodash';
-import { useRequest } from 'ahooks';
+import { map, find, isEmpty, get } from 'lodash';
+import { useBoolean, useRequest } from 'ahooks';
 import { Tabs, Button, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { prefix } from '@/constant';
 import { metaService } from '@/api/meta';
+import { FormDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/configurable/meta';
 import PreviewForm from './PreviewForm';
 import FormDesigner from './FormDesigner';
 
 import './index.less';
 
-interface FormItem {
-  _id: string;
-  formName: string;
-  formCode: string;
-  formDesc?: string;
-}
-
 const BaseForm: React.FC = () => {
   const { appCode, metaObjectCode } = React.useContext(MetaContext);
-  const editingFormRef = React.useRef<FormItem | null>(null);
-  const [isEditing, setIsEditing] = React.useState<boolean>(false);
+  const editingFormRef = React.useRef<FormDto | null>(null);
   const [activeFormCode, setActiveFormCode] = React.useState<string>();
   const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
+  const [isEditing, { setTrue: setOpenEditing, setFalse: setCloseEditing }] = useBoolean(false);
 
   const { data, loading, refresh } = useRequest(
     () =>
@@ -35,8 +29,8 @@ const BaseForm: React.FC = () => {
     {
       refreshDeps: [appCode, metaObjectCode],
       onSuccess: data => {
-        if (data?.data?.list?.length > 0 && !activeFormCode) {
-          setActiveFormCode(data.data.list[0].formCode);
+        if (!isEmpty(data?.data?.list) && !activeFormCode) {
+          setActiveFormCode(get(data, 'data.list[0].formCode'));
         }
       },
       onError: error => {
@@ -46,7 +40,9 @@ const BaseForm: React.FC = () => {
   );
 
   const handleSettingForm = () => {
-    const currentForm = find(data?.data?.list, form => form.formCode === activeFormCode);
+    const filter = form => form.formCode === activeFormCode;
+    const currentForm = find(data?.data?.list, filter);
+
     if (currentForm) {
       editingFormRef.current = currentForm;
       setFormModalOpen(true);
@@ -56,12 +52,14 @@ const BaseForm: React.FC = () => {
   };
 
   const handleDeleteForm = () => {
+
+    metaService.createActionButton
     console.log('handleDeleteForm');
   };
 
   const onActiveFormChange = (formCode: string) => {
     setActiveFormCode(formCode);
-    setIsEditing(false);
+    setCloseEditing();
   };
 
   const items = map(data?.data?.list || [], form => ({
@@ -70,11 +68,17 @@ const BaseForm: React.FC = () => {
     children: null,
   }));
 
-  const designerProps = {
-    appCode,
-    metaObjectCode,
-    formCode: activeFormCode,
-  };
+  const designerProps = React.useMemo(() => {
+    const filter = form => form.formCode === activeFormCode;
+    const currentForm = find(data?.data?.list, filter);
+
+    return {
+      refresh,
+      setCloseEditing,
+      ...currentForm,
+    };
+    return {};
+  }, [data, activeFormCode, refresh, setCloseEditing]);
 
   return (
     <div className={`${prefix}-base-form`}>
@@ -106,13 +110,13 @@ const BaseForm: React.FC = () => {
             <PreviewForm
               onDelete={handleDeleteForm}
               onSetting={handleSettingForm}
-              onEdit={() => setIsEditing(true)}
+              onEdit={setOpenEditing}
             />
           )}
         </>
       )}
 
-      <ModalForm<FormItem>
+      <ModalForm<FormDto>
         title={editingFormRef.current ? '编辑表单' : '新建表单'}
         open={formModalOpen}
         onOpenChange={setFormModalOpen}

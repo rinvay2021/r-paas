@@ -1,26 +1,8 @@
-import type { FieldDto } from '@/api/meta/interface';
-
-export interface FormBaseConfig {
-  title?: string;
-  columns?: number;
-  colon?: boolean;
-  size?: 'small' | 'middle' | 'large';
-  layout?: 'horizontal' | 'vertical' | 'inline';
-  variant?: 'outlined' | 'borderless' | 'filled';
-  labelWrap?: boolean;
-  labelAlign?: 'left' | 'right';
-}
+import type { FieldDto, FormDto, ContainerType, FormLayout } from '@/api/meta/interface';
 
 export interface FormConfigProps {
-  config: FormBaseConfig;
-  onChange: (values: Partial<FormBaseConfig>) => void;
-}
-
-export interface ContainerType {
-  id: string;
-  title?: string;
-  fields?: FieldDto[];
-  columns?: number;
+  config: FormLayout;
+  onChange: (values: Partial<FormLayout>) => void;
 }
 
 export interface FormBlockConfig {
@@ -45,21 +27,20 @@ export interface FieldSelected {
 }
 
 export interface ConfigPanelProps {
-  formConfig: FormBaseConfig;
+  formConfig: FormLayout;
   containers: ContainerType[];
   selectedForm: boolean;
   selectedContainer: string | null;
   selectedField: FieldSelected | null;
-  onFormConfigChange: (values: Partial<FormBaseConfig>) => void;
+  onFormConfigChange: (values: Partial<FormLayout>) => void;
   onContainerChange: (containerId: string, values: Partial<ContainerType>) => void;
   onFieldChange: (containerId: string, fieldId: string, values: Partial<FieldDto>) => void;
 }
 
-export interface FormDesignerProps {
-  formCode: string;
-  appCode: string;
-  metaObjectCode: string;
-}
+export type FormDesignerProps = FormDto & {
+  refresh: () => void;
+  setCloseEditing: () => void;
+};
 
 export interface ContainerProps {
   index: number;
@@ -89,5 +70,3 @@ export interface FieldProps {
     draggedField: FieldDto
   ) => void;
 }
-
-export type { FieldDto };

@@ -2,33 +2,26 @@ import React from 'react';
 import classNames from 'classnames';
 import { useRequest } from 'ahooks';
 import { v4 as uuidv4 } from 'uuid';
-import { filter, map } from 'lodash';
 import { Button, message } from 'antd';
-import { DndProvider } from 'react-dnd';
+import { filter, map, isEmpty } from 'lodash';
 import { PlusOutlined } from '@ant-design/icons';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { metaService } from '@/api/meta';
 import { useElementHeight } from '@/hooks/useElementHeight';
+import { FieldDto, ContainerType, FormLayout } from '@/api/meta/interface';
+import type { FormDesignerProps } from './types';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
-import type { ContainerType, FieldDto, FormBaseConfig, FormDesignerProps } from './types';
 
 import './index.less';
 
 const FormDesigner: React.FC<FormDesignerProps> = props => {
-  const { formCode, appCode, metaObjectCode } = props;
+  const { refresh, setCloseEditing, ...formProps } = props;
   const contentHeight = useElementHeight({ elementId: 'form-designer', offset: 16 });
 
   // 状态管理
-  const [containers, setContainers] = React.useState<ContainerType[]>(() => [
-    {
-      id: `container-${uuidv4()}`,
-      title: '未命名区块',
-      fields: [],
-      columns: 2,
-    },
-  ]);
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
   const [selectedContainer, setSelectedContainer] = React.useState<string | null>(null);
   const [selectedField, setSelectedField] = React.useState<{
@@ -36,45 +29,54 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
     containerId: string;
   } | null>(null);
 
-  const [formConfig, setFormConfig] = React.useState<FormBaseConfig>({
-    title: '',
-    columns: 1,
-    colon: true,
-    size: 'middle',
-    layout: 'horizontal',
-    variant: 'outlined',
-    labelWrap: true,
-    labelAlign: 'left',
-  });
+  const [formConfig, setFormConfig] = React.useState<FormLayout>(
+    formProps?.formConfig || {
+      title: '',
+      columns: 2,
+      colon: true,
+      size: 'middle',
+      layout: 'horizontal',
+      variant: 'outlined',
+      labelWrap: true,
+      labelAlign: 'left',
+    }
+  );
+
+  const [containers, setContainers] = React.useState<ContainerType[]>(
+    isEmpty(formProps?.containers)
+      ? [
+          {
+            id: `container-${uuidv4()}`,
+            title: '未命名区块',
+            fields: [],
+            columns: formConfig.columns,
+          },
+        ]
+      : formProps?.containers
+  );
 
   // 保存表单配置
   const { loading: saveLoading, run: saveForm } = useRequest(
     async () => {
-      if (!appCode || !metaObjectCode) {
+      if (!formProps?.appCode || !formProps?.metaObjectCode) {
         throw new Error('缺少必要参数');
       }
 
       const formData = {
-        appCode,
-        metaObjectCode,
-        formCode,
-        config: {
-          ...formConfig,
-          containers,
-        },
+        formConfig,
+        containers,
+        _id: formProps?._id,
       };
 
-      console.log(formData, '=====++++');
-
-      return metaService.saveFormConfig(formData);
+      return metaService.updateForm(formData);
     },
     {
       manual: true,
       onSuccess: () => {
         message.success('保存成功');
-      },
-      onError: error => {
-        message.error(`保存失败: ${error.message}`);
+
+        refresh();
+        setCloseEditing();
       },
     }
   );
@@ -125,9 +127,7 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
     });
   };
 
-  // config处理
-
-  const handleFormConfigChange = (values: Partial<FormBaseConfig>) => {
+  const handleFormConfigChange = (values: Partial<FormLayout>) => {
     setFormConfig(prev => ({ ...prev, ...values }));
   };
 
@@ -210,7 +210,7 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
             />
           </div>
           <div className="form-designer-footer">
-            <Button style={{ flex: 1 }} onClick={() => {}}>
+            <Button style={{ flex: 1 }} onClick={setCloseEditing}>
               取消
             </Button>
             <Button type="primary" style={{ flex: 1 }} loading={saveLoading} onClick={saveForm}>
