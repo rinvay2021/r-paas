@@ -1,14 +1,14 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-type DateType = string | number | Date | moment.Moment;
+type DateType = string | number | Date | dayjs.Dayjs;
 
 type FormatType = string;
 
 export const formatDate = (date: DateType, format: FormatType = 'YYYY-MM-DD HH:mm:ss') => {
-  const momentDate = moment(date);
+  const dayjsDate = dayjs(date);
 
-  if (momentDate.isValid()) {
-    return momentDate.format(format);
+  if (dayjsDate.isValid()) {
+    return dayjsDate.format(format);
   }
 
   return '';
