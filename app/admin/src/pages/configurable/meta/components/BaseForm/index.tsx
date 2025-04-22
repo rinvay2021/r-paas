@@ -1,7 +1,7 @@
 import React from 'react';
 import { map, find, isEmpty, get } from 'lodash';
 import { useBoolean, useRequest } from 'ahooks';
-import { Tabs, Button, message } from 'antd';
+import { Tabs, Button, message, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { prefix } from '@/constant';
@@ -10,15 +10,19 @@ import { FormDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/configurable/meta';
 import PreviewForm from './PreviewForm';
 import FormDesigner from './FormDesigner';
+import type { FormDesignerRef } from './FormDesigner/types';
 
 import './index.less';
 
 const BaseForm: React.FC = () => {
   const { appCode, metaObjectCode } = React.useContext(MetaContext);
+
   const editingFormRef = React.useRef<FormDto | null>(null);
+  const formDesignerRef = React.useRef<FormDesignerRef>(null);
+
   const [activeFormCode, setActiveFormCode] = React.useState<string>();
   const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
-  const [isEditing, { setTrue: setOpenEditing, setFalse: setCloseEditing }] = useBoolean(false);
+  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
   const { data, loading, refresh } = useRequest(
     () =>
@@ -52,21 +56,20 @@ const BaseForm: React.FC = () => {
   };
 
   const handleDeleteForm = () => {
+    // metaService.createActionButton;
+    // console.log('handleDeleteForm');
+  };
 
-    metaService.createActionButton
-    console.log('handleDeleteForm');
+  const handleSaveForm = () => {
+    if (typeof formDesignerRef.current?.saveForm === 'function') {
+      formDesignerRef.current?.saveForm();
+    }
   };
 
   const onActiveFormChange = (formCode: string) => {
     setActiveFormCode(formCode);
-    setCloseEditing();
+    setPreview();
   };
-
-  const items = map(data?.data?.list || [], form => ({
-    key: form.formCode,
-    label: form.formName,
-    children: null,
-  }));
 
   const designerProps = React.useMemo(() => {
     const filter = form => form.formCode === activeFormCode;
@@ -74,11 +77,15 @@ const BaseForm: React.FC = () => {
 
     return {
       refresh,
-      setCloseEditing,
       ...currentForm,
     };
-    return {};
-  }, [data, activeFormCode, refresh, setCloseEditing]);
+  }, [data, activeFormCode, refresh]);
+
+  const items = map(data?.data?.list || [], form => ({
+    key: form.formCode,
+    label: form.formName,
+    children: null,
+  }));
 
   return (
     <div className={`${prefix}-base-form`}>
@@ -90,27 +97,39 @@ const BaseForm: React.FC = () => {
         className={`${prefix}-base-form-tabs`}
         tabBarExtraContent={{
           right: (
-            <Button
-              icon={<PlusOutlined />}
-              onClick={() => {
-                editingFormRef.current = null;
-                setFormModalOpen(true);
-              }}
-            >
-              新建表单
-            </Button>
+            <Space>
+              <Button
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  editingFormRef.current = null;
+                  setFormModalOpen(true);
+                }}
+              >
+                新建表单
+              </Button>
+              {isEditing ? (
+                <>
+                  <Button type="dashed" onClick={setPreview}>
+                    取消
+                  </Button>
+                  <Button type="primary" onClick={handleSaveForm}>
+                    保存
+                  </Button>
+                </>
+              ) : null}
+            </Space>
           ),
         }}
       />
       {!loading && (
         <>
           {isEditing ? (
-            <FormDesigner {...designerProps} />
+            <FormDesigner ref={formDesignerRef} {...designerProps} />
           ) : (
             <PreviewForm
+              onEdit={setEditing}
               onDelete={handleDeleteForm}
               onSetting={handleSettingForm}
-              onEdit={setOpenEditing}
             />
           )}
         </>

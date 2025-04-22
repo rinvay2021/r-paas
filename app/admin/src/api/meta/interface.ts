@@ -62,7 +62,13 @@ export type UpdateFieldDto = Partial<FieldDto>;
 /**
  * 表单布局
  */
-export type FormLayout = Parameters<typeof Form>[0] & { columns: number };
+export type FormLayout = {
+  layoutSettings?: Parameters<typeof Form>[0] & { columns: number };
+  // TODO: 帮助设置
+  helpSettings?: Record<string, string>;
+  // TODO: 联动设置
+  linkageSettings?: Record<string, string>[];
+};
 
 /**
  * 表单容器

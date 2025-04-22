@@ -11,14 +11,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { metaService } from '@/api/meta';
 import { useElementHeight } from '@/hooks/useElementHeight';
 import { FieldDto, ContainerType, FormLayout } from '@/api/meta/interface';
-import type { FormDesignerProps } from './types';
+import type { FormDesignerProps, FormDesignerRef } from './types';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
 
 import './index.less';
 
-const FormDesigner: React.FC<FormDesignerProps> = props => {
-  const { refresh, setCloseEditing, ...formProps } = props;
+const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesignerProps> = (
+  props,
+  ref
+) => {
+  const { refresh, ...formProps } = props;
   const contentHeight = useElementHeight({ elementId: 'form-designer', offset: 16 });
 
   // 状态管理
@@ -29,18 +32,7 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
     containerId: string;
   } | null>(null);
 
-  const [formConfig, setFormConfig] = React.useState<FormLayout>(
-    formProps?.formConfig || {
-      title: '',
-      columns: 2,
-      colon: true,
-      size: 'middle',
-      layout: 'horizontal',
-      variant: 'outlined',
-      labelWrap: true,
-      labelAlign: 'left',
-    }
-  );
+  const [formConfig, setFormConfig] = React.useState<FormLayout>(formProps?.formConfig);
 
   const [containers, setContainers] = React.useState<ContainerType[]>(
     isEmpty(formProps?.containers)
@@ -49,15 +41,15 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
             id: `container-${uuidv4()}`,
             title: '未命名区块',
             fields: [],
-            columns: formConfig.columns,
+            columns: formConfig?.layoutSettings?.columns,
           },
         ]
       : formProps?.containers
   );
 
   // 保存表单配置
-  const { loading: saveLoading, run: saveForm } = useRequest(
-    async () => {
+  const { run: saveForm } = useRequest(
+    () => {
       if (!formProps?.appCode || !formProps?.metaObjectCode) {
         throw new Error('缺少必要参数');
       }
@@ -76,7 +68,6 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
         message.success('保存成功');
 
         refresh();
-        setCloseEditing();
       },
     }
   );
@@ -87,7 +78,7 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
       id: `container-${uuidv4()}`,
       title: '未命名区块',
       fields: [],
-      columns: formConfig.columns,
+      columns: formConfig?.layoutSettings?.columns,
     };
     setContainers(prev => [...prev, newContainer]);
   };
@@ -154,6 +145,12 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
     );
   };
 
+  React.useImperativeHandle(ref, () => {
+    return {
+      saveForm,
+    };
+  });
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div id="form-designer" className="form-designer" style={{ height: contentHeight }}>
@@ -186,8 +183,8 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
               ))}
             </div>
             <Button
-              type="dashed"
               block
+              type="dashed"
               icon={<PlusOutlined />}
               onClick={handleAddContainer}
               style={{ marginTop: 16 }}
@@ -197,30 +194,20 @@ const FormDesigner: React.FC<FormDesignerProps> = props => {
           </div>
         </div>
         <div className="form-designer-right">
-          <div className="form-designer-content">
-            <ConfigPanel
-              formConfig={formConfig}
-              containers={containers}
-              selectedForm={selectedForm}
-              selectedContainer={selectedContainer}
-              selectedField={selectedField}
-              onFormConfigChange={handleFormConfigChange}
-              onContainerChange={handleContainerChange}
-              onFieldChange={handleFieldChange}
-            />
-          </div>
-          <div className="form-designer-footer">
-            <Button style={{ flex: 1 }} onClick={setCloseEditing}>
-              取消
-            </Button>
-            <Button type="primary" style={{ flex: 1 }} loading={saveLoading} onClick={saveForm}>
-              保存
-            </Button>
-          </div>
+          <ConfigPanel
+            formConfig={formConfig}
+            containers={containers}
+            selectedForm={selectedForm}
+            selectedContainer={selectedContainer}
+            selectedField={selectedField}
+            onFormConfigChange={handleFormConfigChange}
+            onContainerChange={handleContainerChange}
+            onFieldChange={handleFieldChange}
+          />
         </div>
       </div>
     </DndProvider>
   );
 };
 
-export default FormDesigner;
+export default React.forwardRef(FormDesigner);

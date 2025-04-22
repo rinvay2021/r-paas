@@ -23,15 +23,19 @@ interface TreeNodeData extends DataNode {
 }
 
 // 修改转换逻辑，在这里就过滤掉已选中的字段
-const convertToTreeData = (fields: FieldDto[], existingFields: Set<string>): TreeNodeData[] => {
+const convertToTreeData = (
+  fields: FieldDto[],
+  existingFields: Set<string>,
+  groupName: string
+): TreeNodeData[] => {
   const availableFields = filter(fields, field => {
     return !existingFields.has(field._id);
   });
 
   return [
     {
-      key: 'default',
-      title: '默认分组',
+      key: groupName,
+      title: groupName,
       children: map(availableFields, field => ({
         key: field._id,
         title: field.fieldName,
@@ -64,7 +68,6 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
         appCode,
         metaObjectCode,
       });
-
       return response?.data?.list || [];
     },
     {
@@ -77,7 +80,11 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
 
   // 处理搜索和过滤逻辑
   const treeData = useMemo(() => {
-    const originTreeData = convertToTreeData(originFields, existingFields);
+    const originTreeData = convertToTreeData(
+      originFields,
+      existingFields,
+      `${appCode}.${metaObjectCode}`
+    );
 
     const searchFields = (nodes: TreeNodeData[]): TreeNodeData[] => {
       return map(nodes, node => {

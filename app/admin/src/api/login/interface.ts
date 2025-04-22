@@ -1,13 +1,13 @@
 export interface User {
   id?: string;
+  role?: string;
   username?: string;
   email?: string;
-  role?: string;
 }
 
 export interface LoginResponse {
-  token: string;
   user: User;
+  token: string;
 }
 
 export interface LoginRequest {

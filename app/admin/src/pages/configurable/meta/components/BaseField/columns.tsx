@@ -1,7 +1,9 @@
 import React from 'react';
+import { find } from 'lodash';
 import { Popconfirm, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { formatDate } from '@r-paas/shared/moment';
+import { FIELD_TYPE_GROUPS } from './constant';
 import { BaseFieldListItem, BooleanEnum, ColumnsOprators } from './type';
 
 export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldListItem> => {
@@ -29,6 +31,10 @@ export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldList
         title: '字段类型',
         dataIndex: 'fieldType',
         key: 'fieldType',
+        render: (_, record: BaseFieldListItem) => {
+          const group = find(FIELD_TYPE_GROUPS, group => group.type === record.fieldType);
+          return group?.label;
+        },
       },
       {
         title: '是否生效',

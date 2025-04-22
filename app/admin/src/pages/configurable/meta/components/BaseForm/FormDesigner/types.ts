@@ -39,7 +39,6 @@ export interface ConfigPanelProps {
 
 export type FormDesignerProps = FormDto & {
   refresh: () => void;
-  setCloseEditing: () => void;
 };
 
 export interface ContainerProps {
@@ -69,4 +68,8 @@ export interface FieldProps {
     targetContainerId: string,
     draggedField: FieldDto
   ) => void;
+}
+
+export interface FormDesignerRef {
+  saveForm: () => void;
 }
