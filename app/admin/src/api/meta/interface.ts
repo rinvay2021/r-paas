@@ -77,6 +77,10 @@ export type ContainerType = {
   id: string;
   title?: string;
   columns?: number;
+  createMode?: string;
+  editMode?: string;
+  viewMode?: string;
+  isHidden?: boolean;
   fields?: FieldDto[];
 };
 

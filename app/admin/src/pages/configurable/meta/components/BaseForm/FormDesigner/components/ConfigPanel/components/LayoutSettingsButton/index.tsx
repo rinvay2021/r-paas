@@ -4,11 +4,19 @@ import { SettingOutlined } from '@ant-design/icons';
 import { ProForm, ProFormRadio, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
 
 interface LayoutSettings {
+  /** 标题 */
+  title?: string;
+  /** 标签对齐 */
   labelAlign?: 'left' | 'right';
+  /** 布局方式 */
   layout?: 'horizontal' | 'vertical' | 'inline';
+  /** 表单尺寸 */
   size?: 'small' | 'middle' | 'large';
+  /** 变体样式 */
   variant?: 'outlined' | 'filled' | 'borderless';
+  /** 是否显示冒号 */
   colon?: boolean;
+  /** 标签是否换行 */
   labelWrap?: boolean;
 }
 

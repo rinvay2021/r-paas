@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormRadio, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
 import type { FormBlockConfig } from '../../types';
 
 export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
@@ -24,6 +24,41 @@ export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
           { label: '三列', value: 3 },
         ]}
       />
+
+      <ProFormRadio.Group
+        name="createMode"
+        label="新建时"
+        radioType="button"
+        options={[
+          { label: '可编辑', value: 'editable' },
+          { label: '只读', value: 'readonly' },
+          { label: '隐藏', value: 'hidden' },
+        ]}
+      />
+
+      <ProFormRadio.Group
+        name="editMode"
+        label="编辑时"
+        radioType="button"
+        options={[
+          { label: '可编辑', value: 'editable' },
+          { label: '只读', value: 'readonly' },
+          { label: '隐藏', value: 'hidden' },
+        ]}
+      />
+
+      <ProFormRadio.Group
+        name="viewMode"
+        label="查看时"
+        radioType="button"
+        options={[
+          { label: '可编辑', value: 'editable' },
+          { label: '只读', value: 'readonly' },
+          { label: '隐藏', value: 'hidden' },
+        ]}
+      />
+
+      <ProFormSwitch name="isHidden" label="是否隐藏区块" />
     </ProForm>
   );
 };

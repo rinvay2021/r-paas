@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { createHttp } from '@r-paas/shared/http';
+import { createHttp, tokenService } from '@r-paas/shared/http';
 
 const baseURL = 'http://localhost:8080/api/v1';
 
@@ -45,4 +45,4 @@ const authHttp = createHttp({
 // 需要 token 的 HTTP 实例
 const http = createHttp(baseConfig);
 
-export { authHttp, http };
+export { authHttp, http, tokenService };

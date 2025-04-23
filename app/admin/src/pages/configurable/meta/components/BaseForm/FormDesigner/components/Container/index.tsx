@@ -217,7 +217,7 @@ export const Container: React.FC<ContainerProps> = props => {
         <div
           className={classNames({
             fields: true,
-            [`columns-${container.columns}`]: !!container.fields?.length,
+            [`columns-${container.columns || 1}`]: !!container.fields?.length,
           })}
         >
           {!container.fields?.length ? (

@@ -1,5 +1,4 @@
-import { tokenService } from '@r-paas/shared/http';
-import { authHttp, http } from '@/request';
+import { authHttp, http, tokenService } from '@/request';
 import type { LoginRequest, LoginResponse } from './interface';
 
 export class AuthService {
