@@ -90,6 +90,7 @@ const BaseForm: React.FC = () => {
   return (
     <div className={`${prefix}-base-form`}>
       <Tabs
+        id="form-container"
         items={items}
         activeKey={activeFormCode}
         onChange={onActiveFormChange}
@@ -121,18 +122,15 @@ const BaseForm: React.FC = () => {
           ),
         }}
       />
-      {!loading && (
-        <>
-          {isEditing ? (
-            <FormDesigner ref={formDesignerRef} {...designerProps} />
-          ) : (
-            <PreviewForm
-              onEdit={setEditing}
-              onDelete={handleDeleteForm}
-              onSetting={handleSettingForm}
-            />
-          )}
-        </>
+
+      {isEditing ? (
+        <FormDesigner ref={formDesignerRef} {...designerProps} />
+      ) : (
+        <PreviewForm
+          onEdit={setEditing}
+          onDelete={handleDeleteForm}
+          onSetting={handleSettingForm}
+        />
       )}
 
       <ModalForm<FormDto>

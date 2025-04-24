@@ -13,12 +13,12 @@ interface PreviewFormProps {
 
 const PreviewForm: React.FC<PreviewFormProps> = props => {
   const { onEdit, onDelete, onSetting } = props;
-  const height = useElementHeight({ elementId: 'form-preview', offset: 16 });
+  const previewHeight = useElementHeight({ elementId: 'form-container', offset: 80 });
 
   return (
     <div
       id="form-preview"
-      style={{ height: `${height}px` }}
+      style={{ height: `${previewHeight}px` }}
       className={`${prefix}-preview-container`}
     >
       {/* 左侧操作按钮 */}

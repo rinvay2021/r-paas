@@ -22,7 +22,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
   ref
 ) => {
   const { refresh, ...formProps } = props;
-  const contentHeight = useElementHeight({ elementId: 'form-designer', offset: 16 });
+  const designerContentHeight = useElementHeight({ elementId: 'form-container', offset: 80 });
 
   // 状态管理
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
@@ -153,7 +153,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div id="form-designer" className="form-designer" style={{ height: contentHeight }}>
+      <div id="form-designer" className="form-designer" style={{ height: designerContentHeight }}>
         <div className="form-designer-left">
           <div
             onClick={() => {
