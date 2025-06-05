@@ -15,7 +15,6 @@ export const FieldConfigPanel: React.FC<FieldConfigProps> = props => {
       <ProFormRadio.Group
         name="createMode"
         label="新建时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },
@@ -25,7 +24,6 @@ export const FieldConfigPanel: React.FC<FieldConfigProps> = props => {
       <ProFormRadio.Group
         name="editMode"
         label="编辑时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },
@@ -35,7 +33,6 @@ export const FieldConfigPanel: React.FC<FieldConfigProps> = props => {
       <ProFormRadio.Group
         name="viewMode"
         label="查看时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },

@@ -17,7 +17,6 @@ export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
       <ProFormRadio.Group
         name="columns"
         label="显示列数"
-        radioType="button"
         options={[
           { label: '单列', value: 1 },
           { label: '双列', value: 2 },
@@ -28,7 +27,6 @@ export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
       <ProFormRadio.Group
         name="createMode"
         label="新建时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },
@@ -39,7 +37,6 @@ export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
       <ProFormRadio.Group
         name="editMode"
         label="编辑时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },
@@ -50,7 +47,6 @@ export const BlockConfigPanel: React.FC<FormBlockConfig> = props => {
       <ProFormRadio.Group
         name="viewMode"
         label="查看时"
-        radioType="button"
         options={[
           { label: '可编辑', value: 'editable' },
           { label: '只读', value: 'readonly' },
