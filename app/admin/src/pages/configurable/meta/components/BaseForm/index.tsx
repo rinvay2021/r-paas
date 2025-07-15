@@ -8,7 +8,7 @@ import { prefix } from '@/constant';
 import { metaService } from '@/api/meta';
 import { FormDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/configurable/meta';
-import PreviewForm from './PreviewForm';
+import PreviewForm from './FormPreview';
 import FormDesigner from './FormDesigner';
 import type { FormDesignerRef } from './FormDesigner/types';
 
@@ -90,6 +90,7 @@ const BaseForm: React.FC = () => {
   return (
     <div className={`${prefix}-base-form`}>
       <Tabs
+        size="small"
         id="form-container"
         items={items}
         activeKey={activeFormCode}
@@ -100,6 +101,8 @@ const BaseForm: React.FC = () => {
           right: (
             <Space>
               <Button
+                type="dashed"
+                loading={loading}
                 icon={<PlusOutlined />}
                 onClick={() => {
                   editingFormRef.current = null;
@@ -113,7 +116,7 @@ const BaseForm: React.FC = () => {
                   <Button type="dashed" onClick={setPreview}>
                     取消
                   </Button>
-                  <Button type="primary" onClick={handleSaveForm}>
+                  <Button color="primary" variant="filled" onClick={handleSaveForm}>
                     保存
                   </Button>
                 </>
@@ -165,7 +168,8 @@ const BaseForm: React.FC = () => {
             editingFormRef.current = null;
             return true;
           } catch (error) {
-            message.error(editingFormRef.current ? '更新失败' : '创建失败');
+            const errorMessage = get(error, 'message', '操作失败');
+            message.error(errorMessage);
             return false;
           }
         }}

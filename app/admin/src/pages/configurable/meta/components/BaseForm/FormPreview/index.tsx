@@ -13,7 +13,7 @@ interface PreviewFormProps {
 
 const PreviewForm: React.FC<PreviewFormProps> = props => {
   const { onEdit, onDelete, onSetting } = props;
-  const previewHeight = useElementHeight({ elementId: 'form-container', offset: 80 });
+  const previewHeight = useElementHeight({ elementId: 'form-container', offset: 70 });
 
   return (
     <div

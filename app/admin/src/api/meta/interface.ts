@@ -131,18 +131,13 @@ export type QueryListDto = Partial<ListDto & PaginationQuery>;
  * 详情页 DTO
  */
 export interface DetailPageDto {
-  pageCode: string;
-  pageName: string;
-  objectCode: string;
-  sections: Array<{
-    sectionName: string;
-    fields: Array<{
-      fieldCode: string;
-      order: number;
-    }>;
-    order: number;
-  }>;
-  description?: string;
+  _id?: string;
+  detailPageCode: string;
+  detailPageName: string;
+  formCode: string;
+  detailPageDesc?: string;
+  appCode: string;
+  metaObjectCode: string;
 }
 
 /**

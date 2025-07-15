@@ -22,7 +22,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
   ref
 ) => {
   const { refresh, ...formProps } = props;
-  const designerContentHeight = useElementHeight({ elementId: 'form-container', offset: 80 });
+  const designerContentHeight = useElementHeight({ elementId: 'form-container', offset: 70 });
 
   // 状态管理
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
