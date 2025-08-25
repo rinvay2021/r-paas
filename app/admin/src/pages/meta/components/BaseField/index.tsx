@@ -6,7 +6,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { metaService } from '@/api/meta';
 import { useElementHeight } from '@/hooks';
 import { NUMBER_CONSTANTS } from '@/constant';
-import { MetaContext } from '@/pages/configurable/meta';
+import { MetaContext } from '@/pages/meta';
 import type { UpdateFieldDto } from '@/api/meta/interface';
 import FiledModal from './FiledModal';
 import { useColumns } from './columns';

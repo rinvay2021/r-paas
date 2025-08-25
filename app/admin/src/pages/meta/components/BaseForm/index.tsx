@@ -7,7 +7,7 @@ import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-compone
 import { prefix } from '@/constant';
 import { metaService } from '@/api/meta';
 import { FormDto } from '@/api/meta/interface';
-import { MetaContext } from '@/pages/configurable/meta';
+import { MetaContext } from '@/pages/meta';
 import PreviewForm from './FormPreview';
 import FormDesigner from './FormDesigner';
 import type { FormDesignerRef } from './FormDesigner/types';
@@ -111,7 +111,7 @@ const BaseForm: React.FC = () => {
               >
                 新建表单
               </Button>
-              {isEditing ? (
+              {isEditing && (
                 <>
                   <Button type="dashed" onClick={setPreview}>
                     取消
@@ -120,7 +120,7 @@ const BaseForm: React.FC = () => {
                     保存
                   </Button>
                 </>
-              ) : null}
+              )}
             </Space>
           ),
         }}

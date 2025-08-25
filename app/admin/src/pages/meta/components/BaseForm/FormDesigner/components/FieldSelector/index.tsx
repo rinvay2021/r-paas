@@ -4,7 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { map, filter } from 'lodash';
 import type { DataNode } from 'antd/es/tree';
-import { MetaContext } from '@/pages/configurable/meta';
+import { MetaContext } from '@/pages/meta';
 import { metaService } from '@/api/meta';
 import type { FieldDto } from '@/api/meta/interface';
 

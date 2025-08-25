@@ -19,6 +19,11 @@ export interface AppDto {
 }
 
 /**
+ * 查询应用 DTO
+ */
+export type QueryAppDto = Partial<AppDto & PaginationQuery>;
+
+/**
  * 元对象 DTO
  */
 export interface MetaObjectDto {
@@ -144,6 +149,11 @@ export interface DetailPageDto {
  * 查询详情页 DTO
  */
 export type QueryDetailPageDto = Partial<DetailPageDto & PaginationQuery>;
+
+/**
+ * 更新详情页 DTO
+ */
+export type UpdateDetailPageDto = Partial<DetailPageDto>;
 
 /**
  * 搜索表单 DTO

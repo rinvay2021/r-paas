@@ -5,7 +5,7 @@ import React from 'react';
 import { map } from 'lodash';
 import { useRequest } from 'ahooks';
 import { metaService } from '@/api/meta';
-import { MetaContext } from '@/pages/configurable/meta';
+import { MetaContext } from '@/pages/meta';
 
 interface UseFormDataProps {
   appCode?: string;

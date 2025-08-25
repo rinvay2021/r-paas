@@ -1,6 +1,6 @@
 import React from 'react';
-import { get, map } from 'lodash';
-import { useRequest } from 'ahooks';
+import { find, get, map } from 'lodash';
+import { useBoolean, useRequest } from 'ahooks';
 import { Button, message, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
@@ -8,9 +8,13 @@ import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-des
 import { prefix } from '@/constant';
 import { metaService } from '@/api/meta';
 import { DetailPageDto } from '@/api/meta/interface';
-import { MetaContext } from '@/pages/configurable/meta';
+import { MetaContext } from '@/pages/meta';
 
 import { useFormData } from '../BaseForm/useFormData';
+import DetailPageDesigner from './DetailPageDesigner';
+import DetailPagePreview from './DetailPagePreview';
+
+import './index.less';
 
 const BaseDetail: React.FC = () => {
   const { appCode, metaObjectCode } = React.useContext(MetaContext);
@@ -19,6 +23,7 @@ const BaseDetail: React.FC = () => {
 
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
   const [activeDetailCode, setActiveDetailCode] = React.useState<string>();
+  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
   const { options } = useFormData();
 
@@ -29,6 +34,22 @@ const BaseDetail: React.FC = () => {
     })
   );
 
+  const handleDeleteDetail = () => {
+    // metaService.createActionButton;
+    // console.log('handleDeleteForm');
+  };
+
+  const handleSettingDetail = () => {
+    const filter = detail => detail.detailPageCode === activeDetailCode;
+    const currentDetail = find(data?.data?.list, filter);
+
+    if (currentDetail) {
+      editingDetailRef.current = currentDetail;
+      setDetailModalOpen(true);
+    } else {
+      message.info('详情页不存在');
+    }
+  };
   const onActiveDetailChange = (detailCode: string) => {
     setActiveDetailCode(detailCode);
   };
@@ -58,6 +79,7 @@ const BaseDetail: React.FC = () => {
               loading={loading}
               icon={<PlusOutlined />}
               onClick={() => {
+                editingDetailRef.current = null;
                 setDetailModalOpen(true);
               }}
             >
@@ -66,6 +88,16 @@ const BaseDetail: React.FC = () => {
           ),
         }}
       />
+
+      {isEditing ? (
+        <DetailPageDesigner />
+      ) : (
+        <DetailPagePreview
+          onEdit={setEditing}
+          onDelete={handleDeleteDetail}
+          onSetting={handleSettingDetail}
+        />
+      )}
 
       <ModalForm<DetailPageDto>
         title={editingDetailRef.current ? '编辑详情页' : '新建详情页'}
@@ -82,11 +114,11 @@ const BaseDetail: React.FC = () => {
         onFinish={async values => {
           try {
             if (editingDetailRef.current) {
-              // await metaService.updateDetailPage({
-              //   ...values,
-              //   _id: editingDetailRef.current._id,
-              // });
-              // message.success('更新成功');
+              await metaService.updateDetailPage({
+                ...values,
+                _id: editingDetailRef.current._id,
+              });
+              message.success('更新成功');
             } else {
               await metaService.createDetailPage({
                 ...values,

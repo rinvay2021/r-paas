@@ -9,11 +9,11 @@ const Layout = React.lazy(() => import('@/pages/layouts'));
 // 控制台
 const Dashboard = React.lazy(() => import('@/pages/dashboard'));
 // 对象配置
-const Meta = React.lazy(() => import('@/pages/configurable/meta'));
+const Meta = React.lazy(() => import('@/pages/meta'));
 // 菜单配置
-const Menu = React.lazy(() => import('@/pages/configurable/menu'));
+const Menu = React.lazy(() => import('@/pages/menu'));
 // 数据源配置
-const Datasource = React.lazy(() => import('@/pages/configurable/datasource'));
+const Datasource = React.lazy(() => import('@/pages/datasource'));
 
 // 添加类型定义
 interface PrivateRouteProps {

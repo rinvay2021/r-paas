@@ -1,25 +1,26 @@
 import { http } from '@/request';
 import type {
   AppDto,
+  QueryAppDto,
   MetaObjectDto,
-  FieldDto,
-  FormDto,
-  ListDto,
-  DetailPageDto,
-  SearchFormDto,
-  ViewDto,
-  ActionButtonDto,
-  PaginationQuery,
   QueryMetaObjectDto,
+  FieldDto,
   QueryFieldDto,
-  QueryFormDto,
-  QueryListDto,
-  QueryDetailPageDto,
-  QuerySearchFormDto,
-  QueryViewDto,
-  QueryActionButtonDto,
   UpdateFieldDto,
+  FormDto,
+  QueryFormDto,
   UpdateFormDto,
+  DetailPageDto,
+  QueryDetailPageDto,
+  UpdateDetailPageDto,
+  ListDto,
+  QueryListDto,
+  SearchFormDto,
+  QuerySearchFormDto,
+  ViewDto,
+  QueryViewDto,
+  ActionButtonDto,
+  QueryActionButtonDto,
 } from './interface';
 
 /**
@@ -33,7 +34,7 @@ export class MetaService {
     return await http.post<AppDto>('/meta/app/create', data);
   }
 
-  async queryApps(params: PaginationQuery) {
+  async queryApps(params: QueryAppDto) {
     return await http.post<{ list: AppDto[]; total: number }>('/meta/app/list', params);
   }
 
@@ -98,6 +99,10 @@ export class MetaService {
    */
   async createDetailPage(data: DetailPageDto) {
     return await http.post<DetailPageDto>('/meta/detail-page/create', data);
+  }
+
+  async updateDetailPage(data: UpdateDetailPageDto) {
+    return await http.post<DetailPageDto>('/meta/detail-page/update', data);
   }
 
   async queryDetailPages(params: QueryDetailPageDto) {

@@ -14,6 +14,9 @@ export const useElementHeight = ({ elementId, offset = 0 }: UseElementHeightOpti
       const windowHeight = window.innerHeight;
       const element = document.getElementById(elementId);
       const elementTop = element?.getBoundingClientRect().top || 0;
+
+      console.log(elementTop, 'elementTop ====');
+
       setHeight(windowHeight - elementTop - offset);
     };
 
