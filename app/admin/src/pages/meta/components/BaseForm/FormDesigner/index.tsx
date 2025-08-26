@@ -7,9 +7,9 @@ import { filter, map, isEmpty } from 'lodash';
 import { PlusOutlined } from '@ant-design/icons';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { metaService } from '@/api/meta';
 import { FieldDto, ContainerType, FormLayout } from '@/api/meta/interface';
-
 import type { FormDesignerProps, FormDesignerRef } from './types';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
