@@ -1,13 +1,15 @@
 import React from 'react';
 import { map, find, isEmpty, get } from 'lodash';
 import { useBoolean, useRequest } from 'ahooks';
-import { Tabs, Button, message, Space } from 'antd';
+import { Tabs, Button, message, Space, Spin, Flex, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { prefix } from '@/constant';
+import { useElementHeight } from '@/hooks';
 import { metaService } from '@/api/meta';
 import { FormDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/meta';
+import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 import PreviewForm from './FormPreview';
 import FormDesigner from './FormDesigner';
 import type { FormDesignerRef } from './FormDesigner/types';
@@ -16,6 +18,8 @@ import './index.less';
 
 const BaseForm: React.FC = () => {
   const { appCode, metaObjectCode } = React.useContext(MetaContext);
+
+  const height = useElementHeight({ elementId: 'meta-page-container', offset: META_PAGE_OFFSET });
 
   const editingFormRef = React.useRef<FormDto | null>(null);
   const formDesignerRef = React.useRef<FormDesignerRef>(null);
@@ -87,55 +91,84 @@ const BaseForm: React.FC = () => {
     children: null,
   }));
 
+  const renderContent = () => {
+    if (loading) {
+      return <Spin spinning={loading} />;
+    }
+
+    if (items.length === 0) {
+      return (
+        <Flex
+          align="center"
+          justify="center"
+          style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
+        >
+          <Empty description="暂无详情页，去添加一个吧">
+            <Button type="primary" onClick={() => setFormModalOpen(true)}>
+              新建表单
+            </Button>
+          </Empty>
+        </Flex>
+      );
+    }
+
+    return (
+      <>
+        <Tabs
+          size="small"
+          items={items}
+          activeKey={activeFormCode}
+          onChange={onActiveFormChange}
+          indicator={{ size: () => 20 }}
+          className={`${prefix}-base-form-tabs`}
+          tabBarExtraContent={{
+            right: (
+              <Space>
+                <Button
+                  type="dashed"
+                  loading={loading}
+                  icon={<PlusOutlined />}
+                  onClick={() => {
+                    editingFormRef.current = null;
+                    setFormModalOpen(true);
+                  }}
+                >
+                  新建表单
+                </Button>
+                {isEditing && (
+                  <>
+                    <Button type="dashed" onClick={setPreview}>
+                      取消
+                    </Button>
+                    <Button color="primary" variant="filled" onClick={handleSaveForm}>
+                      保存
+                    </Button>
+                  </>
+                )}
+              </Space>
+            ),
+          }}
+        />
+        {isEditing ? (
+          <FormDesigner ref={formDesignerRef} height={height} {...designerProps} />
+        ) : (
+          <PreviewForm
+            height={height}
+            onEdit={setEditing}
+            onDelete={handleDeleteForm}
+            onSetting={handleSettingForm}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <div className={`${prefix}-base-form`}>
-      <Tabs
-        size="small"
-        id="form-container"
-        items={items}
-        activeKey={activeFormCode}
-        onChange={onActiveFormChange}
-        indicator={{ size: () => 20 }}
-        className={`${prefix}-base-form-tabs`}
-        tabBarExtraContent={{
-          right: (
-            <Space>
-              <Button
-                type="dashed"
-                loading={loading}
-                icon={<PlusOutlined />}
-                onClick={() => {
-                  editingFormRef.current = null;
-                  setFormModalOpen(true);
-                }}
-              >
-                新建表单
-              </Button>
-              {isEditing && (
-                <>
-                  <Button type="dashed" onClick={setPreview}>
-                    取消
-                  </Button>
-                  <Button color="primary" variant="filled" onClick={handleSaveForm}>
-                    保存
-                  </Button>
-                </>
-              )}
-            </Space>
-          ),
-        }}
-      />
+      {/* 详情页内容 */}
+      {renderContent()}
 
-      {isEditing ? (
-        <FormDesigner ref={formDesignerRef} {...designerProps} />
-      ) : (
-        <PreviewForm
-          onEdit={setEditing}
-          onDelete={handleDeleteForm}
-          onSetting={handleSettingForm}
-        />
-      )}
-
+      {/* 新建/编辑表单的表单 */}
       <ModalForm<FormDto>
         title={editingFormRef.current ? '编辑表单' : '新建表单'}
         open={formModalOpen}

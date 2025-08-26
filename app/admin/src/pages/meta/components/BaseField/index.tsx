@@ -8,6 +8,7 @@ import { useElementHeight } from '@/hooks';
 import { NUMBER_CONSTANTS } from '@/constant';
 import { MetaContext } from '@/pages/meta';
 import type { UpdateFieldDto } from '@/api/meta/interface';
+import { META_FIELD_LIST_HEIGHT } from '../../constant';
 import FiledModal from './FiledModal';
 import { useColumns } from './columns';
 import { BaseFieldListItem, BooleanEnum } from './type';
@@ -15,6 +16,11 @@ import { BaseFieldListItem, BooleanEnum } from './type';
 import './index.less';
 
 const BaseField: React.FC = () => {
+  const height = useElementHeight({
+    elementId: 'meta-page-container',
+    offset: META_FIELD_LIST_HEIGHT,
+  });
+
   const idRef = React.useRef<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
   const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
@@ -104,8 +110,6 @@ const BaseField: React.FC = () => {
 
   const columns = useColumns({ handleEdit, handleEnable });
 
-  const height = useElementHeight({ elementId: 'baseField', offset: 112 });
-
   return (
     <Flex vertical gap="middle">
       <Flex justify="space-between" align="center">
@@ -136,7 +140,6 @@ const BaseField: React.FC = () => {
       <Table
         rowKey="_id"
         size="small"
-        id="baseField"
         loading={loading}
         columns={columns}
         dataSource={get(data, 'data.list', [])}

@@ -2,23 +2,23 @@ import React from 'react';
 import { Button, Form, Input, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { prefix } from '@/constant';
-import { useElementHeight } from '@/hooks';
+
 import './index.less';
 
 interface PreviewProps {
+  height: number;
   onEdit?: () => void;
   onDelete?: () => void;
   onSetting?: () => void;
 }
 
 const PreviewDetail: React.FC<PreviewProps> = props => {
-  const { onEdit, onDelete, onSetting } = props;
-  const previewHeight = useElementHeight({ elementId: 'detail-container', offset: 70 });
+  const { height, onEdit, onDelete, onSetting } = props;
 
   return (
     <div
       id="detail-preview"
-      style={{ height: `${previewHeight}px` }}
+      style={{ height: `${height}px` }}
       className={`${prefix}-preview-container`}
     >
       {/* 左侧操作按钮 */}

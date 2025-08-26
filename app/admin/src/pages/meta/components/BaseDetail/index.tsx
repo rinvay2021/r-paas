@@ -1,37 +1,45 @@
 import React from 'react';
 import { find, get, map } from 'lodash';
 import { useBoolean, useRequest } from 'ahooks';
-import { Button, message, Tabs } from 'antd';
+import { Button, Empty, Flex, message, Spin, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 import { prefix } from '@/constant';
+import { useElementHeight } from '@/hooks';
 import { metaService } from '@/api/meta';
 import { DetailPageDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/meta';
 
-import { useFormData } from '../BaseForm/useFormData';
+import { useFormData } from '../../hooks/useFormData';
 import DetailPageDesigner from './DetailPageDesigner';
 import DetailPagePreview from './DetailPagePreview';
+
+import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 
 import './index.less';
 
 const BaseDetail: React.FC = () => {
   const { appCode, metaObjectCode } = React.useContext(MetaContext);
 
-  const editingDetailRef = React.useRef<DetailPageDto | null>(null);
+  const height = useElementHeight({ elementId: 'meta-page-container', offset: META_PAGE_OFFSET });
 
+  const editingDetailRef = React.useRef<DetailPageDto | null>(null);
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
   const [activeDetailCode, setActiveDetailCode] = React.useState<string>();
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
   const { options } = useFormData();
 
-  const { data, loading, refresh } = useRequest(() =>
-    metaService.queryDetailPages({
-      appCode,
-      metaObjectCode,
-    })
+  const { data, loading, refresh } = useRequest(
+    () =>
+      metaService.queryDetailPages({
+        appCode,
+        metaObjectCode,
+      }),
+    {
+      refreshDeps: [appCode, metaObjectCode],
+    }
   );
 
   const handleDeleteDetail = () => {
@@ -62,43 +70,72 @@ const BaseDetail: React.FC = () => {
     }));
   }, [data]);
 
-  return (
-    <div className={`${prefix}-base-detail`}>
-      <Tabs
-        size="small"
-        id="detail-container"
-        items={items}
-        activeKey={activeDetailCode}
-        onChange={onActiveDetailChange}
-        indicator={{ size: () => 20 }}
-        className={`${prefix}-base-detail-tabs`}
-        tabBarExtraContent={{
-          right: (
-            <Button
-              type="dashed"
-              loading={loading}
-              icon={<PlusOutlined />}
-              onClick={() => {
-                editingDetailRef.current = null;
-                setDetailModalOpen(true);
-              }}
-            >
+  const renderContent = () => {
+    if (loading) {
+      return <Spin spinning={loading} />;
+    }
+
+    if (items.length === 0) {
+      return (
+        <Flex
+          align="center"
+          justify="center"
+          style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
+        >
+          <Empty description="暂无详情页，去添加一个吧">
+            <Button type="primary" onClick={() => setDetailModalOpen(true)}>
               新建详情页
             </Button>
-          ),
-        }}
-      />
+          </Empty>
+        </Flex>
+      );
+    }
 
-      {isEditing ? (
-        <DetailPageDesigner />
-      ) : (
-        <DetailPagePreview
-          onEdit={setEditing}
-          onDelete={handleDeleteDetail}
-          onSetting={handleSettingDetail}
+    return (
+      <>
+        <Tabs
+          size="small"
+          items={items}
+          activeKey={activeDetailCode}
+          onChange={onActiveDetailChange}
+          indicator={{ size: () => 20 }}
+          className={`${prefix}-base-detail-tabs`}
+          tabBarExtraContent={{
+            right: (
+              <Button
+                type="dashed"
+                loading={loading}
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  editingDetailRef.current = null;
+                  setDetailModalOpen(true);
+                }}
+              >
+                新建详情页
+              </Button>
+            ),
+          }}
         />
-      )}
+        {isEditing ? (
+          <DetailPageDesigner />
+        ) : (
+          <DetailPagePreview
+            height={height}
+            onEdit={setEditing}
+            onDelete={handleDeleteDetail}
+            onSetting={handleSettingDetail}
+          />
+        )}
+      </>
+    );
+  };
 
+  return (
+    <div className={`${prefix}-base-detail`}>
+      {/* 详情页内容 */}
+      {renderContent()}
+
+      {/* 新建/编辑详情页的表单 */}
       <ModalForm<DetailPageDto>
         title={editingDetailRef.current ? '编辑详情页' : '新建详情页'}
         open={detailModalOpen}

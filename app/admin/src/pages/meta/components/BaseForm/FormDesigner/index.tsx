@@ -7,10 +7,9 @@ import { filter, map, isEmpty } from 'lodash';
 import { PlusOutlined } from '@ant-design/icons';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
 import { metaService } from '@/api/meta';
-import { useElementHeight } from '@/hooks/useElementHeight';
 import { FieldDto, ContainerType, FormLayout } from '@/api/meta/interface';
+
 import type { FormDesignerProps, FormDesignerRef } from './types';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
@@ -21,8 +20,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
   props,
   ref
 ) => {
-  const { refresh, ...formProps } = props;
-  const designerContentHeight = useElementHeight({ elementId: 'form-container', offset: 70 });
+  const { refresh, height, ...formProps } = props;
 
   // 状态管理
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
@@ -153,7 +151,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div id="form-designer" className="form-designer" style={{ height: designerContentHeight }}>
+      <div id="form-designer" className="form-designer" style={{ height }}>
         <div className="form-designer-left">
           <div
             onClick={() => {

@@ -39,6 +39,7 @@ export interface ConfigPanelProps {
 
 export type FormDesignerProps = FormDto & {
   refresh: () => void;
+  height: number;
 };
 
 export interface ContainerProps {

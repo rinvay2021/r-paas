@@ -101,7 +101,7 @@ const Dashboard: React.FC = () => {
         configurableType,
       }}
     >
-      <Flex className={`${prefix}-configurable-meta`} vertical gap="middle">
+      <Flex className={`${prefix}-configurable-meta`} vertical>
         {/* 顶部操作区 */}
         <Flex justify="space-between" align="center">
           {/* 选择对象 */}
@@ -123,7 +123,10 @@ const Dashboard: React.FC = () => {
             新建对象
           </Button>
         </Flex>
-        <Divider dashed style={{ margin: 0 }} />
+        <Divider dashed style={{ margin: '8px 0' }} />
+
+        {/* 页面锚点 */}
+        <div id="meta-page-container" />
 
         {/* 配置组件模块 */}
         {renderConfigComponent()}
