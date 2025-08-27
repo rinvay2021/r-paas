@@ -1,8 +1,8 @@
-import type { FieldDto, FormDto, ContainerType, FormLayout } from '@/api/meta/interface';
+import type { FieldDto, FormDto, ContainerType, FormConfig } from '@/api/meta/interface';
 
 export interface FormConfigProps {
-  config: FormLayout;
-  onChange: (values: Partial<FormLayout>) => void;
+  config: FormConfig;
+  onChange: (values: Partial<FormConfig>) => void;
 }
 
 export interface FormBlockConfig {
@@ -27,12 +27,12 @@ export interface FieldSelected {
 }
 
 export interface ConfigPanelProps {
-  formConfig: FormLayout;
+  formConfig: FormConfig;
   containers: ContainerType[];
   selectedForm: boolean;
   selectedContainer: string | null;
   selectedField: FieldSelected | null;
-  onFormConfigChange: (values: Partial<FormLayout>) => void;
+  onFormConfigChange: (values: Partial<FormConfig>) => void;
   onContainerChange: (containerId: string, values: Partial<ContainerType>) => void;
   onFieldChange: (containerId: string, fieldId: string, values: Partial<FieldDto>) => void;
 }

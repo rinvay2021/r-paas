@@ -1,12 +1,11 @@
 import React from 'react';
 import { ProForm } from '@ant-design/pro-components';
-// 表单布局设置
-import LayoutSettingsButton from './components/LayoutSettingsButton';
-// 帮助设置
-import HelpSettingsButton from './components/HelpSettingsButton';
-// 联动设置
-import LinkageSettingsButton from './components/LinkageSettingsButton';
+import HelpSettingsButton from '@/pages/meta/biz-components/HelpSettingsButton';
+
 import type { FormConfigProps } from '../../types';
+
+import LayoutSettingsButton from './components/LayoutSettingsButton';
+import LinkageSettingsButton from './components/LinkageSettingsButton';
 
 export const FormConfigPanel: React.FC<FormConfigProps> = props => {
   const { config, onChange } = props;

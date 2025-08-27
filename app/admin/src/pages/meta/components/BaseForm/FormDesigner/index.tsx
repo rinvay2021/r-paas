@@ -9,7 +9,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { metaService } from '@/api/meta';
-import { FieldDto, ContainerType, FormLayout } from '@/api/meta/interface';
+import { FieldDto, ContainerType, FormConfig } from '@/api/meta/interface';
 import type { FormDesignerProps, FormDesignerRef } from './types';
 import { Container } from './components/Container';
 import { ConfigPanel } from './components/ConfigPanel';
@@ -30,10 +30,12 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
     containerId: string;
   } | null>(null);
 
-  const [formConfig, setFormConfig] = React.useState<FormLayout>(activeForm?.formConfig);
+  const [formConfig, setFormConfig] = React.useState<FormConfig>();
+  const [containers, setContainers] = React.useState<ContainerType[]>();
 
-  const [containers, setContainers] = React.useState<ContainerType[]>(
-    isEmpty(activeForm?.containers)
+  React.useEffect(() => {
+    // 如果表单没有区块，则创建一个默认区块
+    const containers = isEmpty(activeForm?.containers)
       ? [
           {
             id: `container-${uuidv4()}`,
@@ -42,8 +44,11 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
             columns: formConfig?.layoutSettings?.columns,
           },
         ]
-      : activeForm?.containers
-  );
+      : activeForm?.containers;
+
+    setFormConfig(activeForm?.formConfig);
+    setContainers(containers);
+  }, [activeForm]);
 
   // 保存表单配置
   const { run: saveForm } = useRequest(
@@ -64,7 +69,6 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
       manual: true,
       onSuccess: () => {
         message.success('保存成功');
-
         refresh();
       },
     }
@@ -116,7 +120,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
     });
   };
 
-  const handleFormConfigChange = (values: Partial<FormLayout>) => {
+  const handleFormConfigChange = (values: Partial<FormConfig>) => {
     setFormConfig(prev => ({ ...prev, ...values }));
   };
 
@@ -164,7 +168,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
             })}
           >
             <div className="containers">
-              {containers.map((container, index) => (
+              {map(containers, (container, index) => (
                 <Container
                   index={index}
                   key={container.id}
