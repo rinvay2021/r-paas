@@ -1,6 +1,6 @@
 import React from 'react';
 import { map, find, isEmpty, get } from 'lodash';
-import { useBoolean, useRequest } from 'ahooks';
+import { useBoolean, useMemoizedFn, useRequest } from 'ahooks';
 import { Tabs, Button, message, Space, Spin, Flex, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
@@ -24,7 +24,7 @@ const BaseForm: React.FC = () => {
   const editingFormRef = React.useRef<FormDto | null>(null);
   const formDesignerRef = React.useRef<FormDesignerRef>(null);
 
-  const [activeFormCode, setActiveFormCode] = React.useState<string>();
+  const [activeForm, setActiveForm] = React.useState<FormDto>();
   const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
@@ -37,59 +37,59 @@ const BaseForm: React.FC = () => {
     {
       refreshDeps: [appCode, metaObjectCode],
       onSuccess: data => {
-        if (!isEmpty(data?.data?.list) && !activeFormCode) {
-          setActiveFormCode(get(data, 'data.list[0].formCode'));
+        if (!isEmpty(data?.data?.list) && !activeForm?.formCode) {
+          setActiveForm(get(data, 'data.list[0]'));
         }
       },
       onError: error => {
-        message.error(error.message);
+        message.error(error.message || '获取表单列表失败');
       },
     }
   );
 
-  const handleSettingForm = () => {
-    const filter = form => form.formCode === activeFormCode;
-    const currentForm = find(data?.data?.list, filter);
+  const handleSettingForm = useMemoizedFn(() => {
+    const filter = form => form.formCode === activeForm?.formCode;
+    const editingForm = find(data?.data?.list, filter);
 
-    if (currentForm) {
-      editingFormRef.current = currentForm;
+    if (editingForm) {
+      editingFormRef.current = editingForm;
       setFormModalOpen(true);
     } else {
       message.info('表单不存在');
     }
-  };
+  });
 
+  // TODO: 删除表单
   const handleDeleteForm = () => {
     // metaService.createActionButton;
-    // console.log('handleDeleteForm');
   };
 
-  const handleSaveForm = () => {
-    if (typeof formDesignerRef.current?.saveForm === 'function') {
-      formDesignerRef.current?.saveForm();
+  const handleSaveForm = useMemoizedFn(() => {
+    formDesignerRef.current?.saveForm?.();
+  });
+
+  const onActiveFormChange = useMemoizedFn((formCode: string) => {
+    const filter = form => form.formCode === formCode;
+    const activeForm = find(data?.data?.list, filter);
+
+    if (!activeForm) {
+      message.info('表单不存在');
+      return;
     }
-  };
 
-  const onActiveFormChange = (formCode: string) => {
-    setActiveFormCode(formCode);
+    setActiveForm(activeForm);
     setPreview();
-  };
+  });
 
-  const designerProps = React.useMemo(() => {
-    const filter = form => form.formCode === activeFormCode;
-    const currentForm = find(data?.data?.list, filter);
-
-    return {
-      refresh,
-      ...currentForm,
-    };
-  }, [data, activeFormCode, refresh]);
-
-  const items = map(data?.data?.list || [], form => ({
-    key: form.formCode,
-    label: form.formName,
-    children: null,
-  }));
+  const items = React.useMemo(
+    () =>
+      map(data?.data?.list || [], form => ({
+        key: form.formCode,
+        label: form.formName,
+        children: null,
+      })),
+    [data]
+  );
 
   const renderContent = () => {
     if (loading) {
@@ -117,7 +117,7 @@ const BaseForm: React.FC = () => {
         <Tabs
           size="small"
           items={items}
-          activeKey={activeFormCode}
+          activeKey={activeForm?.formCode}
           onChange={onActiveFormChange}
           indicator={{ size: () => 20 }}
           className={`${prefix}-base-form-tabs`}
@@ -150,7 +150,12 @@ const BaseForm: React.FC = () => {
           }}
         />
         {isEditing ? (
-          <FormDesigner ref={formDesignerRef} height={height} {...designerProps} />
+          <FormDesigner
+            ref={formDesignerRef}
+            refresh={refresh}
+            height={height}
+            activeForm={activeForm}
+          />
         ) : (
           <PreviewForm
             height={height}

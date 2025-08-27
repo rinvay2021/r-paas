@@ -1,7 +1,7 @@
 import React from 'react';
-import { find, get, map } from 'lodash';
-import { useBoolean, useRequest } from 'ahooks';
-import { Button, Empty, Flex, message, Spin, Tabs } from 'antd';
+import { find, get, map, isEmpty } from 'lodash';
+import { useBoolean, useMemoizedFn, useRequest } from 'ahooks';
+import { Button, Empty, Flex, message, Space, Spin, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
@@ -10,12 +10,11 @@ import { useElementHeight } from '@/hooks';
 import { metaService } from '@/api/meta';
 import { DetailPageDto } from '@/api/meta/interface';
 import { MetaContext } from '@/pages/meta';
-
 import { useFormData } from '../../hooks/useFormData';
+import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 import DetailPageDesigner from './DetailPageDesigner';
 import DetailPagePreview from './DetailPagePreview';
-
-import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
+import type { DetailPageDesignerRef } from './DetailPageDesigner/types';
 
 import './index.less';
 
@@ -25,9 +24,11 @@ const BaseDetail: React.FC = () => {
   const height = useElementHeight({ elementId: 'meta-page-container', offset: META_PAGE_OFFSET });
 
   const editingDetailRef = React.useRef<DetailPageDto | null>(null);
+  const detailDesignerRef = React.useRef<DetailPageDesignerRef>(null);
+
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
-  const [activeDetailCode, setActiveDetailCode] = React.useState<string>();
-  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
+  const [activeDetail, setActiveDetail] = React.useState<DetailPageDto>();
+  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(true);
 
   const { options } = useFormData();
 
@@ -39,28 +40,51 @@ const BaseDetail: React.FC = () => {
       }),
     {
       refreshDeps: [appCode, metaObjectCode],
+      onSuccess: data => {
+        if (!isEmpty(data?.data?.list) && !activeDetail?.detailPageCode) {
+          setActiveDetail(get(data, 'data.list[0]'));
+        }
+      },
+      onError: error => {
+        message.error(error.message || '获取详情页列表失败');
+      },
     }
   );
 
+  // TODO: 删除详情页
   const handleDeleteDetail = () => {
     // metaService.createActionButton;
-    // console.log('handleDeleteForm');
   };
 
-  const handleSettingDetail = () => {
-    const filter = detail => detail.detailPageCode === activeDetailCode;
-    const currentDetail = find(data?.data?.list, filter);
+  const handleSaveDetail = useMemoizedFn(() => {
+    detailDesignerRef.current?.saveDetail?.();
+  });
 
-    if (currentDetail) {
-      editingDetailRef.current = currentDetail;
-      setDetailModalOpen(true);
-    } else {
+  const handleSettingDetail = useMemoizedFn(() => {
+    const filter = detail => detail.detailPageCode === activeDetail?.detailPageCode;
+    const editingDetail = find(data?.data?.list, filter);
+
+    if (!editingDetail) {
       message.info('详情页不存在');
+      return;
     }
-  };
-  const onActiveDetailChange = (detailCode: string) => {
-    setActiveDetailCode(detailCode);
-  };
+
+    editingDetailRef.current = editingDetail;
+    setDetailModalOpen(true);
+  });
+
+  const onActiveDetailChange = useMemoizedFn((detailCode: string) => {
+    const filter = detail => detail?.detailPageCode === detailCode;
+    const activeDetail = find(data?.data?.list, filter);
+
+    if (!activeDetail) {
+      message.info('详情页不存在');
+      return;
+    }
+
+    setActiveDetail(activeDetail);
+    setPreview();
+  });
 
   const items = React.useMemo(() => {
     return map(data?.data?.list || [], detail => ({
@@ -96,28 +120,45 @@ const BaseDetail: React.FC = () => {
         <Tabs
           size="small"
           items={items}
-          activeKey={activeDetailCode}
+          activeKey={activeDetail?.detailPageCode}
           onChange={onActiveDetailChange}
           indicator={{ size: () => 20 }}
           className={`${prefix}-base-detail-tabs`}
           tabBarExtraContent={{
             right: (
-              <Button
-                type="dashed"
-                loading={loading}
-                icon={<PlusOutlined />}
-                onClick={() => {
-                  editingDetailRef.current = null;
-                  setDetailModalOpen(true);
-                }}
-              >
-                新建详情页
-              </Button>
+              <Space>
+                <Button
+                  type="dashed"
+                  loading={loading}
+                  icon={<PlusOutlined />}
+                  onClick={() => {
+                    editingDetailRef.current = null;
+                    setDetailModalOpen(true);
+                  }}
+                >
+                  新建详情页
+                </Button>
+                {isEditing && (
+                  <>
+                    <Button type="dashed" onClick={setPreview}>
+                      取消
+                    </Button>
+                    <Button color="primary" variant="filled" onClick={handleSaveDetail}>
+                      保存
+                    </Button>
+                  </>
+                )}
+              </Space>
             ),
           }}
         />
         {isEditing ? (
-          <DetailPageDesigner />
+          <DetailPageDesigner
+            ref={detailDesignerRef}
+            refresh={refresh}
+            height={height}
+            activeDetail={activeDetail}
+          />
         ) : (
           <DetailPagePreview
             height={height}

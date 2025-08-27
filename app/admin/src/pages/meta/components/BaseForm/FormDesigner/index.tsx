@@ -20,7 +20,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
   props,
   ref
 ) => {
-  const { refresh, height, ...formProps } = props;
+  const { refresh, height, activeForm } = props;
 
   // 状态管理
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
@@ -30,10 +30,10 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
     containerId: string;
   } | null>(null);
 
-  const [formConfig, setFormConfig] = React.useState<FormLayout>(formProps?.formConfig);
+  const [formConfig, setFormConfig] = React.useState<FormLayout>(activeForm?.formConfig);
 
   const [containers, setContainers] = React.useState<ContainerType[]>(
-    isEmpty(formProps?.containers)
+    isEmpty(activeForm?.containers)
       ? [
           {
             id: `container-${uuidv4()}`,
@@ -42,20 +42,20 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
             columns: formConfig?.layoutSettings?.columns,
           },
         ]
-      : formProps?.containers
+      : activeForm?.containers
   );
 
   // 保存表单配置
   const { run: saveForm } = useRequest(
     () => {
-      if (!formProps?.appCode || !formProps?.metaObjectCode) {
+      if (!activeForm?.appCode || !activeForm?.metaObjectCode) {
         throw new Error('缺少必要参数');
       }
 
       const formData = {
         formConfig,
         containers,
-        _id: formProps?._id,
+        _id: activeForm?._id,
       };
 
       return metaService.updateForm(formData);

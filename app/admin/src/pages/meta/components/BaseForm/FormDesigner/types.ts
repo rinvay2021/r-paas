@@ -37,9 +37,10 @@ export interface ConfigPanelProps {
   onFieldChange: (containerId: string, fieldId: string, values: Partial<FieldDto>) => void;
 }
 
-export type FormDesignerProps = FormDto & {
+export type FormDesignerProps = {
   refresh: () => void;
   height: number;
+  activeForm: FormDto;
 };
 
 export interface ContainerProps {
