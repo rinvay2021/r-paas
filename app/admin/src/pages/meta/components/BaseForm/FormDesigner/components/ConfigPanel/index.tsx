@@ -1,4 +1,5 @@
 import React from 'react';
+import { find } from 'lodash';
 import { FormConfigPanel } from './FormConfig';
 import { BlockConfigPanel } from './BlockConfig';
 import { FieldConfigPanel } from './FieldConfig';
@@ -17,27 +18,33 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = props => {
   } = props;
 
   if (selectedField) {
-    const container = containers.find(c => c.id === selectedField.containerId);
-    const field = container?.fields.find(f => f._id === selectedField.fieldId);
+    const container = find(containers, c => c.id === selectedField.container.id);
+    const field = find(container?.fields, f => f._id === selectedField.field._id);
 
     const handleFieldChange = values => {
-      onFieldChange(selectedField.containerId, selectedField.fieldId, values);
+      onFieldChange(selectedField.container.id, selectedField.field._id, values);
     };
 
     if (field) {
-      return <FieldConfigPanel field={field} onChange={handleFieldChange} />;
+      return <FieldConfigPanel key={field._id} field={field} onChange={handleFieldChange} />;
     }
   }
 
   if (selectedContainer) {
-    const container = containers.find(c => c.id === selectedContainer);
+    const container = find(containers, c => c.id === selectedContainer.id);
 
     const handleContainerChange = values => {
-      onContainerChange(selectedContainer, values);
+      onContainerChange(selectedContainer.id, values);
     };
 
     if (container) {
-      return <BlockConfigPanel container={container} onChange={handleContainerChange} />;
+      return (
+        <BlockConfigPanel
+          key={container.id}
+          container={container}
+          onChange={handleContainerChange}
+        />
+      );
     }
   }
 

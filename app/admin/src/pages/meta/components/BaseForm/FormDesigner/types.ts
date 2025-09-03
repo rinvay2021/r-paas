@@ -22,15 +22,15 @@ export interface FieldConfigProps {
 }
 
 export interface FieldSelected {
-  containerId: string;
-  fieldId: string;
+  container: ContainerType;
+  field: FieldDto;
 }
 
 export interface ConfigPanelProps {
   formConfig: FormConfig;
   containers: ContainerType[];
   selectedForm: boolean;
-  selectedContainer: string | null;
+  selectedContainer: ContainerType;
   selectedField: FieldSelected | null;
   onFormConfigChange: (values: Partial<FormConfig>) => void;
   onContainerChange: (containerId: string, values: Partial<ContainerType>) => void;
@@ -50,7 +50,7 @@ export interface ContainerProps {
   isSelectedContainer?: boolean;
   selectedField?: FieldSelected;
   onSelectField: (params: FieldSelected) => void;
-  onSelectContainer: (containerId: string) => void;
+  onSelectContainer: (container: ContainerType) => void;
   onRemoveContainer: (containerId: string) => void;
   onUpdateField: (containerId: string, fields: FieldDto[]) => void;
   onMoveContainer: (dragIndex: number, hoverIndex: number) => void;

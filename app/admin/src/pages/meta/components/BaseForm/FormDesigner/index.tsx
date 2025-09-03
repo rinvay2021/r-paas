@@ -24,10 +24,10 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
 
   // 状态管理
   const [selectedForm, setSelectedForm] = React.useState<boolean>(true);
-  const [selectedContainer, setSelectedContainer] = React.useState<string | null>(null);
+  const [selectedContainer, setSelectedContainer] = React.useState<ContainerType | null>(null);
   const [selectedField, setSelectedField] = React.useState<{
-    fieldId: string;
-    containerId: string;
+    field: FieldDto;
+    container: ContainerType;
   } | null>(null);
 
   const [formConfig, setFormConfig] = React.useState<FormConfig>();
@@ -87,7 +87,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
 
   const handleRemoveContainer = (containerId: string) => {
     setContainers(prev => filter(prev, c => c.id !== containerId));
-    if (selectedContainer === containerId) {
+    if (selectedContainer?.id === containerId) {
       setSelectedContainer(null);
     }
   };
@@ -98,13 +98,13 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
     );
   };
 
-  const handleSelectContainer = (containerId: string) => {
-    setSelectedContainer(containerId);
+  const handleSelectContainer = (container: ContainerType) => {
+    setSelectedContainer(container);
     setSelectedField(null);
     setSelectedForm(false);
   };
 
-  const handleSelectField = (params: { containerId: string; fieldId: string }) => {
+  const handleSelectField = (params: { container: ContainerType; field: FieldDto }) => {
     setSelectedField(params);
     setSelectedContainer(null);
     setSelectedForm(false);
@@ -175,7 +175,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
                   container={container}
                   containers={containers}
                   selectedField={selectedField}
-                  isSelectedContainer={selectedContainer === container.id}
+                  isSelectedContainer={selectedContainer?.id === container.id}
                   onSelectField={handleSelectField}
                   onUpdateField={handleUpdateField}
                   onMoveContainer={handleMoveContainer}

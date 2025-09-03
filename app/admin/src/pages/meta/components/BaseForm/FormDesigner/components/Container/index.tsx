@@ -188,7 +188,7 @@ export const Container: React.FC<ContainerProps> = props => {
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={e => {
         e.stopPropagation();
-        onSelectContainer(container.id);
+        onSelectContainer(container);
       }}
     >
       <div className="container-header">
@@ -224,11 +224,11 @@ export const Container: React.FC<ContainerProps> = props => {
             <div className="fields-empty">请点击右上角 + 添加字段</div>
           ) : (
             container.fields.map((field, index) => {
-              const isSelectedField = selectedField?.fieldId === field._id;
+              const isSelectedField = selectedField?.field?._id === field._id;
               const handleSelectField = () =>
                 onSelectField({
-                  containerId: container.id,
-                  fieldId: field._id,
+                  container,
+                  field,
                 });
               const handleDeleteField = () => {
                 onUpdateField(
