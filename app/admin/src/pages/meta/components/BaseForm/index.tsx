@@ -8,7 +8,7 @@ import { prefix } from '@/constant';
 import { useElementHeight } from '@/hooks';
 import { metaService } from '@/api/meta';
 import { FormDto } from '@/api/meta/interface';
-import { MetaContext } from '@/pages/meta';
+import { MetaContext, useMeta } from '@/pages/meta';
 import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 import PreviewForm from './FormPreview';
 import FormDesigner from './FormDesigner';
@@ -17,9 +17,12 @@ import type { FormDesignerRef } from './FormDesigner/types';
 import './index.less';
 
 const BaseForm: React.FC = () => {
-  const { appCode, metaObjectCode } = React.useContext(MetaContext);
+  const { appCode, metaObjectCode } = useMeta();
 
-  const height = useElementHeight({ elementId: 'meta-page-container', offset: META_PAGE_OFFSET });
+  const height = useElementHeight({
+    elementId: 'meta-page-container',
+    offset: META_PAGE_OFFSET,
+  });
 
   const editingFormRef = React.useRef<FormDto | null>(null);
   const formDesignerRef = React.useRef<FormDesignerRef>(null);

@@ -135,10 +135,10 @@ export type DetailPageContainer = DetailPageMainObjectContainer | DetailPageSubO
 export type DetailPageContainerType = 'MAIN_OBJECT' | 'SUB_OBJECT';
 
 /** 详情页页面显示类型 */
-export type DetailPagePageType = 'TAG' | 'ONE_PAGE';
+export type DetailPagePageType = 'TagTiled' | 'OnePage';
 
 /** 详情页关联组件类型 */
-export type DetailPageComponentType = 'LIST' | 'VIEW';
+export type DetailPageComponentType = 'List' | 'View';
 
 /** 详情页主对象容器 */
 export type DetailPageMainObjectContainer = {
@@ -155,29 +155,44 @@ export type DetailPageMainObjectContainer = {
 export type DetailPageSubObjectContainer = {
   type: DetailPageContainerType;
   /** 关联对象 */
-  objectCode: string;
+  metaObjectCode?: string;
   /** 标题 */
-  title: string;
+  title?: string;
   /** 关联组件：列表/视图 */
-  componentType: DetailPageComponentType;
-  /** 组件 */
-  component: string;
+  componentType?: DetailPageComponentType;
+  /** 编码 */
+  code?: string;
   /** 排序 */
-  order: number;
+  order?: number;
+  /** 是否默认展开 */
+  defaultExpand?: boolean;
   /** 功能按钮 */
   buttons?: any[];
 };
 
 /** 详情页 DTO */
 export interface DetailPageDto {
+  /** 唯一id */
   _id?: string;
+  /** 详情页编码 */
   detailPageCode: string;
+  /** 详情页名称 */
   detailPageName: string;
-  formCode: string;
+  /** 详情页描述 */
   detailPageDesc?: string;
+  /** 表单编码 */
+  formCode: string;
+  /** 页面显示类型：标签平铺 / 一页展示 */
+  pageType?: DetailPagePageType;
+  /** 功能按钮 */
+  buttons?: any[];
+  /** 应用编码 */
   appCode: string;
+  /** 对象编码 */
   metaObjectCode: string;
-  containers?: DetailPageContainer[];
+  /** 子对象 */
+  containers?: DetailPageSubObjectContainer[];
+  /** 详情页配置 */
   detailPageConfig?: DetailPageConfig;
 }
 

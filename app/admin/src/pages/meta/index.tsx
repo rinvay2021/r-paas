@@ -31,6 +31,11 @@ export const MetaContext = React.createContext<{
   configurableType: '',
 });
 
+export const useMeta = () => {
+  const meta = React.useContext(MetaContext);
+  return meta;
+};
+
 const Dashboard: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
   // 获取查询参数

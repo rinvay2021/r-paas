@@ -1,34 +1,32 @@
-/**
- * 获取表单数据源
- */
+/** 表单数据源 */
 import React from 'react';
+import { atom, useAtom } from 'jotai';
 import { map } from 'lodash';
 import { useRequest } from 'ahooks';
+import { OptionProps } from 'antd/es/select';
+
+import { useMeta } from '@/pages/meta';
 import { metaService } from '@/api/meta';
-import { MetaContext } from '@/pages/meta';
 
-interface UseFormDataProps {
-  appCode?: string;
-  metaObjectCode?: string;
-}
+export const useMetaFormAtom = (params?: Record<string, unknown>) => {
+  const { appCode, metaObjectCode } = useMeta();
 
-export const useFormData = (props?: UseFormDataProps) => {
-  // 优先使用路由上的 appCode 和 metaObjectCode
-  const { appCode, metaObjectCode } = React.useContext(MetaContext);
   const { data, loading, refresh } = useRequest(
     () =>
       metaService.queryForms({
         appCode,
         metaObjectCode,
-        ...props,
+        ...params,
       }),
     {
-      cacheKey: 'meta-use-form-data',
+      cacheKey: 'meta-form-options',
     }
   );
 
+  const metaData = data?.data?.list || [];
+
   const options = React.useMemo(() => {
-    return map(data?.data?.list || [], form => ({
+    return map(metaData || [], form => ({
       label: form.formName,
       value: form.formCode,
     }));
@@ -38,5 +36,6 @@ export const useFormData = (props?: UseFormDataProps) => {
     options,
     loading,
     refresh,
+    metaData,
   };
 };

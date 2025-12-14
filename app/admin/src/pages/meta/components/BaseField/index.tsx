@@ -6,7 +6,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { metaService } from '@/api/meta';
 import { useElementHeight } from '@/hooks';
 import { NUMBER_CONSTANTS } from '@/constant';
-import { MetaContext } from '@/pages/meta';
+import { MetaContext, useMeta } from '@/pages/meta';
 import type { UpdateFieldDto } from '@/api/meta/interface';
 import { META_FIELD_LIST_HEIGHT } from '../../constant';
 import FiledModal from './FiledModal';
@@ -16,6 +16,8 @@ import { BaseFieldListItem, BooleanEnum } from './type';
 import './index.less';
 
 const BaseField: React.FC = () => {
+  const { appCode, metaObjectCode } = useMeta();
+
   const height = useElementHeight({
     elementId: 'meta-page-container',
     offset: META_FIELD_LIST_HEIGHT,
@@ -24,7 +26,6 @@ const BaseField: React.FC = () => {
   const idRef = React.useRef<string>('');
   const [keyword, setKeyword] = React.useState<string>('');
   const [fieldModalVisible, setFieldModalVisible] = React.useState(false);
-  const { appCode, metaObjectCode } = React.useContext(MetaContext);
 
   const paginationRef = React.useRef({
     current: 1,
