@@ -1,22 +1,25 @@
 import React from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import { useMetaFormAtom } from '@/store/metaFormAtom';
+import { Button, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
+// import { useMetaFormAtom } from '@/store/metaFormAtom';
 import { DetailPageConfig, DetailPageDto } from '@/api/meta/interface';
 import { DETAIL_PAGE_OPTIONS } from '../constant';
 import ConfigPanel from './components/ConfigPanel';
 import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
 import './index.less';
+import { useRequest } from 'ahooks';
+import { metaService } from '@/api/meta';
 
 const DetailPageDesigner: React.ForwardRefRenderFunction<
   DetailPageDesignerRef,
   DetailPageDesignerProps
 > = (props, ref) => {
   const { refresh, height, activeDetail } = props;
+  console.log(activeDetail, 'activeDetail ====');
+  // const { options } = useMetaFormAtom();
 
+  let options = [];
   const [form] = Form.useForm<DetailPageDto>();
-
-  const { options } = useMetaFormAtom();
   const [detailPageConfig, setDetailPageConfig] = React.useState<DetailPageConfig>();
 
   React.useEffect(() => {
@@ -24,10 +27,32 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
     setDetailPageConfig(activeDetail?.detailPageConfig);
   }, [form, activeDetail]);
 
-  React.useImperativeHandle(ref, () => ({
-    saveDetail: () => {
-      // TODO: 保存详情页配置
+  const { run: saveDetail } = useRequest(
+    async () => {
+      const details = await form.validateFields();
+
+      const detailPageData = {
+        ...details,
+        detailPageConfig,
+        _id: activeDetail?._id || '',
+      };
+
+      return metaService.updateDetailPage(detailPageData);
     },
+    {
+      manual: true,
+      onSuccess: () => {
+        message.success('保存成功');
+        refresh();
+      },
+      onError: error => {
+        message.error(error.message || '保存失败');
+      },
+    }
+  );
+
+  React.useImperativeHandle(ref, () => ({
+    saveDetail,
   }));
 
   return (
@@ -54,8 +79,13 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                     </Form.Item>
                   </Col>
                 </Row>
-                {/* TODO */}
-                <Form.Item label="功能按钮" name="buttons"></Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item label="功能按钮" name="buttons">
+                      <Select options={DETAIL_PAGE_OPTIONS} />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </div>
             </div>
             {/* 子对象配置 */}
@@ -65,7 +95,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                   <>
                     {fields.map(({ key, name, ...restField }) => {
                       return (
-                        <div className="container">
+                        <div key={key} className="container">
                           <div className="container-header">
                             <div className="container-title">对象配置（子）</div>
                             <div className="container-actions">
@@ -125,10 +155,13 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                 </Form.Item>
                               </Col>
                             </Row>
-                            <Form.Item {...restField} label="功能按钮" name={[name, 'buttons']}>
-                              {/* TODO */}
-                              {/* <Select options={DETAIL_PAGE_OPTIONS} /> */}
-                            </Form.Item>
+                            <Row gutter={16}>
+                              <Col span={12}>
+                                <Form.Item {...restField} label="功能按钮" name={[name, 'buttons']}>
+                                  <Select options={DETAIL_PAGE_OPTIONS} />
+                                </Form.Item>
+                              </Col>
+                            </Row>
                           </div>
                         </div>
                       );

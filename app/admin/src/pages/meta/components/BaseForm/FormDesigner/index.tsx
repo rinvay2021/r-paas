@@ -71,6 +71,9 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
         message.success('保存成功');
         refresh();
       },
+      onError: error => {
+        message.error(error.message || '保存失败');
+      },
     }
   );
 

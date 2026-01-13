@@ -1,10 +1,10 @@
-import React, { useState, useContext, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Tree, Input, Space, Button, Empty, Spin, message, Popover } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { map, filter } from 'lodash';
-import type { DataNode } from 'antd/es/tree';
-import { MetaContext } from '@/pages/meta';
+import type { DataNode } from 'antd/lib/tree';
+import { useMeta } from '@/store/metaAtom';
 import { metaService } from '@/api/meta';
 import type { FieldDto } from '@/api/meta/interface';
 
@@ -52,7 +52,7 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
   trigger = 'click',
   ...restProps
 }) => {
-  const { appCode, metaObjectCode } = useContext(MetaContext);
+  const { appCode, metaObjectCode } = useMeta();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);

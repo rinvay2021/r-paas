@@ -8,7 +8,7 @@ import { prefix } from '@/constant';
 import { useElementHeight } from '@/hooks';
 import { metaService } from '@/api/meta';
 import { FormDto } from '@/api/meta/interface';
-import { MetaContext, useMeta } from '@/pages/meta';
+import { useMeta } from '@/store/metaAtom';
 import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 import PreviewForm from './FormPreview';
 import FormDesigner from './FormDesigner';

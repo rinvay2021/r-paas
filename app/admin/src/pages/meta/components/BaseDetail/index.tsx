@@ -7,22 +7,24 @@ import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-des
 
 import { prefix } from '@/constant';
 import { useElementHeight } from '@/hooks';
-import { useMeta } from '@/pages/meta';
+import { useMeta } from '@/store/metaAtom';
 import { metaService } from '@/api/meta';
 import { DetailPageDto } from '@/api/meta/interface';
-import { useMetaFormAtom } from '@/store/metaFormAtom';
 import { META_PAGE_OFFSET, META_PAGE_TAB_HEIGHT } from '../../constant';
 import DetailPageDesigner from './DetailPageDesigner';
 import DetailPagePreview from './DetailPagePreview';
 import type { DetailPageDesignerRef } from './DetailPageDesigner/types';
 
 import './index.less';
+import { useMetaFormOptions } from '@/store/metaFormAtom';
 
 const BaseDetail: React.FC = () => {
+  const height = useElementHeight({
+    elementId: 'meta-page-container',
+    offset: META_PAGE_OFFSET,
+  });
+
   const { appCode, metaObjectCode } = useMeta();
-
-  const height = useElementHeight({ elementId: 'meta-page-container', offset: META_PAGE_OFFSET });
-
   const editingDetailRef = React.useRef<DetailPageDto | null>(null);
   const detailDesignerRef = React.useRef<DetailPageDesignerRef>(null);
 
@@ -30,7 +32,7 @@ const BaseDetail: React.FC = () => {
   const [activeDetail, setActiveDetail] = React.useState<DetailPageDto>();
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(true);
 
-  const { options } = useMetaFormAtom();
+  const options = useMetaFormOptions();
 
   const { data, loading, refresh } = useRequest(
     () =>
