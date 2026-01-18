@@ -87,25 +87,41 @@ export type FormConfig = {
 
 /** 表单容器 */
 export type ContainerType = {
+  /** id */
   id: string;
+  /** 标题 */
   title?: string;
+  /** 列数 */
   columns?: number;
+  /** 创建模式 */
   createMode?: string;
+  /** 编辑模式 */
   editMode?: string;
+  /** 视图模式 */
   viewMode?: string;
+  /** 是否隐藏 */
   isHidden?: boolean;
+  /** 字段 */
   fields?: FieldDto[];
 };
 
 /** 表单 DTO */
 export interface FormDto {
+  /** id */
   _id?: string;
+  /** 表单编码 */
   formCode: string;
+  /** 表单名称 */
   formName: string;
+  /** 表单描述 */
   formDesc?: string;
+  /** 应用编码 */
   appCode: string;
+  /** 元数据对象编码 */
   metaObjectCode: string;
+  /** 表单配置 */
   formConfig?: FormConfig;
+  /** 表单容器 */
   containers?: ContainerType[];
 }
 
@@ -143,7 +159,7 @@ export interface ListFieldDto {
   /** 宽度 */
   width: number;
   /** 对齐方式 */
-  align: 'left' | 'center' | 'right';
+  align: string;
   /** 字段类型 */
   field: FieldDto;
 }
@@ -180,9 +196,6 @@ export type DetailPageConfig = {
   helpSettings?: Record<string, string>;
 };
 
-/** 详情页容器 */
-export type DetailPageContainer = DetailPageMainObjectContainer | DetailPageSubObjectContainer;
-
 /** 详情页容器类型 */
 export type DetailPageContainerType = 'MAIN_OBJECT' | 'SUB_OBJECT';
 
@@ -198,10 +211,11 @@ export type DetailPageMainObjectContainer = {
   /** 基础表单 */
   formCode: string;
   /** 页面显示类型：标签平铺 / 一页展示 */
-  pageType: DetailPagePageType;
+  pageType?: DetailPagePageType;
   /** 功能按钮 */
   buttons?: any[];
 };
+
 
 /** 详情页子对象容器 */
 export type DetailPageSubObjectContainer = {
@@ -222,6 +236,9 @@ export type DetailPageSubObjectContainer = {
   buttons?: any[];
 };
 
+/** 详情页容器 */
+export type DetailPageContainer = DetailPageMainObjectContainer | DetailPageSubObjectContainer;
+
 /** 详情页 DTO */
 export interface DetailPageDto {
   /** 唯一id */
@@ -234,16 +251,12 @@ export interface DetailPageDto {
   detailPageDesc?: string;
   /** 表单编码 */
   formCode: string;
-  /** 页面显示类型：标签平铺 / 一页展示 */
-  pageType?: DetailPagePageType;
-  /** 功能按钮 */
-  buttons?: any[];
   /** 应用编码 */
   appCode: string;
   /** 对象编码 */
   metaObjectCode: string;
   /** 子对象 */
-  containers?: DetailPageSubObjectContainer[];
+  containers?: DetailPageContainer[];
   /** 详情页配置 */
   detailPageConfig?: DetailPageConfig;
 }
@@ -256,51 +269,132 @@ export type UpdateDetailPageDto = Partial<DetailPageDto>;
 /** ==================== 详情页 end ==================== */
 
 /** ==================== 搜索表单 start ==================== */
+/** 搜索表单配置 */
+export interface SearchFormConfig {
+  /** 是否可折叠 */
+  isCollapsible?: boolean;
+  /** 折叠行数 */
+  collapseRows?: number;
+}
+
+/** 搜索表单字段 */
+export interface SearchFormFieldDto {
+  /** 字段名称 */
+  fieldName: string;
+  /** 条件 */
+  condition: string;
+  /** 默认值快捷输入 */
+  quickDefaultValue?: string;
+  /** 默认值 */
+  defaultValue?: string;
+  /** 提示语 */
+  placeholder?: string;
+  /** 是否显示 */
+  isVisible?: boolean;
+}
+
 /** 搜索表单 DTO */
 export interface SearchFormDto {
-  formCode: string;
-  formName: string;
-  objectCode: string;
-  fields: Array<{
-    fieldCode: string;
-    order: number;
-  }>;
-  description?: string;
+  /** id */
+  _id?: string;
+  /** 应用编码 */
+  appCode: string;
+  /** 元数据对象编码 */
+  metaObjectCode: string;
+  /** 搜索表单编码 */
+  searchFormCode: string;
+  /** 搜索表单名称 */
+  searchFormName: string;
+  /** 搜索表单描述 */
+  searchFormDesc?: string;
+  /** 搜索表单配置 */
+  searchFormConfig?: SearchFormConfig;
+  /** 搜索表单字段 */
+  searchFormFields: SearchFormFieldDto[];
 }
 
 /** 查询搜索表单 DTO */
 export type QuerySearchFormDto = Partial<SearchFormDto & PaginationQuery>;
+
+/** 更新搜索表单 DTO */
+export type UpdateSearchFormDto = Partial<SearchFormDto>;
 /** ==================== 搜索表单 end ==================== */
 
 /** ==================== 视图 start ==================== */
+/** 视图配置 */
+export interface ViewConfig {
+  /** 帮助设置 */
+  helpSettings?: Record<string, string>;
+}
 /** 视图 DTO */
 export interface ViewDto {
+  /** id */
+  _id?: string;
+  /** 应用编码 */
+  appCode: string;
+  /** 元数据对象编码 */
+  metaObjectCode: string;
+  /** 视图编码 */
   viewCode: string;
+  /** 视图名称 */
   viewName: string;
-  objectCode: string;
-  type: 'LIST' | 'DETAIL';
-  config: any;
-  description?: string;
+  /** 视图描述 */
+  viewDesc?: string;
+  /** 列表编码 */
+  listCode: string;
+  /** 搜索表单编码 */
+  searchFormCode: string;
+  /** 功能按钮 */
+  buttons?: any[];
+  /** 视图配置 */
+  viewConfig?: ViewConfig;
 }
 
 /** 查询视图 DTO */
 export type QueryViewDto = Partial<ViewDto & PaginationQuery>;
+
+/** 更新视图 DTO */
+export type UpdateViewDto = Partial<ViewDto>;
 /** ==================== 视图 end ==================== */
 
 /** ==================== 操作按钮 start ==================== */
 /** 操作按钮 DTO */
 export interface ActionButtonDto {
+  /** id */
+  _id?: string;
+  /** 应用编码 */
+  appCode: string;
+  /** 元数据对象编码 */
+  metaObjectCode: string;
+  /** 操作按钮编码 */
   buttonCode: string;
+  /** 操作按钮名称 */
   buttonName: string;
-  objectCode: string;
-  type: 'CREATE' | 'UPDATE' | 'DELETE' | 'CUSTOM';
-  position: 'LIST' | 'DETAIL';
-  config: any;
-  description?: string;
+  /** 操作按钮描述 */
+  buttonDesc?: string;
+  /** 排序 */
+  buttonOrder: number;
+  /** 帮助类型 */
+  buttonHelpType: string;
+  /** 帮助提示 */
+  buttonHelpTip: string;
+  /** 帮助链接 */
+  buttonHelpLink?: string;
+  /** 级别 */
+  buttonLevel: number;
+  /** 事件类型 */
+  buttonEventType: string;
+  /** 事件 */
+  buttonEvent: string;
+  /** 配置 */
+  buttonConfig?: any;
 }
 
 /** 查询操作按钮 DTO */
 export interface QueryActionButtonDto extends Partial<ActionButtonDto & PaginationQuery> {
   keyword?: string;
 }
+
+/** 更新操作按钮 DTO */
+export type UpdateActionButtonDto = Partial<ActionButtonDto>;
 /** ==================== 操作按钮 end ==================== */
