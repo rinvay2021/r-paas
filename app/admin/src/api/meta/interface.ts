@@ -1,52 +1,67 @@
 import { Form } from 'antd';
 
-/** 分页查询参数 */
+/** ==================== common start ==================== */
+/** 分页查询DTO */
 export interface PaginationQuery {
-  page: number;
-  pageSize: number;
+  /** 页码 */
+  page?: number;
+  /** 每页条数 */
+  pageSize?: number;
 }
+/** ==================== common end ==================== */
 
 /** ==================== 应用 start ==================== */
-
 /** 应用 DTO */
 export interface AppDto {
-  id?: string;
+  /** id */
+  _id?: string;
+  /** 应用编码 */
   appCode: string;
+  /** 应用名称 */
   appName?: string;
+  /** 应用描述 */
   appDesc?: string;
 }
 
 /** 查询应用 DTO */
 export type QueryAppDto = Partial<AppDto & PaginationQuery>;
-
 /** ==================== 应用 end ==================== */
 
 /** ==================== 元对象 start ==================== */
-
 /** 元对象 DTO */
 export interface MetaObjectDto {
-  id?: string;
+  /** id */
+  _id?: string;
+  /** 应用编码 */
   appCode: string;
+  /** 元数据对象编码 */
   metaObjectCode: string;
+  /** 元数据对象名称 */
   metaObjectName: string;
+  /** 元数据对象描述 */
   metaObjectDesc?: string;
 }
 
 /** 查询元对象 DTO */
 export type QueryMetaObjectDto = Partial<MetaObjectDto & PaginationQuery>;
-
 /** ==================== 元对象 end ==================== */
 
 /** ==================== 字段 start ==================== */
-
 /** 字段 DTO */
 export interface FieldDto {
+  /** id */
   _id?: string;
+  /** 字段编码 */
   fieldCode?: string;
+  /** 字段名称 */
   fieldName?: string;
+  /** 字段类型 */
   fieldType?: string;
+  /** 字段描述 */
   fieldDesc?: string;
+  /** 应用编码 */
   appCode: string;
+  /** 元数据对象编码 */
   metaObjectCode: string;
 }
 
@@ -57,16 +72,16 @@ export interface QueryFieldDto extends Partial<FieldDto & PaginationQuery> {
 
 /** 更新字段 DTO */
 export type UpdateFieldDto = Partial<FieldDto>;
-
 /** ==================== 字段 end ==================== */
 
 /** ==================== 表单 start ==================== */
-
 /** 表单布局 */
 export type FormConfig = {
-  layoutSettings?: Parameters<typeof Form>[0] & { columns: number };
+  /** 帮助设置 */
   helpSettings?: Record<string, string>;
-  // TODO: 联动设置
+  /** 布局设置 */
+  layoutSettings?: Parameters<typeof Form>[0] & { columns: number };
+  /** 联动设置 */
   linkageSettings?: Record<string, string>[];
 };
 
@@ -99,30 +114,67 @@ export type QueryFormDto = Partial<FormDto & PaginationQuery>;
 
 /** 更新表单 DTO */
 export type UpdateFormDto = Partial<FormDto>;
-
 /** ==================== 表单 end ==================== */
 
 /** ==================== 列表 start ==================== */
+/** 列表配置 */
+export interface ListConfig {
+  /** 冻结操作列 */
+  frozenColumn: boolean;
+  /** 显示操作列 */
+  showActions: boolean;
+  /** 显示勾选框 */
+  showCheckbox: boolean;
+  /** 显示序号 */
+  showIndex: boolean;
+  /** 左侧冻结列数量 */
+  frozenColumnNum: number;
+  /** 每页显示数据 */
+  pageSize: number;
+}
+/** 列表字段DTO */
+export interface ListFieldDto {
+  /** 显示名称 */
+  displayName: string;
+  /** 是否显示 */
+  isVisible: boolean;
+  /** 显示帮助 */
+  showHelp: boolean;
+  /** 宽度 */
+  width: number;
+  /** 对齐方式 */
+  align: 'left' | 'center' | 'right';
+  /** 字段类型 */
+  field: FieldDto;
+}
 
-/** 列表 DTO */
+/** 列表DTO */
 export interface ListDto {
+  /** id */
+  _id?: string;
+  /** 应用编码 */
+  appCode: string;
+  /** 元数据对象编码 */
+  metaObjectCode: string;
+  /** 列表编码 */
   listCode: string;
+  /** 列表名称 */
   listName: string;
-  objectCode: string;
-  columns: Array<{
-    fieldCode: string;
-    order: number;
-  }>;
-  description?: string;
+  /** 列表描述 */
+  listDesc?: string;
+  /** 列表配置 */
+  listConfig?: ListConfig;
+  /** 列表按钮 */
+  buttons?: any[];
+  /** 列表字段 */
+  listFields: ListFieldDto[];
 }
 
 /** 查询列表 DTO */
 export type QueryListDto = Partial<ListDto & PaginationQuery>;
-
 /** ==================== 列表 end ==================== */
 
 /** ==================== 详情页 start ==================== */
-
 /** 详情页配置 */
 export type DetailPageConfig = {
   helpSettings?: Record<string, string>;
@@ -201,11 +253,9 @@ export type QueryDetailPageDto = Partial<DetailPageDto & PaginationQuery>;
 
 /** 更新详情页 DTO */
 export type UpdateDetailPageDto = Partial<DetailPageDto>;
-
 /** ==================== 详情页 end ==================== */
 
 /** ==================== 搜索表单 start ==================== */
-
 /** 搜索表单 DTO */
 export interface SearchFormDto {
   formCode: string;
@@ -220,11 +270,9 @@ export interface SearchFormDto {
 
 /** 查询搜索表单 DTO */
 export type QuerySearchFormDto = Partial<SearchFormDto & PaginationQuery>;
-
 /** ==================== 搜索表单 end ==================== */
 
 /** ==================== 视图 start ==================== */
-
 /** 视图 DTO */
 export interface ViewDto {
   viewCode: string;
@@ -237,11 +285,9 @@ export interface ViewDto {
 
 /** 查询视图 DTO */
 export type QueryViewDto = Partial<ViewDto & PaginationQuery>;
-
 /** ==================== 视图 end ==================== */
 
 /** ==================== 操作按钮 start ==================== */
-
 /** 操作按钮 DTO */
 export interface ActionButtonDto {
   buttonCode: string;
@@ -257,5 +303,4 @@ export interface ActionButtonDto {
 export interface QueryActionButtonDto extends Partial<ActionButtonDto & PaginationQuery> {
   keyword?: string;
 }
-
 /** ==================== 操作按钮 end ==================== */
