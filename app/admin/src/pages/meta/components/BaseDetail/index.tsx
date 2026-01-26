@@ -44,7 +44,7 @@ const BaseDetail: React.FC = () => {
   const detailDesignerRef = React.useRef<DetailPageDesignerRef>(null);
 
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
-  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(true);
+  const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
   // TODO: 删除详情页
   const handleDeleteDetail = () => {
@@ -82,7 +82,7 @@ const BaseDetail: React.FC = () => {
   });
 
   const items = React.useMemo(() => {
-    return map(details || [], detail => ({
+    return map(details, detail => ({
       key: detail?.detailPageCode,
       label: detail?.detailPageName,
       children: null,
@@ -90,10 +90,9 @@ const BaseDetail: React.FC = () => {
   }, [details]);
 
   const formOptions = React.useMemo(() => {
-    return map(forms || [], form => ({
-      key: form.formCode,
-      label: form.formName,
-      children: null,
+    return map(forms, form => ({
+      value: form?.formCode,
+      label: form?.formName,
     }));
   }, [forms]);
 
