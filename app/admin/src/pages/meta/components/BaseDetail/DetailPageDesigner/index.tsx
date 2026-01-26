@@ -58,8 +58,8 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
   return (
     <div id="detailPage-designer" className="detailPage-designer" style={{ height }}>
       <div className="detailPage-designer-left">
-        <Form labelCol={{ span: 4 }} form={form} variant="filled">
-          <div className="containers-wrapper selected">
+        <div className="containers-wrapper selected">
+          <Form labelCol={{ span: 4 }} form={form} variant="filled">
             {/* 主对象配置 */}
             <div className="container">
               <div className="container-header">
@@ -179,8 +179,8 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                 );
               }}
             </Form.List>
-          </div>
-        </Form>
+          </Form>
+        </div>
       </div>
       <div className="form-designer-right">
         <ConfigPanel config={detailPageConfig} onChange={setDetailPageConfig} />
