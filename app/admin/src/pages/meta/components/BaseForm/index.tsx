@@ -15,44 +15,37 @@ import FormDesigner from './FormDesigner';
 import type { FormDesignerRef } from './FormDesigner/types';
 
 import './index.less';
+import {
+  useCurrentMetaForm,
+  useLoadingForms,
+  useMetaFroms,
+  useRefreshMetaForms,
+  useSetCurrentMetaForm,
+} from '@/store/metaFormAtom';
 
 const BaseForm: React.FC = () => {
-  const { appCode, metaObjectCode } = useMeta();
-
   const height = useElementHeight({
     elementId: 'meta-page-container',
     offset: META_PAGE_OFFSET,
   });
+  const { appCode, metaObjectCode } = useMeta();
+
+  const froms = useMetaFroms();
+  const loading = useLoadingForms();
+  const activeForm = useCurrentMetaForm();
+  const setActiveForm = useSetCurrentMetaForm();
+  const refreshTrigger = useRefreshMetaForms();
+
 
   const editingFormRef = React.useRef<FormDto | null>(null);
   const formDesignerRef = React.useRef<FormDesignerRef>(null);
 
-  const [activeForm, setActiveForm] = React.useState<FormDto>();
   const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
-  const { data, loading, refresh } = useRequest(
-    () =>
-      metaService.queryForms({
-        appCode,
-        metaObjectCode,
-      }),
-    {
-      refreshDeps: [appCode, metaObjectCode],
-      onSuccess: data => {
-        if (!isEmpty(data?.data?.list) && !activeForm?.formCode) {
-          setActiveForm(get(data, 'data.list[0]'));
-        }
-      },
-      onError: error => {
-        message.error(error.message || '获取表单列表失败');
-      },
-    }
-  );
-
   const handleSettingForm = useMemoizedFn(() => {
     const filter = form => form.formCode === activeForm?.formCode;
-    const editingForm = find(data?.data?.list, filter);
+    const editingForm = find(froms, filter);
 
     if (editingForm) {
       editingFormRef.current = editingForm;
@@ -73,7 +66,7 @@ const BaseForm: React.FC = () => {
 
   const onActiveFormChange = useMemoizedFn((formCode: string) => {
     const filter = form => form.formCode === formCode;
-    const activeForm = find(data?.data?.list, filter);
+    const activeForm = find(froms, filter);
 
     if (!activeForm) {
       message.info('表单不存在');
@@ -86,12 +79,12 @@ const BaseForm: React.FC = () => {
 
   const items = React.useMemo(
     () =>
-      map(data?.data?.list || [], form => ({
+      map(froms || [], form => ({
         key: form.formCode,
         label: form.formName,
         children: null,
       })),
-    [data]
+    [froms]
   );
 
   const renderContent = () => {
@@ -155,7 +148,7 @@ const BaseForm: React.FC = () => {
         {isEditing ? (
           <FormDesigner
             ref={formDesignerRef}
-            refresh={refresh}
+            refresh={refreshTrigger}
             height={height}
             activeForm={activeForm}
           />

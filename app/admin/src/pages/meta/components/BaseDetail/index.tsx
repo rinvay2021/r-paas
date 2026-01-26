@@ -1,6 +1,6 @@
 import React from 'react';
-import { find, get, map, isEmpty } from 'lodash';
-import { useBoolean, useMemoizedFn, useRequest } from 'ahooks';
+import { find, get, map } from 'lodash';
+import { useBoolean, useMemoizedFn } from 'ahooks';
 import { Button, Empty, Flex, message, Space, Spin, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
@@ -16,7 +16,14 @@ import DetailPagePreview from './DetailPagePreview';
 import type { DetailPageDesignerRef } from './DetailPageDesigner/types';
 
 import './index.less';
-import { useMetaFormOptions } from '@/store/metaFormAtom';
+import { useMetaFroms } from '@/store/metaFormAtom';
+import {
+  useMetaDetails,
+  useCurrentDetail,
+  useSetCurrentDetail,
+  useLoadingDetails,
+  useRefreshMetaDetails,
+} from '@/store/metaDetailAtom';
 
 const BaseDetail: React.FC = () => {
   const height = useElementHeight({
@@ -25,33 +32,19 @@ const BaseDetail: React.FC = () => {
   });
 
   const { appCode, metaObjectCode } = useMeta();
+
+  const forms = useMetaFroms();
+  const details = useMetaDetails();
+  const loading = useLoadingDetails();
+  const activeDetail = useCurrentDetail();
+  const setActiveDetail = useSetCurrentDetail();
+  const refreshTrigger = useRefreshMetaDetails();
+
   const editingDetailRef = React.useRef<DetailPageDto | null>(null);
   const detailDesignerRef = React.useRef<DetailPageDesignerRef>(null);
 
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
-  const [activeDetail, setActiveDetail] = React.useState<DetailPageDto>();
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(true);
-
-  const options = useMetaFormOptions();
-
-  const { data, loading, refresh } = useRequest(
-    () =>
-      metaService.queryDetailPages({
-        appCode,
-        metaObjectCode,
-      }),
-    {
-      refreshDeps: [appCode, metaObjectCode],
-      onSuccess: data => {
-        if (!isEmpty(data?.data?.list) && !activeDetail?.detailPageCode) {
-          setActiveDetail(get(data, 'data.list[0]'));
-        }
-      },
-      onError: error => {
-        message.error(error.message || '获取详情页列表失败');
-      },
-    }
-  );
 
   // TODO: 删除详情页
   const handleDeleteDetail = () => {
@@ -64,7 +57,7 @@ const BaseDetail: React.FC = () => {
 
   const handleSettingDetail = useMemoizedFn(() => {
     const filter = detail => detail.detailPageCode === activeDetail?.detailPageCode;
-    const editingDetail = find(data?.data?.list, filter);
+    const editingDetail = find(details, filter);
 
     if (!editingDetail) {
       message.info('详情页不存在');
@@ -77,7 +70,7 @@ const BaseDetail: React.FC = () => {
 
   const onActiveDetailChange = useMemoizedFn((detailCode: string) => {
     const filter = detail => detail?.detailPageCode === detailCode;
-    const activeDetail = find(data?.data?.list, filter);
+    const activeDetail = find(details, filter);
 
     if (!activeDetail) {
       message.info('详情页不存在');
@@ -89,12 +82,20 @@ const BaseDetail: React.FC = () => {
   });
 
   const items = React.useMemo(() => {
-    return map(data?.data?.list || [], detail => ({
-      key: detail.detailPageCode,
-      label: detail.detailPageName,
+    return map(details || [], detail => ({
+      key: detail?.detailPageCode,
+      label: detail?.detailPageName,
       children: null,
     }));
-  }, [data]);
+  }, [details]);
+
+  const formOptions = React.useMemo(() => {
+    return map(forms || [], form => ({
+      key: form.formCode,
+      label: form.formName,
+      children: null,
+    }));
+  }, [forms]);
 
   const renderContent = () => {
     if (loading) {
@@ -116,6 +117,8 @@ const BaseDetail: React.FC = () => {
         </Flex>
       );
     }
+
+
 
     return (
       <>
@@ -157,7 +160,7 @@ const BaseDetail: React.FC = () => {
         {isEditing ? (
           <DetailPageDesigner
             ref={detailDesignerRef}
-            refresh={refresh}
+            refresh={refreshTrigger}
             height={height}
             activeDetail={activeDetail}
           />
@@ -208,7 +211,7 @@ const BaseDetail: React.FC = () => {
               message.success('创建成功');
             }
 
-            refresh();
+            refreshTrigger();
             editingDetailRef.current = null;
             return true;
           } catch (error) {
@@ -244,7 +247,7 @@ const BaseDetail: React.FC = () => {
         <ProFormSelect
           name="formCode"
           label="基础表单"
-          options={options}
+          options={formOptions}
           rules={[{ required: true, message: '请选择基础表单' }]}
         />
         <ProFormTextArea
