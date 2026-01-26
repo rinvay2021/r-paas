@@ -45,7 +45,7 @@ const LayoutSettingsButton: React.FC<LayoutSettingsButtonProps> = ({ value, onCh
 
   return (
     <>
-      <Button icon={<SettingOutlined />} type="dashed" onClick={() => setOpen(true)}>
+      <Button icon={<SettingOutlined />} type="link" onClick={() => setOpen(true)}>
         点击设置
       </Button>
       <Modal title="布局设置" open={open} onOk={handleOk} onCancel={handleCancel} width={800}>

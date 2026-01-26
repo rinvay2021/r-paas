@@ -87,8 +87,10 @@ export const useInitMetaDetailAtom = (params?: QueryDetailPageDto) => {
       ready: !!appCode && !!metaObjectCode,
       refreshDeps: [appCode, metaObjectCode, refreshTrigger], // 依赖刷新触发器
       onSuccess: data => {
-        setMetaDetails(get(data, 'data.list', []));
-        setCurrentDetail(get(data, 'data.list[0]'));
+        const list = get(data, 'data.list', [])
+
+        setMetaDetails(list);
+        setCurrentDetail(list?.[0]);
       },
       onBefore: () => {
         setLoadingDetails(true);

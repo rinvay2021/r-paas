@@ -1,6 +1,6 @@
 /** 表单数据源 */
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { map } from 'lodash';
+import { get } from 'lodash';
 import { useRequest } from 'ahooks';
 import { OptionProps } from 'antd/lib/select';
 
@@ -72,6 +72,7 @@ export const useMetaFormsRefreshTrigger = () => {
 /** 初始化表单数据源 hook */
 export const useInitMetaFormAtom = (params?: QueryFormDto) => {
   const { appCode, metaObjectCode } = useMeta();
+
   const setMetaFroms = useSetMetaFroms();
   const setCurrentMetaForm = useSetCurrentMetaForm();
   const setLoadingForms = useSetLoadingForms();
@@ -89,8 +90,10 @@ export const useInitMetaFormAtom = (params?: QueryFormDto) => {
       ready: !!appCode && !!metaObjectCode,
       refreshDeps: [appCode, metaObjectCode, refreshTrigger], // 依赖刷新触发器
       onSuccess: data => {
-        setMetaFroms(data?.data?.list);
-        setCurrentMetaForm(data?.data?.list[0]);
+        const list = get(data, 'data.list', [])
+
+        setMetaFroms(list);
+        setCurrentMetaForm(list[0]);
       },
       onBefore: () => {
         setLoadingForms(true);

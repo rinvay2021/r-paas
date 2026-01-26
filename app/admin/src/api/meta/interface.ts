@@ -136,17 +136,20 @@ export type UpdateFormDto = Partial<FormDto>;
 /** 列表配置 */
 export interface ListConfig {
   /** 冻结操作列 */
-  frozenColumn: boolean;
+  frozenColumn?: boolean;
   /** 显示操作列 */
-  showActions: boolean;
+  showActions?: boolean;
   /** 显示勾选框 */
-  showCheckbox: boolean;
+  showCheckbox?: boolean;
   /** 显示序号 */
-  showIndex: boolean;
+  showIndex?: boolean;
   /** 左侧冻结列数量 */
-  frozenColumnNum: number;
+  frozenColumnNum?: number;
   /** 每页显示数据 */
-  pageSize: number;
+  pageSize?: number;
+
+  /** 帮助设置 */
+  helpSettings?: Record<string, string>;
 }
 /** 列表字段DTO */
 export interface ListFieldDto {
@@ -188,6 +191,9 @@ export interface ListDto {
 
 /** 查询列表 DTO */
 export type QueryListDto = Partial<ListDto & PaginationQuery>;
+
+/** 更新列表 DTO */
+export type UpdateListDto = Partial<ListDto>;
 /** ==================== 列表 end ==================== */
 
 /** ==================== 详情页 start ==================== */

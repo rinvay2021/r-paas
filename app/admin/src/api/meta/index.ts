@@ -21,6 +21,7 @@ import type {
   QueryViewDto,
   ActionButtonDto,
   QueryActionButtonDto,
+  UpdateListDto,
 } from './interface';
 
 /**
@@ -92,6 +93,10 @@ export class MetaService {
 
   async queryLists(params: QueryListDto) {
     return await http.post<{ list: ListDto[]; total: number }>('/meta/list/list', params);
+  }
+
+  async updateList(data: UpdateListDto) {
+    return await http.post<ListDto>('/meta/list/update', data);
   }
 
   /**

@@ -1,0 +1,30 @@
+.@{prefix}-preview-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px dashed #d9d9d9;
+}
+
+.@{prefix}-action-buttons {
+  position: absolute;
+  left: 20px;
+  top: 30px;
+}
+
+.@{prefix}-form-content {
+  width: 50%;
+  height: 100%;
+  padding: 8px 0;
+  overflow-y: auto;
+
+  .@{prefix}-form {
+    pointer-events: auto;
+    border-radius: 8px;
+    padding: 20px 24px;
+    border: 1px solid #e8e8e8;
+  }
+
+  .rpaas-scrollbars();
+}
