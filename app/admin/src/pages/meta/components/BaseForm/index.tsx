@@ -198,7 +198,7 @@ const BaseForm: React.FC = () => {
               });
               message.success('创建成功');
             }
-            refresh();
+            refreshTrigger();
             editingFormRef.current = null;
             return true;
           } catch (error) {
