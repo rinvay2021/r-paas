@@ -153,12 +153,18 @@ export interface ListConfig {
 }
 /** 列表字段DTO */
 export interface ListFieldDto {
+  /** 排序 */
+  sort: number;
+  /** 字段名称 */
+  name: string;
   /** 显示名称 */
   displayName: string;
   /** 是否显示 */
   isVisible: boolean;
   /** 显示帮助 */
   showHelp: boolean;
+  /** 帮助提示 */
+  helpTip: string;
   /** 宽度 */
   width: number;
   /** 对齐方式 */

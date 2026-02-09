@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useDrop, useDrag } from 'react-dnd';
 import { DeleteOutlined, PlusOutlined, MenuOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { FieldDto } from '@/api/meta/interface';
-import { FieldSelector } from '../FieldSelector';
+import { FieldSelector } from '../../../../../biz-components/FieldSelector';
 import { ContainerProps, FieldProps } from '../../types';
 
 // 定义拖拽类型

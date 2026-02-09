@@ -1,32 +1,37 @@
 import React from 'react';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
-// import { useMetaFormAtom } from '@/store/metaFormAtom';
-import { DetailPageConfig, DetailPageDto, ListConfig, ListDto } from '@/api/meta/interface';
-import { DETAIL_PAGE_OPTIONS } from '../constant';
-import ConfigPanel from './components/ConfigPanel';
-import type { ListDesignerRef, ListDesignerProps } from './types';
-import './index.less';
 import { useRequest } from 'ahooks';
+import { message } from 'antd';
 import { metaService } from '@/api/meta';
 
-const DetailPageDesigner: React.ForwardRefRenderFunction<
+import ConfigPanel from './components/ConfigPanel';
+import ListFieldEditor from './components/ListFieldEditor';
+import type {
   ListDesignerRef,
-  ListDesignerProps
-> = (props, ref) => {
+  ListDesignerProps,
+  ListConfigRef,
+  ListFieldEditorRef,
+} from './types';
+
+import './index.less';
+
+const ListDesigner: React.ForwardRefRenderFunction<ListDesignerRef, ListDesignerProps> = (
+  props,
+  ref
+) => {
   const { refresh, height, activeList } = props;
 
-  const [form] = Form.useForm<ListDto>();
-  const [listConfig, setListConfig] = React.useState<ListConfig>();
+  const listConfigRef = React.useRef<ListConfigRef>(null);
+  const listFieldEditorRef = React.useRef<ListFieldEditorRef>(null);
 
   const { run: saveList } = useRequest(
     async () => {
-      const lists = await form.validateFields();
+      const listConfig = listConfigRef.current?.getListConfig();
+      const listFields = listFieldEditorRef.current?.getListFields();
 
       const listData = {
-        ...lists,
+        ...activeList,
         listConfig,
-        _id: activeList?._id || '',
+        listFields,
       };
 
       return metaService.updateList(listData);
@@ -48,17 +53,17 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
   }));
 
   return (
-    <div id="detailPage-designer" className="detailPage-designer" style={{ height }}>
-      <div className="detailPage-designer-left">
+    <div id="list-designer" className="list-designer" style={{ height }}>
+      <div className="list-designer-left">
         <div className="containers-wrapper selected">
-          {/* 列表字段编辑 */}
+          <ListFieldEditor ref={listFieldEditorRef} value={activeList.listFields} />
         </div>
       </div>
       <div className="form-designer-right">
-        <ConfigPanel config={listConfig} onChange={setListConfig} />
+        <ConfigPanel ref={listConfigRef} config={activeList.listConfig} />
       </div>
     </div>
   );
 };
 
-export default React.forwardRef(DetailPageDesigner);
+export default React.forwardRef(ListDesigner);
