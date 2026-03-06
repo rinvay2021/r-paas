@@ -17,6 +17,7 @@ import type {
   QueryListDto,
   SearchFormDto,
   QuerySearchFormDto,
+  UpdateSearchFormDto,
   ViewDto,
   QueryViewDto,
   ActionButtonDto,
@@ -129,6 +130,10 @@ export class MetaService {
       '/meta/search-form/list',
       params
     );
+  }
+
+  async updateSearchForm(data: UpdateSearchFormDto) {
+    return await http.post<SearchFormDto>('/meta/search-form/update', data);
   }
 
   /**

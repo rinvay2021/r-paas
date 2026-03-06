@@ -29,6 +29,7 @@ import {
 import { useInitMetaFormAtom } from '@/store/metaFormAtom';
 import { useInitMetaDetailAtom } from '@/store/metaDetailAtom';
 import { useInitMetaListAtom } from '@/store/metaListAtom';
+import { useInitMetaSearchFormAtom } from '@/store/metaSearchFormAtom';
 
 const ComponentMap = {
   [META_CONFIG.BaseField]: BaseField,
@@ -47,6 +48,8 @@ const ConfigComponent: React.FC = () => {
   useInitMetaDetailAtom();
   /** 初始化列表数据源 */
   useInitMetaListAtom();
+  /** 初始化搜索表单数据源 */
+  useInitMetaSearchFormAtom();
   /** 渲染组件 */
   const { configurableType } = useMeta();
 
