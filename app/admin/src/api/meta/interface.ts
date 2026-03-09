@@ -387,13 +387,13 @@ export interface ActionButtonDto {
   /** 排序 */
   buttonOrder: number;
   /** 帮助类型 */
-  buttonHelpType: string;
+  buttonHelpType?: string;
   /** 帮助提示 */
-  buttonHelpTip: string;
+  buttonHelpTip?: string;
   /** 帮助链接 */
   buttonHelpLink?: string;
   /** 级别 */
-  buttonLevel: number;
+  buttonLevel: string;
   /** 事件类型 */
   buttonEventType: string;
   /** 事件 */

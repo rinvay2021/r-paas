@@ -22,6 +22,7 @@ import type {
   QueryViewDto,
   ActionButtonDto,
   QueryActionButtonDto,
+  UpdateActionButtonDto,
   UpdateListDto,
 } from './interface';
 
@@ -159,6 +160,18 @@ export class MetaService {
       '/meta/action-button/list',
       params
     );
+  }
+
+  async updateActionButton(data: UpdateActionButtonDto) {
+    return await http.post<ActionButtonDto>('/meta/action-button/update', data);
+  }
+
+  async getActionButtonById(id: string) {
+    return await http.post<ActionButtonDto>('/meta/action-button/detail', { id });
+  }
+
+  async deleteActionButton(id: string) {
+    return await http.post('/meta/action-button/delete', { id });
   }
 }
 
