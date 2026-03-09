@@ -3,8 +3,8 @@ import { find } from 'lodash';
 import { Popconfirm, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { formatDate } from '@r-paas/shared/moment';
-import { BUTTON_LEVEL_OPTIONS, HELP_TYPE_OPTIONS, BUTTON_EVENT_TYPE_OPTIONS } from './constant';
-import { FunctionButtonListItem, ColumnsOperators, ButtonLevel, HelpType, ButtonEventType } from './type';
+import { FunctionButtonListItem, ColumnsOperators } from './type';
+import { BUTTON_LEVEL_OPTIONS, BUTTON_EVENT_TYPE_OPTIONS } from './constant';
 
 export const useColumns = (operators: ColumnsOperators): ColumnsType<FunctionButtonListItem> => {
   const { handleEdit, handleDelete, handleEnable } = operators;
@@ -34,15 +34,6 @@ export const useColumns = (operators: ColumnsOperators): ColumnsType<FunctionBut
         render: (_, record: FunctionButtonListItem) => {
           const level = find(BUTTON_LEVEL_OPTIONS, option => option.value === record.buttonLevel);
           return level?.label;
-        },
-      },
-      {
-        title: '帮助类型',
-        dataIndex: 'buttonHelpType',
-        key: 'buttonHelpType',
-        render: (_, record: FunctionButtonListItem) => {
-          const helpType = find(HELP_TYPE_OPTIONS, option => option.value === record.buttonHelpType);
-          return helpType?.label;
         },
       },
       {
