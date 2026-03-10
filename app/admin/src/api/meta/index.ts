@@ -72,6 +72,10 @@ export class MetaService {
     return await http.post<FieldDto>('/meta/field/detail', { id });
   }
 
+  async deleteField(id: string) {
+    return await http.post('/meta/field/delete', { id });
+  }
+
   /**
    * 表单管理接口
    */
@@ -85,6 +89,10 @@ export class MetaService {
 
   async updateForm(data: UpdateFormDto) {
     return await http.post<FormDto>('/meta/form/update', data);
+  }
+
+  async deleteForm(id: string) {
+    return await http.post('/meta/form/delete', { id });
   }
 
   /**

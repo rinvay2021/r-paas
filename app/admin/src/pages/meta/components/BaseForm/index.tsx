@@ -36,7 +36,6 @@ const BaseForm: React.FC = () => {
   const setActiveForm = useSetCurrentMetaForm();
   const refreshTrigger = useRefreshMetaForms();
 
-
   const editingFormRef = React.useRef<FormDto | null>(null);
   const formDesignerRef = React.useRef<FormDesignerRef>(null);
 
@@ -55,10 +54,15 @@ const BaseForm: React.FC = () => {
     }
   });
 
-  // TODO: 删除表单
-  const handleDeleteForm = () => {
-    // metaService.createActionButton;
-  };
+  const handleDeleteForm = useMemoizedFn(async () => {
+    try {
+      await metaService.deleteForm(activeForm?._id);
+      message.success('删除成功');
+      refreshTrigger();
+    } catch (error) {
+      message.error(error?.message || '删除失败');
+    }
+  });
 
   const handleSaveForm = useMemoizedFn(() => {
     formDesignerRef.current?.saveForm?.();
