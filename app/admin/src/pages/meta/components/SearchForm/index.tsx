@@ -1,7 +1,7 @@
 import React from 'react';
 import { find, get, map } from 'lodash';
 import { useBoolean, useMemoizedFn } from 'ahooks';
-import { Button, Empty, Flex, message, Space, Spin, Tabs } from 'antd';
+import { Button, Empty, Flex, message, Modal, Space, Spin, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
@@ -44,10 +44,15 @@ const SearchForm: React.FC = () => {
   const [searchFormModalOpen, setSearchFormModalOpen] = React.useState(false);
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
-  // TODO: 删除搜索表单
-  const handleDeleteSearchForm = () => {
-    // metaService.deleteSearchForm;
-  };
+  const handleDeleteSearchForm = useMemoizedFn(async () => {
+    try {
+      await metaService.deleteSearchForm(activeSearchForm._id);
+      message.success('删除成功');
+      refreshTrigger();
+    } catch (error) {
+      message.error('删除失败');
+    }
+  });
 
   const handleSaveSearchForm = useMemoizedFn(() => {
     searchFormDesignerRef.current?.saveSearchForm?.();

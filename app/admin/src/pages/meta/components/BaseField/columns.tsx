@@ -72,15 +72,14 @@ export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldList
               >
                 编辑
               </a>
-              <a
-                key="delete"
-                disabled={true}
-                onClick={() => {
+              <Popconfirm
+                title="确定要删除吗？"
+                onConfirm={() => {
                   handleDelete?.(record);
                 }}
               >
-                删除
-              </a>
+                <a key="delete">删除</a>
+              </Popconfirm>
               <Popconfirm
                 title={isEnabled ? '确定要停用吗？' : '确定要启用吗？'}
                 onConfirm={() => {

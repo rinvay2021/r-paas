@@ -110,6 +110,10 @@ export class MetaService {
     return await http.post<ListDto>('/meta/list/update', data);
   }
 
+  async deleteList(id: string) {
+    return await http.post('/meta/list/delete', { id });
+  }
+
   /**
    * 详情页管理接口
    */
@@ -128,6 +132,10 @@ export class MetaService {
     );
   }
 
+  async deleteDetailPage(id: string) {
+    return await http.post('/meta/detail-page/delete', { id });
+  }
+
   /**
    * 搜索表单管理接口
    */
@@ -144,6 +152,10 @@ export class MetaService {
 
   async updateSearchForm(data: UpdateSearchFormDto) {
     return await http.post<SearchFormDto>('/meta/search-form/update', data);
+  }
+
+  async deleteSearchForm(id: string) {
+    return await http.post('/meta/search-form/delete', { id });
   }
 
   /**

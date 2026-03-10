@@ -87,6 +87,16 @@ const BaseField: React.FC = () => {
     fetchFields({ keyword });
   };
 
+  const handleDelete = async (record: BaseFieldListItem) => {
+    try {
+      await metaService.deleteField(record._id);
+      message.success('删除成功');
+      fetchFields({ keyword });
+    } catch (error) {
+      message.error(error?.message || '删除失败');
+    }
+  };
+
   const handleEdit = (record: BaseFieldListItem) => {
     idRef.current = record._id;
     setFieldModalVisible(true);
@@ -109,7 +119,7 @@ const BaseField: React.FC = () => {
     fetchFields({ keyword: '' });
   }, [metaObjectCode]);
 
-  const columns = useColumns({ handleEdit, handleEnable });
+  const columns = useColumns({ handleEdit, handleDelete, handleEnable });
 
   return (
     <Flex vertical gap="middle">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { find, get, map } from 'lodash';
 import { useBoolean, useMemoizedFn } from 'ahooks';
-import { Button, Empty, Flex, message, Space, Spin, Tabs } from 'antd';
+import { Button, Empty, Flex, message, Modal, Space, Spin, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
@@ -46,10 +46,15 @@ const BaseDetail: React.FC = () => {
   const [detailModalOpen, setDetailModalOpen] = React.useState(false);
   const [isEditing, { setTrue: setEditing, setFalse: setPreview }] = useBoolean(false);
 
-  // TODO: 删除详情页
-  const handleDeleteDetail = () => {
-    // metaService.createActionButton;
-  };
+  const handleDeleteDetail = useMemoizedFn(async () => {
+    try {
+      await metaService.deleteDetailPage(activeDetail._id);
+      message.success('删除成功');
+      refreshTrigger();
+    } catch (error) {
+      message.error('删除失败');
+    }
+  });
 
   const handleSaveDetail = useMemoizedFn(() => {
     detailDesignerRef.current?.saveDetail?.();
@@ -116,8 +121,6 @@ const BaseDetail: React.FC = () => {
         </Flex>
       );
     }
-
-
 
     return (
       <>
