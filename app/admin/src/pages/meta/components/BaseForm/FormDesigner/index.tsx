@@ -46,7 +46,6 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
         ]
       : activeForm?.containers;
 
-    setFormConfig(activeForm?.formConfig);
     setContainers(containers);
   }, [activeForm]);
 
@@ -200,7 +199,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
         </div>
         <div className="form-designer-right">
           <ConfigPanel
-            formConfig={formConfig}
+            formConfig={activeForm?.formConfig}
             containers={containers}
             selectedForm={selectedForm}
             selectedContainer={selectedContainer}

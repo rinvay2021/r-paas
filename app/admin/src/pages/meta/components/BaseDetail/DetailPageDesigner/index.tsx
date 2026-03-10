@@ -9,32 +9,39 @@ import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
 import './index.less';
 import { useRequest } from 'ahooks';
 import { metaService } from '@/api/meta';
+import { useMetaFroms } from '@/store/metaFormAtom';
 
 const DetailPageDesigner: React.ForwardRefRenderFunction<
   DetailPageDesignerRef,
   DetailPageDesignerProps
 > = (props, ref) => {
   const { refresh, height, activeDetail } = props;
-  console.log(activeDetail, 'activeDetail ====');
-  // const { options } = useMetaFormAtom();
 
-  let options = [];
+  const forms = useMetaFroms();
   const [form] = Form.useForm<DetailPageDto>();
   const [detailPageConfig, setDetailPageConfig] = React.useState<DetailPageConfig>();
 
   React.useEffect(() => {
-    form.setFieldsValue(activeDetail);
+    const [mainContainer, ...restContainers] = activeDetail?.containers || [];
+
+    form.setFieldsValue({
+      ...mainContainer,
+      containers: restContainers,
+    });
+
     setDetailPageConfig(activeDetail?.detailPageConfig);
   }, [form, activeDetail]);
 
   const { run: saveDetail } = useRequest(
     async () => {
       const details = await form.validateFields();
+      const { containers, ...restParams } = details;
 
       const detailPageData = {
-        ...details,
-        detailPageConfig,
         _id: activeDetail?._id || '',
+        formCode: restParams?.formCode,
+        containers: [restParams, ...containers],
+        detailPageConfig,
       };
 
       return metaService.updateDetailPage(detailPageData);
@@ -49,6 +56,11 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
         message.error(error.message || '保存失败');
       },
     }
+  );
+
+  const formsOptions = React.useMemo(
+    () => forms.map(list => ({ value: list.formCode, label: list.formName })),
+    [forms]
   );
 
   React.useImperativeHandle(ref, () => ({
@@ -70,7 +82,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item label="对象表单" name="formCode">
-                      <Select options={options} />
+                      <Select options={formsOptions} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -114,7 +126,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   label="关联对象"
                                   name={[name, 'metaObjectCode']}
                                 >
-                                  <Select options={options} />
+                                  <Select options={formsOptions} />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -130,7 +142,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   label="关联控件"
                                   name={[name, 'componentType']}
                                 >
-                                  <Select options={options} />
+                                  <Select options={formsOptions} />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -183,7 +195,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
         </div>
       </div>
       <div className="form-designer-right">
-        <ConfigPanel config={detailPageConfig} onChange={setDetailPageConfig} />
+        <ConfigPanel config={activeDetail?.detailPageConfig} onChange={setDetailPageConfig} />
       </div>
     </div>
   );

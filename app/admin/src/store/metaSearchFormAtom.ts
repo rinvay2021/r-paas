@@ -1,5 +1,5 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import { useRequest } from 'ahooks';
 
 import { useMeta } from '@/store/metaAtom';
@@ -73,6 +73,9 @@ export const useInitMetaSearchFormAtom = (params?: QuerySearchFormDto) => {
   const setMetaSearchForms = useSetMetaSearchForms();
   const setCurrentMetaSearchForm = useSetCurrentMetaSearchForm();
   const setLoadingSearchForms = useSetLoadingSearchForms();
+
+  // 当前搜索表单
+  const activeSearchForm = useCurrentMetaSearchForm();
   const refreshTrigger = useMetaSearchFormsRefreshTrigger();
 
   useRequest(
@@ -90,7 +93,12 @@ export const useInitMetaSearchFormAtom = (params?: QuerySearchFormDto) => {
         const list = get(data, 'data.list', []);
 
         setMetaSearchForms(list);
-        setCurrentMetaSearchForm(list[0]);
+
+        // 如果有当前搜索表单，则设置当前搜索表单
+        const searchForm = find(list, f => f.searchFormCode === activeSearchForm?.searchFormCode);
+        const finalActiveSearchForm = searchForm ? searchForm : list[0];
+
+        setCurrentMetaSearchForm(finalActiveSearchForm);
       },
       onBefore: () => {
         setLoadingSearchForms(true);

@@ -1,6 +1,6 @@
 /** 详情页数据源 */
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import { useRequest } from 'ahooks';
 
 import { useMeta } from '@/store/metaAtom';
@@ -73,6 +73,8 @@ export const useInitMetaDetailAtom = (params?: QueryDetailPageDto) => {
   const setMetaDetails = useSetMetaDetails();
   const setCurrentDetail = useSetCurrentDetail();
   const setLoadingDetails = useSetLoadingDetails();
+
+  const activeDetail = useCurrentDetail();
   const refreshTrigger = useMetaDetailsRefreshTrigger();
 
   useRequest(
@@ -87,10 +89,15 @@ export const useInitMetaDetailAtom = (params?: QueryDetailPageDto) => {
       ready: !!appCode && !!metaObjectCode,
       refreshDeps: [appCode, metaObjectCode, refreshTrigger], // 依赖刷新触发器
       onSuccess: data => {
-        const list = get(data, 'data.list', [])
+        const list = get(data, 'data.list', []);
 
         setMetaDetails(list);
-        setCurrentDetail(list?.[0]);
+
+        // 如果有当前详情页，则设置当前详情页
+        const detail = find(list, item => item?.formCode === activeDetail?.formCode);
+        const finalActiveDetail = detail ? detail : list[0];
+
+        setCurrentDetail(finalActiveDetail);
       },
       onBefore: () => {
         setLoadingDetails(true);

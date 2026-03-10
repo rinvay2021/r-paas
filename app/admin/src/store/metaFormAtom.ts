@@ -1,6 +1,6 @@
 /** 表单数据源 */
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import { useRequest } from 'ahooks';
 import { OptionProps } from 'antd/lib/select';
 
@@ -68,7 +68,6 @@ export const useMetaFormsRefreshTrigger = () => {
   return refreshTrigger;
 };
 
-
 /** 初始化表单数据源 hook */
 export const useInitMetaFormAtom = (params?: QueryFormDto) => {
   const { appCode, metaObjectCode } = useMeta();
@@ -76,6 +75,8 @@ export const useInitMetaFormAtom = (params?: QueryFormDto) => {
   const setMetaFroms = useSetMetaFroms();
   const setCurrentMetaForm = useSetCurrentMetaForm();
   const setLoadingForms = useSetLoadingForms();
+
+  const activeForm = useCurrentMetaForm();
   const refreshTrigger = useMetaFormsRefreshTrigger();
 
   useRequest(
@@ -90,10 +91,15 @@ export const useInitMetaFormAtom = (params?: QueryFormDto) => {
       ready: !!appCode && !!metaObjectCode,
       refreshDeps: [appCode, metaObjectCode, refreshTrigger], // 依赖刷新触发器
       onSuccess: data => {
-        const list = get(data, 'data.list', [])
+        const list = get(data, 'data.list', []);
 
         setMetaFroms(list);
-        setCurrentMetaForm(list[0]);
+
+        // 如果有当前表单，则设置当前表单
+        const form = find(list, item => item?.formCode === activeForm?.formCode);
+        const finalActiveForm = form ? form : list[0];
+
+        setCurrentMetaForm(finalActiveForm);
       },
       onBefore: () => {
         setLoadingForms(true);

@@ -267,7 +267,7 @@ export interface DetailPageDto {
   appCode: string;
   /** 对象编码 */
   metaObjectCode: string;
-  /** 子对象 */
+  /** 对象 */
   containers?: DetailPageContainer[];
   /** 详情页配置 */
   detailPageConfig?: DetailPageConfig;
