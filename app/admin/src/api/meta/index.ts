@@ -20,6 +20,7 @@ import type {
   UpdateSearchFormDto,
   ViewDto,
   QueryViewDto,
+  UpdateViewDto,
   ActionButtonDto,
   QueryActionButtonDto,
   UpdateActionButtonDto,
@@ -146,6 +147,14 @@ export class MetaService {
 
   async queryViews(params: QueryViewDto) {
     return await http.post<{ list: ViewDto[]; total: number }>('/meta/view/list', params);
+  }
+
+  async updateView(data: UpdateViewDto) {
+    return await http.post<ViewDto>('/meta/view/update', data);
+  }
+
+  async deleteView(id: string) {
+    return await http.post('/meta/view/delete', { id });
   }
 
   /**

@@ -12,7 +12,7 @@ import {
 // 帮助类型选项
 export const HELP_TYPE_OPTIONS = [
   { label: '帮助提示', value: HelpType.TOOLTIP },
-  { label: '链接', value: HelpType.LINK },
+  { label: '帮助提示+链接', value: HelpType.LINK },
 ];
 
 // 按钮级别选项

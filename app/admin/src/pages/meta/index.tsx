@@ -1,25 +1,12 @@
 import React from 'react';
-// import { map } from 'lodash';
-// import { useRequest } from 'ahooks';
-// import { useParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
-// import { useQueryParam, StringParam } from 'use-query-params';
 import { Flex, Select, Button, message, Segmented, Divider } from 'antd';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 import { metaService } from '@/api/meta';
 import type { MetaObjectDto } from '@/api/meta/interface';
 import { META_CONFIG_TYPE, META_CONFIG, NUMBER_CONSTANTS, prefix } from '@/constant';
-import {
-  BaseField,
-  BaseForm,
-  BaseDetail,
-  BaseList,
-  SearchForm,
-  FunctionButton,
-  BaseView,
-} from './components';
-import './index.less';
+
 import {
   useMeta,
   useInitMetaObjects,
@@ -30,6 +17,19 @@ import { useInitMetaFormAtom } from '@/store/metaFormAtom';
 import { useInitMetaDetailAtom } from '@/store/metaDetailAtom';
 import { useInitMetaListAtom } from '@/store/metaListAtom';
 import { useInitMetaSearchFormAtom } from '@/store/metaSearchFormAtom';
+import { useInitMetaViewAtom } from '@/store/metaViewAtom';
+
+import {
+  BaseField,
+  BaseForm,
+  BaseDetail,
+  BaseList,
+  SearchForm,
+  FunctionButton,
+  BaseView,
+} from './components';
+
+import './index.less';
 
 const ComponentMap = {
   [META_CONFIG.BaseField]: BaseField,
@@ -50,6 +50,8 @@ const ConfigComponent: React.FC = () => {
   useInitMetaListAtom();
   /** 初始化搜索表单数据源 */
   useInitMetaSearchFormAtom();
+  /** 初始化视图数据源 */
+  useInitMetaViewAtom();
   /** 渲染组件 */
   const { configurableType } = useMeta();
 
