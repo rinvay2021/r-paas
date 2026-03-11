@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProForm, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
-import HelpSettingsButton from '@/pages/meta/biz-components/HelpSettingsButton';
+import HelpSettingsButton from '@/pages/meta/biz-components/HelpSettings';
 
 import type { ListConfigProps, ListConfigRef } from '../../types';
 

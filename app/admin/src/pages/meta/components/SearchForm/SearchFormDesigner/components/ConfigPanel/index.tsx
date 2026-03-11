@@ -23,7 +23,6 @@ const ConfigPanel: React.ForwardRefRenderFunction<SearchFormConfigRef, SearchFor
       {/* <ProForm.Item name="helpSettings" layout="horizontal" tooltip="配置表单帮助" label="帮助设置">
         <HelpSettingsButton />
       </ProForm.Item> */}
-
       <ProFormSwitch name="isCollapsible" label="是否可折叠" />
       <ProFormDigit name="collapseRows" label="折叠行数" min={1} max={10} />
     </ProForm>
