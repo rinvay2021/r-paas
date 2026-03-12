@@ -2,9 +2,7 @@ import {
   HelpType,
   ButtonLevel,
   ButtonEventType,
-  ListRowButtonEvent,
-  ListButtonEvent,
-  ViewButtonEvent,
+  ButtonEvent,
   BooleanEnum,
   ButtonConfigItem,
 } from './type';
@@ -30,20 +28,24 @@ export const BUTTON_EVENT_TYPE_OPTIONS = [
 
 // 列表行事件选项
 export const LIST_ROW_BUTTON_EVENT_OPTIONS = [
-  { label: '修改', value: ListRowButtonEvent.Update },
-  { label: '删除', value: ListRowButtonEvent.Delete },
+  { label: '修改', value: ButtonEvent.Update },
+  { label: '删除', value: ButtonEvent.Delete },
 ];
 
 // 列表事件选项
-export const LIST_BUTTON_EVENT_OPTIONS = [{ label: '新建', value: ListButtonEvent.Create }];
+export const LIST_BUTTON_EVENT_OPTIONS = [
+  { label: '新建', value: ButtonEvent.Create },
+  { label: '批量删除', value: ButtonEvent.BatchDelete },
+  { label: '批量编辑', value: ButtonEvent.BatchUpdate },
+  { label: '导出', value: ButtonEvent.Export },
+  { label: '导入', value: ButtonEvent.Import },
+];
 
 // 视图事件选项
 export const VIEW_BUTTON_EVENT_OPTIONS = [
-  { label: '新建', value: ViewButtonEvent.Create },
-  { label: '导出', value: ViewButtonEvent.Export },
-  { label: '导入', value: ViewButtonEvent.Import },
-  { label: '批量删除', value: ViewButtonEvent.BatchDelete },
-  { label: '批量编辑', value: ViewButtonEvent.BatchUpdate },
+  { label: '新建', value: ButtonEvent.Create },
+  { label: '导出', value: ButtonEvent.Export },
+  { label: '导入', value: ButtonEvent.Import },
 ];
 
 // 布尔值选项

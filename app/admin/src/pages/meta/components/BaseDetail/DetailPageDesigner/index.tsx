@@ -139,7 +139,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                               <Col span={12}>
                                 <Form.Item
                                   {...restField}
-                                  label="关联控件"
+                                  label="关联表单"
                                   name={[name, 'componentType']}
                                 >
                                   <Select options={formsOptions} />

@@ -12,6 +12,7 @@ export enum ButtonLevel {
   View = 'View',
   List = 'List',
   ListRow = 'ListRow',
+  Detail = 'DetailPage',
 }
 
 // 事件类型枚举
@@ -20,23 +21,21 @@ export enum ButtonEventType {
   Custom = 'Custom',
 }
 
-// 列表行事件枚举
-export enum ListRowButtonEvent {
+// 事件枚举
+export enum ButtonEvent {
+  /** 编辑 */
   Update = 'Update',
+  /** 删除 */
   Delete = 'Delete',
-}
-
-// 列表事件枚举
-export enum ListButtonEvent {
+  /** 新增 */
   Create = 'Create',
-}
-
-// 视图事件枚举
-export enum ViewButtonEvent {
-  Create = 'Create',
+  /** 导出 */
   Export = 'Export',
+  /** 导入 */
   Import = 'Import',
+  /** 批量删除 */
   BatchDelete = 'BatchDelete',
+  /** 批量更新 */
   BatchUpdate = 'BatchUpdate',
 }
 
