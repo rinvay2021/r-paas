@@ -228,7 +228,6 @@ export type DetailPageMainObjectContainer = {
   buttons?: any[];
 };
 
-
 /** 详情页子对象容器 */
 export type DetailPageSubObjectContainer = {
   type: DetailPageContainerType;
@@ -238,12 +237,14 @@ export type DetailPageSubObjectContainer = {
   title?: string;
   /** 关联组件：列表/视图 */
   componentType?: DetailPageComponentType;
+  /** 组件 */
+  component: string;
   /** 编码 */
-  code?: string;
+  componentCode?: string;
   /** 排序 */
   order?: number;
-  /** 是否默认展开 */
-  defaultExpand?: boolean;
+  /** 是否展示 */
+  isVisible?: boolean;
   /** 功能按钮 */
   buttons?: any[];
 };

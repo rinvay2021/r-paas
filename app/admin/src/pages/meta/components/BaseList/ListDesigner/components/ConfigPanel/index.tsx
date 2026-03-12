@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProForm, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
 import HelpSettingsButton from '@/pages/meta/biz-components/HelpSettings';
-
+import ButtonSelector from '@/pages/meta/biz-components/ButtonSelector';
 import type { ListConfigProps, ListConfigRef } from '../../types';
 
 const ConfigPanel: React.ForwardRefRenderFunction<ListConfigRef, ListConfigProps> = (
@@ -23,7 +23,9 @@ const ConfigPanel: React.ForwardRefRenderFunction<ListConfigRef, ListConfigProps
       <ProForm.Item name="helpSettings" layout="horizontal" tooltip="配置表单帮助" label="帮助设置">
         <HelpSettingsButton />
       </ProForm.Item>
-
+      <ProForm.Item name="buttons" layout="horizontal" tooltip="配置列表功能按钮" label="功能按钮">
+        <ButtonSelector />
+      </ProForm.Item>
       <ProFormSwitch name="frozenColumn" label="冻结操作列" />
       <ProFormSwitch name="showActions" label="显示操作列" />
       <ProFormSwitch name="showCheckbox" label="显示勾选框" />

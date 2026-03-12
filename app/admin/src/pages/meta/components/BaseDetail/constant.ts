@@ -1,8 +1,4 @@
-/** 详情页面类型 */
-export enum PageType {
-  TagTiled = 'TagTiled',
-  OnePage = 'OnePage',
-}
+import { PageType, ComponentType } from './types';
 
 export const DETAIL_PAGE_OPTIONS = [
   {
@@ -15,14 +11,13 @@ export const DETAIL_PAGE_OPTIONS = [
   },
 ];
 
-
 export const COMPONENT_TYPE_OPTIONS = [
   {
     label: '列表',
-    value: 'List',
+    value: ComponentType.List,
   },
   {
     label: '视图',
-    value: 'View',
+    value: ComponentType.View,
   },
 ];

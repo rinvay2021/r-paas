@@ -1,4 +1,4 @@
-.@{prefix}-view-preview-container {
+.@{prefix}-preview-container {
   position: relative;
   display: flex;
   justify-content: center;
@@ -13,11 +13,18 @@
   top: 30px;
 }
 
-.@{prefix}-preview-content {
+.@{prefix}-form-content {
   width: 50%;
   height: 100%;
   padding: 8px 0;
   overflow-y: auto;
+
+  .@{prefix}-form {
+    pointer-events: auto;
+    border-radius: 8px;
+    padding: 20px 24px;
+    border: 1px solid #e8e8e8;
+  }
 
   .rpaas-scrollbars();
 }

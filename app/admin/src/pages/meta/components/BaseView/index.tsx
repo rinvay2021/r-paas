@@ -72,28 +72,7 @@ const BaseView: React.FC = () => {
   });
 
   const handleSaveView = useMemoizedFn(async () => {
-    try {
-      const formData = await viewDesignerRef.current?.getFormData?.();
-
-      if (!formData) {
-        message.error('获取表单数据失败');
-        return;
-      }
-
-      if (editingViewRef.current) {
-        await metaService.updateView({
-          ...formData,
-          _id: editingViewRef.current._id,
-        });
-        message.success('更新成功');
-      }
-
-      refreshTrigger();
-      setPreview();
-    } catch (error) {
-      const errorMessage = get(error, 'message', '保存失败');
-      message.error(errorMessage);
-    }
+    await viewDesignerRef.current?.saveView?.();
   });
 
   const handleSettingView = useMemoizedFn(() => {
@@ -203,7 +182,12 @@ const BaseView: React.FC = () => {
           }}
         />
         {isEditing ? (
-          <ViewDesigner ref={viewDesignerRef} height={height} activeView={activeView} />
+          <ViewDesigner
+            ref={viewDesignerRef}
+            height={height}
+            activeView={activeView}
+            refresh={refreshTrigger}
+          />
         ) : (
           <ViewPreview
             height={height}

@@ -1,25 +1,25 @@
 import React from 'react';
-import { Button, Space, Popconfirm } from 'antd';
+import { Button, Form, Input, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { prefix } from '@/constant';
 
 import './index.less';
 
-interface ViewPreviewProps {
+interface PreviewProps {
   height: number;
   onEdit?: () => void;
   onDelete?: () => void;
   onSetting?: () => void;
 }
 
-const ViewPreview: React.FC<ViewPreviewProps> = props => {
+const PreviewDetail: React.FC<PreviewProps> = props => {
   const { height, onEdit, onDelete, onSetting } = props;
 
   return (
     <div
-      id="view-preview"
+      id="detail-preview"
       style={{ height: `${height}px` }}
-      className={`${prefix}-view-preview-container`}
+      className={`${prefix}-preview-container`}
     >
       {/* 左侧操作按钮 */}
       <Space direction="vertical" size="middle" className={`${prefix}-action-buttons`}>
@@ -36,14 +36,20 @@ const ViewPreview: React.FC<ViewPreviewProps> = props => {
         </Popconfirm>
       </Space>
 
-      {/* 预览内容区域 */}
-      <div className={`${prefix}-preview-content`}>
-        <div style={{ padding: '24px', color: '#999' }}>
-          预览内容
-        </div>
+      {/* 表单内容区域 */}
+      {/* TODO：后续替换真实的表单渲染控件 */}
+      <div className={`${prefix}-form-content`}>
+        <Form className={`${prefix}-form`} layout="vertical">
+          {/* 模拟一些表单项来测试滚动 */}
+          {Array.from({ length: 20 }, (_, index) => (
+            <Form.Item key={index} label={`表单项 ${index + 1}`} required={index % 3 === 0}>
+              <Input placeholder={`请输入表单项 ${index + 1}`} />
+            </Form.Item>
+          ))}
+        </Form>
       </div>
     </div>
   );
 };
 
-export default ViewPreview;
+export default PreviewDetail;

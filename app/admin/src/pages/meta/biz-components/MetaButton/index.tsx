@@ -1,8 +1,8 @@
 import React from 'react';
-import { map, filter, includes } from 'lodash';
 import { useMemoizedFn } from 'ahooks';
-import { Transfer, Empty, Spin } from 'antd';
 import type { TransferProps } from 'antd';
+import { Transfer, Empty, Spin } from 'antd';
+import { map, filter, includes } from 'lodash';
 import { useMeta } from '@/store/metaAtom';
 import { useMetaButtons, useLoadingButtons } from '@/store/metaButtons';
 import { ActionButtonDto } from '@/api/meta/interface';
@@ -45,7 +45,7 @@ export const ButtonSelector: React.FC<ButtonSelectorProps> = props => {
     return map(buttons, (button: ActionButtonDto) => {
       return {
         key: button._id,
-        /** 按钮等级 */
+        /** 按钮等级过滤 */
         disabled: button.buttonLevel !== level,
         title: button.buttonName,
       };
@@ -62,7 +62,7 @@ export const ButtonSelector: React.FC<ButtonSelectorProps> = props => {
       onChange={handleChange}
       listStyle={{
         width: '100%',
-        height: 300,
+        height: 220,
       }}
       render={item => `${item.title}`}
     />

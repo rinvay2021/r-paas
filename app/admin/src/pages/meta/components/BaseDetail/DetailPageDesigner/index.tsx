@@ -12,6 +12,8 @@ import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
 import { COMPONENT_TYPE_OPTIONS, DETAIL_PAGE_OPTIONS } from '../constant';
 
 import ConfigPanel from './components/ConfigPanel';
+import ComponentSelect from './components/ComponentSelect';
+import ComponentButtonSelect from './components/ComponentButtonSelect';
 import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
 
 import './index.less';
@@ -49,7 +51,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
         formCode: restParams?.formCode,
         containers: [restParams, ...containers],
         detailPageConfig,
-      };
+      } as any;
 
       return metaService.updateDetailPage(detailPageData);
     },
@@ -105,7 +107,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                 </Row>
                 <Row gutter={16}>
                   <Col span={12}>
-                    <Form.Item label="功能按钮（详情页）" name="buttons">
+                    <Form.Item label="功能按钮" tooltip="功能按钮（详情页）" name="buttons">
                       <ButtonSelector level={ButtonLevel.ListRow} />
                     </Form.Item>
                   </Col>
@@ -138,12 +140,19 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   label="关联对象"
                                   name={[name, 'metaObjectCode']}
                                 >
-                                  <Select options={metaObjectOptions} />
+                                  <Select
+                                    options={metaObjectOptions}
+                                    placeholder="请先选择关联对象"
+                                    onChange={() => {
+                                      form.setFieldValue(['containers', name, 'component'], undefined);
+                                      form.setFieldValue(['containers', name, 'buttons'], undefined);
+                                    }}
+                                  />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
                                 <Form.Item {...restField} label="组件标题" name={[name, 'title']}>
-                                  <Input />
+                                  <Input placeholder="请输入组件标题" />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -152,21 +161,54 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   label="组件类型"
                                   name={[name, 'componentType']}
                                 >
-                                  <Select options={COMPONENT_TYPE_OPTIONS} />
+                                  <Select
+                                    options={COMPONENT_TYPE_OPTIONS}
+                                    placeholder="请先选择组件类型"
+                                    onChange={() => {
+                                      form.setFieldValue(['containers', name, 'component'], undefined);
+                                      form.setFieldValue(['containers', name, 'buttons'], undefined);
+                                    }}
+                                  />
                                 </Form.Item>
                               </Col>
+                              <Form.Item
+                                noStyle
+                                shouldUpdate={(prevValues, currentValues) => {
+                                  return (
+                                    prevValues?.containers?.[name]?.metaObjectCode !==
+                                      currentValues?.containers?.[name]?.metaObjectCode ||
+                                    prevValues?.containers?.[name]?.componentType !==
+                                      currentValues?.containers?.[name]?.componentType
+                                  );
+                                }}
+                              >
+                                {() => (
+                                  <Col span={12}>
+                                    <Form.Item {...restField} label="组件" name={[name, 'component']}>
+                                      <ComponentSelect
+                                        metaObjectCode={form.getFieldValue([
+                                          'containers',
+                                          name,
+                                          'metaObjectCode',
+                                        ])}
+                                        componentType={form.getFieldValue([
+                                          'containers',
+                                          name,
+                                          'componentType',
+                                        ])}
+                                      />
+                                    </Form.Item>
+                                  </Col>
+                                )}
+                              </Form.Item>
                               <Col span={12}>
                                 <Form.Item
                                   {...restField}
-                                  label="组件"
-                                  name={[name, 'componentType']}
+                                  label="编码"
+                                  name={[name, 'componentCode']}
+                                  rules={[{ required: true, message: '请输入编码' }]}
                                 >
-                                  <Select options={COMPONENT_TYPE_OPTIONS} />
-                                </Form.Item>
-                              </Col>
-                              <Col span={12}>
-                                <Form.Item {...restField} label="编码" name={[name, 'code']}>
-                                  <Input />
+                                  <Input placeholder="请输入编码" />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -177,22 +219,46 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                               <Col span={12}>
                                 <Form.Item
                                   {...restField}
-                                  label="默认显示"
-                                  name={[name, 'defaultExpand']}
+                                  label="是否可见"
+                                  initialValue={true}
+                                  name={[name, 'isVisible']}
                                 >
                                   <Switch />
                                 </Form.Item>
                               </Col>
                             </Row>
-                            <Row gutter={16}></Row>
-                            <Row gutter={16}></Row>
-                            <Row gutter={16}>
-                              <Col span={12}>
-                                <Form.Item {...restField} label="功能按钮" name={[name, 'buttons']}>
-                                  <ButtonSelector />
-                                </Form.Item>
-                              </Col>
-                            </Row>
+                            <Form.Item
+                              noStyle
+                              shouldUpdate={(prevValues, currentValues) => {
+                                return (
+                                  prevValues?.containers?.[name]?.metaObjectCode !==
+                                    currentValues?.containers?.[name]?.metaObjectCode ||
+                                  prevValues?.containers?.[name]?.componentType !==
+                                    currentValues?.containers?.[name]?.componentType
+                                );
+                              }}
+                            >
+                              {() => (
+                                <Row gutter={16}>
+                                  <Col span={12}>
+                                    <Form.Item {...restField} label="功能按钮" name={[name, 'buttons']}>
+                                      <ComponentButtonSelect
+                                        metaObjectCode={form.getFieldValue([
+                                          'containers',
+                                          name,
+                                          'metaObjectCode',
+                                        ])}
+                                        componentType={form.getFieldValue([
+                                          'containers',
+                                          name,
+                                          'componentType',
+                                        ])}
+                                      />
+                                    </Form.Item>
+                                  </Col>
+                                </Row>
+                              )}
+                            </Form.Item>
                           </div>
                         </div>
                       );

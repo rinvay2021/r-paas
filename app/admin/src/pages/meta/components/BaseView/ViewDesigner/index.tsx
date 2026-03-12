@@ -1,8 +1,12 @@
 import React from 'react';
-import { Form, Row, Col, Select } from 'antd';
+import { useRequest } from 'ahooks';
+import { Form, Row, Col, Select, message } from 'antd';
 import { ViewDto } from '@/api/meta/interface';
 import { useMetaLists } from '@/store/metaListAtom';
 import { useMetaSearchForms } from '@/store/metaSearchFormAtom';
+import { ButtonSelector } from '@/pages/meta/biz-components/MetaButton';
+import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { metaService } from '@/api/meta';
 import ViewConfigPanel from './components/ViewConfigPanel';
 import type { ViewDesignerProps, ViewDesignerRef } from './types';
 
@@ -12,7 +16,7 @@ const ViewDesigner: React.ForwardRefRenderFunction<ViewDesignerRef, ViewDesigner
   props,
   ref
 ) => {
-  const { height, activeView } = props;
+  const { height, activeView, refresh } = props;
 
   const lists = useMetaLists();
   const searchForms = useMetaSearchForms();
@@ -35,14 +39,31 @@ const ViewDesigner: React.ForwardRefRenderFunction<ViewDesignerRef, ViewDesigner
     [searchForms]
   );
 
-  React.useImperativeHandle(ref, () => ({
-    getFormData: async () => {
+  const { run: saveView } = useRequest(
+    async () => {
       const values = await form.validateFields();
-      return {
+      const viewData = {
         ...values,
         viewConfig,
+        _id: activeView?._id,
       };
+
+      return metaService.updateView(viewData);
     },
+    {
+      manual: true,
+      onSuccess: () => {
+        message.success('保存成功');
+        refresh?.();
+      },
+      onError: (error: any) => {
+        message.error(error.message || '保存失败');
+      },
+    }
+  );
+
+  React.useImperativeHandle(ref, () => ({
+    saveView,
   }));
 
   return (
@@ -65,6 +86,16 @@ const ViewDesigner: React.ForwardRefRenderFunction<ViewDesignerRef, ViewDesigner
                   <Col span={12}>
                     <Form.Item name="listCode" label="列表" rules={[{ required: true }]}>
                       <Select options={listOptions} placeholder="请选择列表" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name="buttons"
+                      layout="horizontal"
+                      tooltip="配置视图功能按钮"
+                      label="功能按钮"
+                    >
+                      <ButtonSelector level={ButtonLevel.View} />
                     </Form.Item>
                   </Col>
                 </Row>

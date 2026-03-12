@@ -1,10 +1,11 @@
 import { ViewDto } from '@/api/meta/interface';
 
 export interface ViewDesignerRef {
-  getFormData: () => Promise<any>;
+  saveView: () => void;
 }
 
 export interface ViewDesignerProps {
   height: number;
   activeView?: ViewDto;
+  refresh?: () => void;
 }
