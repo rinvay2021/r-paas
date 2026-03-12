@@ -1,15 +1,17 @@
 import React from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
+import { Button, Col, Form, Input, InputNumber, message, Row, Select, Switch } from 'antd';
 // import { useMetaFormAtom } from '@/store/metaFormAtom';
 import { DetailPageConfig, DetailPageDto } from '@/api/meta/interface';
-import { DETAIL_PAGE_OPTIONS } from '../constant';
+import { COMPONENT_TYPE_OPTIONS, DETAIL_PAGE_OPTIONS } from '../constant';
 import ConfigPanel from './components/ConfigPanel';
 import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
 import './index.less';
 import { useRequest } from 'ahooks';
 import { metaService } from '@/api/meta';
 import { useMetaFroms } from '@/store/metaFormAtom';
+import { ButtonSelector } from '@/pages/meta/biz-components/MetaButton';
+import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
 
 const DetailPageDesigner: React.ForwardRefRenderFunction<
   DetailPageDesignerRef,
@@ -94,7 +96,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item label="功能按钮" name="buttons">
-                      <Select options={DETAIL_PAGE_OPTIONS} />
+                      <ButtonSelector level={ButtonLevel.ListRow} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -134,15 +136,22 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   <Input />
                                 </Form.Item>
                               </Col>
-                            </Row>
-                            <Row gutter={16}>
                               <Col span={12}>
                                 <Form.Item
                                   {...restField}
-                                  label="关联表单"
+                                  label="组件类型"
                                   name={[name, 'componentType']}
                                 >
-                                  <Select options={formsOptions} />
+                                  <Select options={COMPONENT_TYPE_OPTIONS} />
+                                </Form.Item>
+                              </Col>
+                              <Col span={12}>
+                                <Form.Item
+                                  {...restField}
+                                  label="组件"
+                                  name={[name, 'componentType']}
+                                >
+                                  <Select options={COMPONENT_TYPE_OPTIONS} />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -150,8 +159,6 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   <Input />
                                 </Form.Item>
                               </Col>
-                            </Row>
-                            <Row gutter={16}>
                               <Col span={12}>
                                 <Form.Item {...restField} label="排序" name={[name, 'order']}>
                                   <InputNumber />
@@ -160,17 +167,19 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                               <Col span={12}>
                                 <Form.Item
                                   {...restField}
-                                  label="是否默认显示"
+                                  label="默认显示"
                                   name={[name, 'defaultExpand']}
                                 >
-                                  <Select options={DETAIL_PAGE_OPTIONS} />
+                                  <Switch />
                                 </Form.Item>
                               </Col>
                             </Row>
+                            <Row gutter={16}></Row>
+                            <Row gutter={16}></Row>
                             <Row gutter={16}>
                               <Col span={12}>
                                 <Form.Item {...restField} label="功能按钮" name={[name, 'buttons']}>
-                                  <Select options={DETAIL_PAGE_OPTIONS} />
+                                  <ButtonSelector />
                                 </Form.Item>
                               </Col>
                             </Row>

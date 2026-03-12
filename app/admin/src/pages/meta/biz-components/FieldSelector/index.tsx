@@ -1,11 +1,12 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { Tree, Input, Space, Button, Empty, Spin, message, Popover } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { useRequest } from 'ahooks';
+import React from 'react';
 import { map, filter } from 'lodash';
-import type { DataNode } from 'antd/lib/tree';
+import { useMemoizedFn } from 'ahooks';
+import { SearchOutlined } from '@ant-design/icons';
+import { Tree, Input, Space, Button, Empty, Spin, Popover } from 'antd';
+
 import { useMeta } from '@/store/metaAtom';
-import { metaService } from '@/api/meta';
+import { useMetaFields, useLoadingFields } from '@/store/metaFields';
+import type { DataNode } from 'antd/lib/tree';
 import type { FieldDto } from '@/api/meta/interface';
 
 import './index.less';
@@ -53,33 +54,17 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
   ...restProps
 }) => {
   const { appCode, metaObjectCode } = useMeta();
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [open, setOpen] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [selectedKeys, setSelectedKeys] = React.useState<string[]>([]);
 
   // 获取字段列表
-  const { data: originFields = [], loading } = useRequest(
-    async () => {
-      if (!appCode || !metaObjectCode) {
-        throw new Error('缺少必要参数：appCode 或 metaObjectCode');
-      }
-
-      const response = await metaService.queryFields({
-        appCode,
-        metaObjectCode,
-      });
-      return response?.data?.list || [];
-    },
-    {
-      ready: !!(appCode && metaObjectCode),
-      onError: err => {
-        message.error(`获取字段列表失败: ${err.message}`);
-      },
-    }
-  );
+  const originFields = useMetaFields();
+  const loading = useLoadingFields();
 
   // 处理搜索和过滤逻辑
-  const treeData = useMemo(() => {
+  const treeData = React.useMemo(() => {
     const originTreeData = convertToTreeData(
       originFields,
       existingFields,
@@ -114,25 +99,24 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
     return searchFields(originTreeData);
   }, [originFields, searchValue, existingFields]);
 
-  const handleCheck = useCallback(
+  const handleCheck = useMemoizedFn(
     (checked: string[] | { checked: string[]; halfChecked: string[] }) => {
       const checkedKeys = Array.isArray(checked) ? checked : checked.checked;
       setSelectedKeys(checkedKeys);
-    },
-    []
+    }
   );
 
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useMemoizedFn((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value.trim());
-  }, []);
+  });
 
-  const handleCancel = useCallback(() => {
+  const handleCancel = useMemoizedFn(() => {
     setSelectedKeys([]);
     setSearchValue('');
     setOpen(false);
-  }, []);
+  });
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useMemoizedFn(() => {
     // 获取选中的字段
     const selectedFields = filter(originFields, field => {
       return selectedKeys.includes(field._id);
@@ -143,7 +127,7 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
     setOpen(false);
     setSelectedKeys([]);
     setSearchValue('');
-  }, [selectedKeys, onConfirm]);
+  });
 
   const content = (
     <div className="field-selector">

@@ -14,3 +14,15 @@ export const DETAIL_PAGE_OPTIONS = [
     value: PageType.OnePage,
   },
 ];
+
+
+export const COMPONENT_TYPE_OPTIONS = [
+  {
+    label: '列表',
+    value: 'List',
+  },
+  {
+    label: '视图',
+    value: 'View',
+  },
+];

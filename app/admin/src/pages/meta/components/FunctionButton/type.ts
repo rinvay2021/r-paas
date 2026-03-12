@@ -12,7 +12,7 @@ export enum ButtonLevel {
   View = 'View',
   List = 'List',
   ListRow = 'ListRow',
-  Detail = 'DetailPage',
+  DetailPage = 'DetailPage',
 }
 
 // 事件类型枚举

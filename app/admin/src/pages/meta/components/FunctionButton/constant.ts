@@ -7,32 +7,34 @@ import {
   ButtonConfigItem,
 } from './type';
 
-// 帮助类型选项
+/** 帮助类型选项 */
 export const HELP_TYPE_OPTIONS = [
   { label: '帮助提示', value: HelpType.TOOLTIP },
   { label: '帮助提示+链接', value: HelpType.LINK },
 ];
 
-// 按钮级别选项
+/** 按钮级别选项 */
 export const BUTTON_LEVEL_OPTIONS = [
   { label: '视图', value: ButtonLevel.View },
   { label: '列表', value: ButtonLevel.List },
   { label: '列表行', value: ButtonLevel.ListRow },
+  { label: '详情页', value: ButtonLevel.DetailPage },
 ];
 
-// 事件类型选项
+/** 事件类型选项 */
 export const BUTTON_EVENT_TYPE_OPTIONS = [
   { label: '系统事件', value: ButtonEventType.System },
   { label: '自定义事件', value: ButtonEventType.Custom },
 ];
 
-// 列表行事件选项
-export const LIST_ROW_BUTTON_EVENT_OPTIONS = [
-  { label: '修改', value: ButtonEvent.Update },
-  { label: '删除', value: ButtonEvent.Delete },
+/** 视图事件选项 */
+export const VIEW_BUTTON_EVENT_OPTIONS = [
+  { label: '新建', value: ButtonEvent.Create },
+  { label: '导出', value: ButtonEvent.Export },
+  { label: '导入', value: ButtonEvent.Import },
 ];
 
-// 列表事件选项
+/** 列表事件选项 */
 export const LIST_BUTTON_EVENT_OPTIONS = [
   { label: '新建', value: ButtonEvent.Create },
   { label: '批量删除', value: ButtonEvent.BatchDelete },
@@ -41,14 +43,19 @@ export const LIST_BUTTON_EVENT_OPTIONS = [
   { label: '导入', value: ButtonEvent.Import },
 ];
 
-// 视图事件选项
-export const VIEW_BUTTON_EVENT_OPTIONS = [
-  { label: '新建', value: ButtonEvent.Create },
-  { label: '导出', value: ButtonEvent.Export },
-  { label: '导入', value: ButtonEvent.Import },
+/** 列表行事件选项 */
+export const LIST_ROW_BUTTON_EVENT_OPTIONS = [
+  { label: '修改', value: ButtonEvent.Update },
+  { label: '删除', value: ButtonEvent.Delete },
 ];
 
-// 布尔值选项
+/** 详情页事件选项 */
+export const DETAIL_PAGE_BUTTON_EVENT_OPTIONS = [
+  { label: '修改', value: ButtonEvent.Update },
+  { label: '删除', value: ButtonEvent.Delete },
+];
+
+/** 布尔值选项 */
 export const BOOLEAN_OPTIONS = [
   { label: '是', value: BooleanEnum.YES },
   { label: '否（默认）', value: BooleanEnum.NO },
@@ -63,6 +70,8 @@ export const getButtonEventOptionsByLevel = (level: ButtonLevel) => {
       return LIST_BUTTON_EVENT_OPTIONS;
     case ButtonLevel.ListRow:
       return LIST_ROW_BUTTON_EVENT_OPTIONS;
+    case ButtonLevel.DetailPage:
+      return DETAIL_PAGE_BUTTON_EVENT_OPTIONS;
     default:
       return [];
   }

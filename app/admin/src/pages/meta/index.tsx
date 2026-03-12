@@ -13,6 +13,8 @@ import {
   useMetaObjectListAtom,
   useRefreshMetaObjects,
 } from '@/store/metaAtom';
+import { useInitMetaFieldAtom } from '@/store/metaFields';
+import { useInitMetaButtonAtom } from '@/store/metaButtons';
 import { useInitMetaFormAtom } from '@/store/metaFormAtom';
 import { useInitMetaDetailAtom } from '@/store/metaDetailAtom';
 import { useInitMetaListAtom } from '@/store/metaListAtom';
@@ -42,6 +44,10 @@ const ComponentMap = {
 };
 
 const ConfigComponent: React.FC = () => {
+  /** 初始化字段 */
+  useInitMetaFieldAtom();
+  /** 初始化按钮 */
+  useInitMetaButtonAtom();
   /** 初始化表单数据源 */
   useInitMetaFormAtom();
   /** 初始化详情页数据源 */
