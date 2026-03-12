@@ -1,5 +1,5 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { map } from 'lodash';
+import { map, get } from 'lodash';
 import { useMemoizedFn, useRequest } from 'ahooks';
 import { metaService } from '@/api/meta';
 import type { MetaObjectDto } from '@/api/meta/interface';
@@ -80,13 +80,9 @@ export const useInitMetaObjects = () => {
     ready: !!appCode,
     refreshDeps: [appCode, refreshTrigger],
     onSuccess: res => {
-      const list = map(res?.data?.list, (item: MetaObjectDto) => {
-        return {
-          label: item.metaObjectName,
-          value: item.metaObjectCode,
-        };
-      });
-      const defaultMetaObjectCode = metaObjectCode || list[0].value;
+      const list = get(res, 'data.list', []);
+
+      const defaultMetaObjectCode = metaObjectCode || list?.[0]?.metaObjectCode;
       const defaultConfigurableType = configurableType || META_CONFIG_TYPE[0].value;
 
       setAppCodeAtom(appCode);

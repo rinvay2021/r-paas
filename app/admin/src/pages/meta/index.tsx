@@ -1,4 +1,5 @@
 import React from 'react';
+import { map } from 'lodash';
 import { PlusOutlined } from '@ant-design/icons';
 import { Flex, Select, Button, message, Segmented, Divider } from 'antd';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
@@ -73,6 +74,13 @@ const Dashboard: React.FC = () => {
   const { setMetaObjectCode, setConfigurableType } = useInitMetaObjects();
   const [createModalOpen, setCreateModalOpen] = React.useState<boolean>(false);
 
+  const metaObjectOptions = React.useMemo(() => {
+    return map(metaObjectList, item => ({
+      value: item.metaObjectCode,
+      label: item.metaObjectName,
+    }));
+  }, [metaObjectList]);
+
   return (
     <Flex className={`${prefix}-configurable-meta`} vertical>
       {/* 顶部操作区 */}
@@ -80,7 +88,7 @@ const Dashboard: React.FC = () => {
         {/* 选择对象 */}
         <Select
           placeholder="请选择对象"
-          options={metaObjectList}
+          options={metaObjectOptions}
           value={metaObjectCode}
           onChange={value => setMetaObjectCode(value)}
           style={{ width: NUMBER_CONSTANTS.MAX_INPUT_LENGTH }}

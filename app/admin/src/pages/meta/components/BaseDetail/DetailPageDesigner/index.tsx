@@ -1,17 +1,20 @@
 import React from 'react';
+import { map } from 'lodash';
+import { useRequest } from 'ahooks';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, InputNumber, message, Row, Select, Switch } from 'antd';
-// import { useMetaFormAtom } from '@/store/metaFormAtom';
-import { DetailPageConfig, DetailPageDto } from '@/api/meta/interface';
-import { COMPONENT_TYPE_OPTIONS, DETAIL_PAGE_OPTIONS } from '../constant';
-import ConfigPanel from './components/ConfigPanel';
-import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
-import './index.less';
-import { useRequest } from 'ahooks';
 import { metaService } from '@/api/meta';
+import { DetailPageConfig, DetailPageDto } from '@/api/meta/interface';
 import { useMetaFroms } from '@/store/metaFormAtom';
+import { useMetaObjectListAtom } from '@/store/metaAtom';
 import { ButtonSelector } from '@/pages/meta/biz-components/MetaButton';
 import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { COMPONENT_TYPE_OPTIONS, DETAIL_PAGE_OPTIONS } from '../constant';
+
+import ConfigPanel from './components/ConfigPanel';
+import type { DetailPageDesignerRef, DetailPageDesignerProps } from './types';
+
+import './index.less';
 
 const DetailPageDesigner: React.ForwardRefRenderFunction<
   DetailPageDesignerRef,
@@ -20,6 +23,8 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
   const { refresh, height, activeDetail } = props;
 
   const forms = useMetaFroms();
+  const metaObjectList = useMetaObjectListAtom();
+
   const [form] = Form.useForm<DetailPageDto>();
   const [detailPageConfig, setDetailPageConfig] = React.useState<DetailPageConfig>();
 
@@ -61,8 +66,13 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
   );
 
   const formsOptions = React.useMemo(
-    () => forms.map(list => ({ value: list.formCode, label: list.formName })),
+    () => map(forms, list => ({ value: list.formCode, label: list.formName })),
     [forms]
+  );
+
+  const metaObjectOptions = React.useMemo(
+    () => map(metaObjectList, list => ({ value: list.metaObjectCode, label: list.metaObjectName })),
+    [metaObjectList]
   );
 
   React.useImperativeHandle(ref, () => ({
@@ -95,7 +105,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                 </Row>
                 <Row gutter={16}>
                   <Col span={12}>
-                    <Form.Item label="功能按钮" name="buttons">
+                    <Form.Item label="功能按钮（详情页）" name="buttons">
                       <ButtonSelector level={ButtonLevel.ListRow} />
                     </Form.Item>
                   </Col>
@@ -128,11 +138,11 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                                   label="关联对象"
                                   name={[name, 'metaObjectCode']}
                                 >
-                                  <Select options={formsOptions} />
+                                  <Select options={metaObjectOptions} />
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
-                                <Form.Item {...restField} label="页面标题" name={[name, 'title']}>
+                                <Form.Item {...restField} label="组件标题" name={[name, 'title']}>
                                   <Input />
                                 </Form.Item>
                               </Col>

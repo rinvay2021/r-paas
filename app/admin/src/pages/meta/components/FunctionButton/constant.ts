@@ -18,7 +18,7 @@ export const BUTTON_LEVEL_OPTIONS = [
   { label: '视图', value: ButtonLevel.View },
   { label: '列表', value: ButtonLevel.List },
   { label: '列表行', value: ButtonLevel.ListRow },
-  { label: '详情页', value: ButtonLevel.DetailPage },
+  // { label: '详情页', value: ButtonLevel.DetailPage },
 ];
 
 /** 事件类型选项 */
