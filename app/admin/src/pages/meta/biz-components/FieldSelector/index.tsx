@@ -16,6 +16,8 @@ interface FieldSelectorProps {
   onConfirm: (fields: FieldDto[]) => void;
   children?: React.ReactNode;
   trigger?: 'click' | 'hover';
+  /** 字段类型过滤函数 */
+  filterFieldType?: (fieldType: string) => boolean;
 }
 
 interface TreeNodeData extends DataNode {
@@ -23,14 +25,21 @@ interface TreeNodeData extends DataNode {
   children?: TreeNodeData[];
 }
 
-// 修改转换逻辑，在这里就过滤掉已选中的字段
+// 修改转换逻辑，在这里就过滤掉已选中的字段和不符合条件的字段类型
 const convertToTreeData = (
   fields: FieldDto[],
   existingFields: Set<string>,
-  groupName: string
+  groupName: string,
+  filterFieldType?: (fieldType: string) => boolean
 ): TreeNodeData[] => {
   const availableFields = filter(fields, field => {
-    return !existingFields.has(field._id);
+    // 过滤已存在的字段
+    if (existingFields.has(field._id)) return false;
+    // 如果提供了字段类型过滤函数，则应用过滤
+    if (filterFieldType && field.fieldType) {
+      return filterFieldType(field.fieldType);
+    }
+    return true;
   });
 
   return [
@@ -51,6 +60,7 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
   onConfirm,
   children,
   trigger = 'click',
+  filterFieldType,
   ...restProps
 }) => {
   const { appCode, metaObjectCode } = useMeta();
@@ -68,7 +78,8 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
     const originTreeData = convertToTreeData(
       originFields,
       existingFields,
-      `${appCode}.${metaObjectCode}`
+      `${appCode}.${metaObjectCode}`,
+      filterFieldType
     );
 
     const searchFields = (nodes: TreeNodeData[]): TreeNodeData[] => {

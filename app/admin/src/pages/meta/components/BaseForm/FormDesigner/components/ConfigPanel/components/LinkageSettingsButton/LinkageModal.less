@@ -1,0 +1,60 @@
+.linkage-modal {
+  .linkage-modal-content {
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+
+  .condition-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    .label {
+      font-weight: 500;
+      min-width: 70px;
+      line-height: 32px;
+    }
+  }
+
+  .actions-section {
+    .label {
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .actions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-left: 20px;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+
+      .action-label {
+        min-width: 80px;
+        flex-shrink: 0;
+        color: rgba(0, 0, 0, 0.65);
+        line-height: 32px;
+      }
+
+      .action-select {
+        flex: 1;
+        min-width: 0; // 防止多选框溢出
+      }
+    }
+  }
+
+  .linkage-modal-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

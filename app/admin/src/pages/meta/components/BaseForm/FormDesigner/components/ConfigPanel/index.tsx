@@ -49,7 +49,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = props => {
   }
 
   if (selectedForm) {
-    return <FormConfigPanel config={formConfig} onChange={onFormConfigChange} />;
+    return <FormConfigPanel config={formConfig} containers={containers} onChange={onFormConfigChange} />;
   }
 
   return null;

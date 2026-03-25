@@ -7,11 +7,21 @@ import type { FormConfigProps } from '../../types';
 import LayoutSettingsButton from './components/LayoutSettingsButton';
 import LinkageSettingsButton from './components/LinkageSettingsButton';
 
-export const FormConfigPanel: React.FC<FormConfigProps> = props => {
-  const { config, onChange } = props;
+export const FormConfigPanel: React.FC<FormConfigProps & { containers?: any[] }> = props => {
+  const { config, onChange, containers = [] } = props;
+
+  const handleValuesChange = (_changedValues: any, allValues: any) => {
+    // 传递所有值，而不仅仅是变化的值
+    onChange(allValues);
+  };
 
   return (
-    <ProForm layout="horizontal" submitter={false} initialValues={config} onValuesChange={onChange}>
+    <ProForm
+      layout="horizontal"
+      submitter={false}
+      initialValues={config}
+      onValuesChange={handleValuesChange}
+    >
       <ProForm.Item name="helpSettings" tooltip="配置表单帮助" label="帮助设置">
         <HelpSettingsButton />
       </ProForm.Item>
@@ -19,7 +29,7 @@ export const FormConfigPanel: React.FC<FormConfigProps> = props => {
         <LayoutSettingsButton />
       </ProForm.Item>
       <ProForm.Item name="linkageSettings" tooltip="配置表单字段联动" label="联动设置">
-        <LinkageSettingsButton />
+        <LinkageSettingsButton containers={containers} />
       </ProForm.Item>
     </ProForm>
   );

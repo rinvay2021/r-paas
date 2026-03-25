@@ -34,6 +34,9 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
   const [containers, setContainers] = React.useState<ContainerType[]>();
 
   React.useEffect(() => {
+    // 初始化 formConfig
+    setFormConfig(activeForm?.formConfig || {});
+
     // 如果表单没有区块，则创建一个默认区块
     const containers = isEmpty(activeForm?.containers)
       ? [
@@ -41,7 +44,7 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
             id: `container-${uuidv4()}`,
             title: '未命名区块',
             fields: [],
-            columns: formConfig?.layoutSettings?.columns,
+            columns: activeForm?.formConfig?.layoutSettings?.columns,
           },
         ]
       : activeForm?.containers;
@@ -122,8 +125,9 @@ const FormDesigner: React.ForwardRefRenderFunction<FormDesignerRef, FormDesigner
     });
   };
 
-  const handleFormConfigChange = (values: Partial<FormConfig>) => {
-    setFormConfig(prev => ({ ...prev, ...values }));
+  const handleFormConfigChange = (values: FormConfig) => {
+    // 直接设置所有值，因为 FormConfigPanel 已经传递了完整的表单值
+    setFormConfig(values);
   };
 
   const handleContainerChange = (containerId: string, values: Partial<ContainerType>) => {
