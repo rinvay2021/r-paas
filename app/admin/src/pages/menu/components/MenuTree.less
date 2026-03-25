@@ -1,0 +1,179 @@
+@import '@/styles/mixins.less';
+
+.menu-tree-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  min-height: 0;
+
+  .rpaas-scrollbars();
+}
+
+.menu-tree-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 24px 16px;
+}
+
+.menu-tree {
+  // 树节点样式
+  .ant-tree-treenode {
+    padding: 0;
+    margin-bottom: 8px;
+
+    &::before {
+      display: none;
+    }
+
+    // 节点内容包装器
+    .ant-tree-node-content-wrapper {
+      flex: 1;
+      padding: 0;
+      border-radius: 6px;
+      background-color: #fff;
+      border: 1px solid #e8e8e8;
+      transition: all 0.2s;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: #fafafa;
+        border-color: #d9d9d9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    // 选中状态
+    &.ant-tree-treenode-selected {
+      .ant-tree-node-content-wrapper {
+        background-color: #e6f7ff !important;
+        border-color: #91d5ff !important;
+        box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+
+        .menu-tree-node-title {
+          color: #1890ff;
+          font-weight: 500;
+        }
+
+        .menu-tree-node-icon {
+          color: #1890ff;
+        }
+      }
+    }
+  }
+
+  // 子节点缩进
+  .ant-tree-indent {
+    &-unit {
+      width: 24px;
+    }
+  }
+
+  // 第一层节点没有缩进
+  & > .ant-tree-treenode {
+    .ant-tree-indent {
+      display: none;
+    }
+  }
+
+  // 展开/收起图标（隐藏默认的）
+  .ant-tree-switcher {
+    width: 0 !important;
+    margin: 0 !important;
+    display: none !important;
+  }
+
+  // 拖拽图标
+  .ant-tree-draggable-icon {
+    width: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+  }
+}
+
+// 菜单节点
+.menu-tree-node {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 12px;
+  min-height: 44px;
+
+  &-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &-expand-icon {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.45);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 4px;
+    margin-left: -4px;
+
+    &:hover {
+      color: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 2px;
+    }
+  }
+
+  &-expand-placeholder {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    margin-left: 0px;
+    margin-right: 4px;
+  }
+
+  &-title {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  &-count {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.45);
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+}
+
+// 拖拽时的样式
+.ant-tree-treenode-draggable {
+  cursor: move;
+
+  .ant-tree-draggable-icon {
+    display: none !important;
+  }
+}
+
+// 拖拽中的节点样式
+.ant-tree-treenode.drag-over {
+  .ant-tree-node-content-wrapper {
+    background-color: #bae7ff !important;
+    border-color: #1890ff !important;
+  }
+}
+
+.ant-tree-treenode.drag-over-gap-top,
+.ant-tree-treenode.drag-over-gap-bottom {
+  .ant-tree-node-content-wrapper {
+    border-color: #1890ff !important;
+  }
+}

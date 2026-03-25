@@ -25,6 +25,10 @@ import type {
   QueryActionButtonDto,
   UpdateActionButtonDto,
   UpdateListDto,
+  MenuDto,
+  QueryMenuDto,
+  UpdateMenuDto,
+  SaveMenuListDto,
 } from './interface';
 
 /**
@@ -201,6 +205,23 @@ export class MetaService {
 
   async deleteActionButton(id: string) {
     return await http.post('/meta/action-button/delete', { id });
+  }
+
+  /** ==================== 菜单相关接口 ==================== */
+  async createMenu(data: Omit<MenuDto, '_id' | 'orderNum' | 'level'>) {
+    return await http.post<MenuDto>('/menu/create', data);
+  }
+
+  async getMenuList(params: QueryMenuDto) {
+    return await http.post<MenuDto[]>('/menu/list', params);
+  }
+
+  async updateMenu(data: UpdateMenuDto) {
+    return await http.post<MenuDto>('/menu/update', data);
+  }
+
+  async saveMenuList(data: SaveMenuListDto) {
+    return await http.post('/menu/save-list', data);
   }
 }
 

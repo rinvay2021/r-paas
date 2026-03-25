@@ -81,8 +81,24 @@ export type FormConfig = {
   helpSettings?: Record<string, string>;
   /** 布局设置 */
   layoutSettings?: Parameters<typeof Form>[0] & { columns: number };
-  /** 联动设置 */
-  linkageSettings?: Record<string, string>[];
+  /** 联动设置（直接是数组） */
+  linkageSettings?: Array<{
+    id: string;
+    condition: {
+      field: string;
+      operator: string;
+      value: any;
+    };
+    actions: {
+      show?: string[];
+      hide?: string[];
+      require?: string[];
+      unrequire?: string[];
+      readonly?: string[];
+      editable?: string[];
+      clear?: string[];
+    };
+  }>;
 };
 
 /** 表单容器 */
@@ -294,10 +310,12 @@ export interface SearchFormConfig {
 export interface SearchFormFieldDto {
   /** 字段名称 */
   fieldName: string;
-  /** 条件 */
+  /** 显示名称 */
+  displayName?: string;
+  /** 查询条件 */
   condition: string;
-  /** 默认值快捷输入 */
-  quickDefaultValue?: string;
+  /** 默认值选择方式：custom-自定义，system-系统输入 */
+  defaultValueType?: 'custom' | 'system';
   /** 默认值 */
   defaultValue?: string;
   /** 提示语 */
@@ -411,3 +429,62 @@ export interface QueryActionButtonDto extends Partial<ActionButtonDto & Paginati
 /** 更新操作按钮 DTO */
 export type UpdateActionButtonDto = Partial<ActionButtonDto>;
 /** ==================== 操作按钮 end ==================== */
+
+/** ==================== 菜单 start ==================== */
+/** 菜单 DTO */
+export interface MenuDto {
+  /** id */
+  _id?: string;
+  /** 应用编码 */
+  appCode: string;
+  /** 菜单名称 */
+  menuName: string;
+  /** 菜单编码 */
+  menuCode: string;
+  /** 菜单描述 */
+  menuDesc?: string;
+  /** 父菜单ID */
+  parentId?: string | null;
+  /** 关联视图编码 */
+  viewCode?: string;
+  /** 排序号 */
+  orderNum: number;
+  /** 层级 */
+  level: number;
+  /** 是否删除 */
+  isDelete?: boolean;
+  /** 创建时间 */
+  createdAt?: string;
+  /** 更新时间 */
+  updatedAt?: string;
+}
+
+/** 查询菜单 DTO */
+export interface QueryMenuDto {
+  /** 应用编码 */
+  appCode: string;
+}
+
+/** 更新菜单 DTO */
+export type UpdateMenuDto = Partial<MenuDto> & {
+  _id: string;
+};
+
+/** 菜单位置信息 DTO */
+export interface MenuPositionDto {
+  /** 菜单ID */
+  _id: string;
+  /** 父菜单ID */
+  parentId?: string | null;
+  /** 排序号 */
+  orderNum: number;
+}
+
+/** 保存菜单列表 DTO */
+export interface SaveMenuListDto {
+  /** 应用编码 */
+  appCode: string;
+  /** 菜单位置信息列表 */
+  menus: MenuPositionDto[];
+}
+/** ==================== 菜单 end ==================== */
