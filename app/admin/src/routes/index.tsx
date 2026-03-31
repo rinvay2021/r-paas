@@ -56,7 +56,7 @@ const RenderRouter: React.FC = () => {
           element: <Dashboard />,
         },
         {
-          path: ':appCode',
+          path: 'app/:appCode',
           children: [
             {
               path: 'meta',

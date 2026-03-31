@@ -10,7 +10,6 @@ export default defineConfig({
       '@components': resolve(__dirname, 'src/components'),
       '@assets': resolve(__dirname, 'src/assets'),
       '@utils': resolve(__dirname, 'src/utils'),
-      '@r-paas/shared': resolve(__dirname, '../../packages/shared/src'),
     },
   },
   css: {
@@ -59,6 +58,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['antd', '@r-paas/shared'],
+    include: ['antd'],
   },
 });

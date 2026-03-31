@@ -23,7 +23,7 @@ function generateRoutes(appList: AppDto[]): RouteItem[] {
     },
     ...map(appList, app => {
       const parentRoute: RouteItem = {
-        path: `/${app.appCode}`,
+        path: `/app/${app.appCode}`,
         name: app.appName,
         icon: <CrownFilled />,
         routes: [],
@@ -31,7 +31,7 @@ function generateRoutes(appList: AppDto[]): RouteItem[] {
 
       forEach(SUB_MENU_TYPES, ({ name, route }) => {
         parentRoute.routes!.push({
-          path: `/${app.appCode}/${route}`,
+          path: `/app/${app.appCode}/${route}`,
           name: name,
           icon: <CrownFilled />,
         });

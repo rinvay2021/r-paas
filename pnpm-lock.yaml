@@ -14,6 +14,12 @@ importers:
       '@ant-design/pro-components':
         specifier: 2.8.2
         version: 2.8.2(antd@5.22.5(moment@2.30.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(rc-field-form@2.7.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/react-grid-layout':
+        specifier: ^2.1.0
+        version: 2.1.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/react-resizable':
+        specifier: ^3.0.8
+        version: 3.0.8
       '@types/sortablejs':
         specifier: ^1.15.8
         version: 1.15.8
@@ -26,6 +32,9 @@ importers:
       classnames:
         specifier: ^2.3.2
         version: 2.5.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       jotai:
         specifier: ^2.16.0
         version: 2.16.0(@babel/core@7.26.0)(@babel/template@7.25.9)(@types/react@18.0.0)(react@18.2.0)
@@ -47,6 +56,12 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-grid-layout:
+        specifier: ^2.2.3
+        version: 2.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-resizable:
+        specifier: ^3.1.3
+        version: 3.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-router-dom:
         specifier: 6.10.0
         version: 6.10.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1605,6 +1620,13 @@ packages:
     peerDependencies:
       '@types/react': ^18.0.0
 
+  '@types/react-grid-layout@2.1.0':
+    resolution: {integrity: sha1-5gQ/9HOn9nBFE784erQXIruPJLI=, tarball: http://r.npm.sankuai.com/@types/react-grid-layout/download/@types/react-grid-layout-2.1.0.tgz}
+    deprecated: This is a stub types definition. react-grid-layout provides its own type definitions, so you do not need this installed.
+
+  '@types/react-resizable@3.0.8':
+    resolution: {integrity: sha1-snABtNJiyCzAdict9LjvkdlIeRg=, tarball: http://r.npm.sankuai.com/@types/react-resizable/download/@types/react-resizable-3.0.8.tgz}
+
   '@types/react@18.0.0':
     resolution: {integrity: sha1-S+iqOi0Er8OsLMHKQ9ObC9QSiQw=, tarball: http://r.npm.sankuai.com/@types/react/download/@types/react-18.0.0.tgz}
 
@@ -2100,6 +2122,10 @@ packages:
   clone@1.0.4:
     resolution: {integrity: sha1-2jCcwmPfFZlMaIypAheco8fNfH4=, tarball: http://r.npm.sankuai.com/clone/download/clone-1.0.4.tgz}
     engines: {node: '>=0.8'}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha1-7tOXyf2L2IK/sY3qtxAgSaLzKZk=, tarball: http://r.npm.sankuai.com/clsx/download/clsx-2.1.1.tgz}
+    engines: {node: '>=6'}
 
   co@4.6.0:
     resolution: {integrity: sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=, tarball: http://r.npm.sankuai.com/co/download/co-4.6.0.tgz}
@@ -2785,6 +2811,9 @@ packages:
 
   fast-diff@1.3.0:
     resolution: {integrity: sha1-7OQH+lUKZNY4U2zXJ+EpxhYW4PA=, tarball: http://r.npm.sankuai.com/fast-diff/download/fast-diff-1.3.0.tgz}
+
+  fast-equals@4.0.3:
+    resolution: {integrity: sha1-cohMyAXsPGZ5uZh19rdlTznw6Mc=, tarball: http://r.npm.sankuai.com/fast-equals/download/fast-equals-4.0.3.tgz}
 
   fast-glob@3.3.2:
     resolution: {integrity: sha1-qQRQHlfP3S/83tRemaVP71XkYSk=, tarball: http://r.npm.sankuai.com/fast-glob/download/fast-glob-3.3.2.tgz}
@@ -4794,8 +4823,20 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
+  react-draggable@4.5.0:
+    resolution: {integrity: sha1-CydMy2ll/Pl+04/PfjzCI7xIzfU=, tarball: http://r.npm.sankuai.com/react-draggable/download/react-draggable-4.5.0.tgz}
+    peerDependencies:
+      react: '>= 16.3.0'
+      react-dom: '>= 16.3.0'
+
   react-fast-compare@3.2.2:
     resolution: {integrity: sha1-kpqXpTIwTOn+5LyuRCNPHOLCHUk=, tarball: http://r.npm.sankuai.com/react-fast-compare/download/react-fast-compare-3.2.2.tgz}
+
+  react-grid-layout@2.2.3:
+    resolution: {integrity: sha1-ba8kuMSESK9hcjhSDdIzqTdeLxY=, tarball: http://r.npm.sankuai.com/react-grid-layout/download/react-grid-layout-2.2.3.tgz}
+    peerDependencies:
+      react: '>= 16.3.0'
+      react-dom: '>= 16.3.0'
 
   react-is@16.13.1:
     resolution: {integrity: sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=, tarball: http://r.npm.sankuai.com/react-is/download/react-is-16.13.1.tgz}
@@ -4812,6 +4853,12 @@ packages:
   react-refresh@0.14.2:
     resolution: {integrity: sha1-ODPaAc4y2kcPH5NrnUd9pccCi/k=, tarball: http://r.npm.sankuai.com/react-refresh/download/react-refresh-0.14.2.tgz}
     engines: {node: '>=0.10.0'}
+
+  react-resizable@3.1.3:
+    resolution: {integrity: sha1-uMP4rv+3sLLCMGv8enQkYuWBJfs=, tarball: http://r.npm.sankuai.com/react-resizable/download/react-resizable-3.1.3.tgz}
+    peerDependencies:
+      react: '>= 16.3'
+      react-dom: '>= 16.3'
 
   react-router-dom@6.10.0:
     resolution: {integrity: sha1-CQ3cXITcQbWDzghGjEAHyEJF9h8=, tarball: http://r.npm.sankuai.com/react-router-dom/download/react-router-dom-6.10.0.tgz}
@@ -6495,7 +6542,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.7.2)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -7421,6 +7468,17 @@ snapshots:
     dependencies:
       '@types/react': 18.3.17
 
+  '@types/react-grid-layout@2.1.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      react-grid-layout: 2.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
+  '@types/react-resizable@3.0.8':
+    dependencies:
+      '@types/react': 18.0.0
+
   '@types/react@18.0.0':
     dependencies:
       '@types/prop-types': 15.7.14
@@ -8128,6 +8186,8 @@ snapshots:
 
   clone@1.0.4: {}
 
+  clsx@2.1.1: {}
+
   co@4.6.0: {}
 
   collect-v8-coverage@1.0.2: {}
@@ -8222,7 +8282,7 @@ snapshots:
     dependencies:
       toggle-selection: 1.0.6
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.7.2)
@@ -9030,6 +9090,8 @@ snapshots:
   fast-deep-equal@3.1.3: {}
 
   fast-diff@1.3.0: {}
+
+  fast-equals@4.0.3: {}
 
   fast-glob@3.3.2:
     dependencies:
@@ -11618,7 +11680,25 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
+  react-draggable@4.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      clsx: 2.1.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
   react-fast-compare@3.2.2: {}
+
+  react-grid-layout@2.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      clsx: 2.1.1
+      fast-equals: 4.0.3
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-draggable: 4.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-resizable: 3.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      resize-observer-polyfill: 1.5.1
 
   react-is@16.13.1: {}
 
@@ -11629,6 +11709,13 @@ snapshots:
   react-lifecycles-compat@3.0.4: {}
 
   react-refresh@0.14.2: {}
+
+  react-resizable@3.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-draggable: 4.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   react-router-dom@6.10.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:

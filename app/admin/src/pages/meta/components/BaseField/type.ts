@@ -56,7 +56,7 @@ export interface FieldConfigItem {
     | 'ProFormTextArea'
     | 'ProFormSwitch';
   label: string;
-  name: string;
+  name: string[] | string;
   tooltip?: string;
   'x-component-props'?: {
     required?: boolean;
@@ -76,33 +76,26 @@ export interface BaseFieldBase {
   isEnabled?: BooleanEnum; // 是否启用
 }
 
-// 文本类型相关字段
-export interface TextFieldProps {
-  inputType?: string; // 文本类型
-}
+// 字段配置对象（所有字段类型特有的配置都存在这里）
+export interface FieldConfig {
+  // 文本类型配置
+  inputType?: string; // 文本类型（Text/Password/Tel/Email/Url）
 
-// 数字类型相关字段
-export interface NumberFieldProps {
+  // 数字类型配置
   precision?: number; // 数字精度
-}
 
-// 时间类型相关字段
-export interface TimeFieldProps {
-  use12Hours?: boolean; // 是否12小时制
+  // 时间类型配置
+  use12Hours?: BooleanEnum; // 是否12小时制
   format?: string; // 时间格式
-  showTime?: boolean; // 是否显示时间
+  showTime?: BooleanEnum; // 是否显示时间
   timeType?: string; // 时间选择类型
-}
 
-// 选择类型相关字段
-export interface SelectFieldProps {
-  dataSource?: string; // 数据源
-  multiple?: boolean; // 是否多选
-}
+  // 选择类型配置
+  datasourceCode?: string; // 数据源编码
+  multiple?: BooleanEnum; // 是否多选
 
-// 通用配置字段
-export interface CommonFieldProps {
-  config?: string; // JSON配置
+  // 其他扩展配置
+  [key: string]: any;
 }
 
 // 系统字段
@@ -115,13 +108,11 @@ export interface SystemFieldProps {
 }
 
 // 组合成最终的列表项类型
-export type BaseFieldListItem = BaseFieldBase &
-  TextFieldProps &
-  NumberFieldProps &
-  TimeFieldProps &
-  SelectFieldProps &
-  CommonFieldProps &
-  SystemFieldProps;
+export interface BaseFieldListItem extends BaseFieldBase, SystemFieldProps {
+  config?: FieldConfig; // 字段配置对象
+  appCode?: string; // 所属应用
+  metaObjectCode?: string; // 所属对象
+}
 
 // 列操作函数
 export type ColumnsOprators = {

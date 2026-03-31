@@ -47,6 +47,24 @@ export type QueryMetaObjectDto = Partial<MetaObjectDto & PaginationQuery>;
 /** ==================== 元对象 end ==================== */
 
 /** ==================== 字段 start ==================== */
+/** 字段配置对象 */
+export interface FieldConfig {
+  /** 文本类型配置 */
+  inputType?: string;
+  /** 数字精度配置 */
+  precision?: number;
+  /** 时间类型配置 */
+  use12Hours?: number;
+  format?: string;
+  showTime?: number;
+  timeType?: string;
+  /** 选择类型配置 */
+  datasourceCode?: string;
+  multiple?: number;
+  /** 其他扩展配置 */
+  [key: string]: any;
+}
+
 /** 字段 DTO */
 export interface FieldDto {
   /** id */
@@ -59,10 +77,18 @@ export interface FieldDto {
   fieldType?: string;
   /** 字段描述 */
   fieldDesc?: string;
+  /** 是否启用 */
+  isEnabled?: number;
   /** 应用编码 */
   appCode: string;
   /** 元数据对象编码 */
   metaObjectCode: string;
+  /** 字段配置 */
+  config?: FieldConfig;
+  /** 创建时间 */
+  createdAt?: string;
+  /** 更新时间 */
+  updatedAt?: string;
 }
 
 /** 查询字段 DTO */

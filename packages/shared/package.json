@@ -1,7 +1,15 @@
 {
   "name": "@r-paas/shared",
   "version": "1.0.0",
+  "main": "./dist/http/index.js",
+  "module": "./dist/http/index.mjs",
+  "types": "./dist/http/index.d.ts",
   "exports": {
+    ".": {
+      "types": "./dist/http/index.d.ts",
+      "import": "./dist/http/index.mjs",
+      "require": "./dist/http/index.js"
+    },
     "./http": {
       "types": "./dist/http/index.d.ts",
       "import": "./dist/http/index.mjs",

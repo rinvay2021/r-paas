@@ -133,19 +133,20 @@ export const useCommonConfigs = (isEdit?: boolean): FieldConfigItem[] => [
   },
 ];
 
-// 配置
+// 配置（JSON 格式，用于高级配置）
 export const JSON_CONFIG: FieldConfigItem[] = [
   {
     type: 'ProFormTextArea',
-    label: '配置',
-    tooltip: '需要符合JSON对象格式，例如：{"a":1,"b":2}',
-    name: 'config',
+    label: '高级配置（JSON）',
+    tooltip: '需要符合JSON对象格式，例如：{"a":1,"b":2}。会与上方配置合并。',
+    name: 'configJson',
     'x-component-props': {
-      placeholder: '请输入JSON配置',
+      placeholder: '请输入JSON配置（可选）',
+      rows: 4,
       rules: [
         {
           validator: (_, value) => {
-            if (value) {
+            if (value && value.trim()) {
               try {
                 const json = JSON.parse(value);
 
@@ -170,7 +171,7 @@ export const DATASOURCE_CONFIGS: FieldConfigItem[] = [
   {
     type: 'ProFormSelect',
     label: '数据源',
-    name: 'dataSource',
+    name: ['config', 'datasourceCode'],
     'x-component-props': {
       placeholder: '请选择数据源',
     },
@@ -182,7 +183,7 @@ export const SELECT_CONFIGS: FieldConfigItem[] = [
   {
     type: 'ProFormRadio.Group',
     label: '是否多选',
-    name: 'multiple',
+    name: ['config', 'multiple'],
     'x-component-props': {
       options: BOOLEAN_OPTIONS,
     },
@@ -194,7 +195,7 @@ export const SHOW_TIME_CONFIGS: FieldConfigItem[] = [
   {
     type: 'ProFormRadio.Group',
     label: '是否展示时间',
-    name: 'showTime',
+    name: ['config', 'showTime'],
     'x-component-props': {
       options: BOOLEAN_OPTIONS,
     },
@@ -212,7 +213,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormSelect',
         label: '文本类型',
-        name: 'inputType',
+        name: ['config', 'inputType'],
         'x-component-props': {
           placeholder: '请选择文本类型',
           options: INPUT_TYPE_OPTIONS,
@@ -226,7 +227,7 @@ export const TYPE_CONFIGS: Record<
         type: 'ProFormDigit',
         label: '精度精度',
         tooltip: '决定数值保留几位小数',
-        name: 'precision',
+        name: ['config', 'precision'],
         'x-component-props': {
           placeholder: '请输入精度',
         },
@@ -244,7 +245,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormRadio.Group',
         label: '是否启用12小时制',
-        name: 'use12Hours',
+        name: ['config', 'use12Hours'],
         'x-component-props': {
           options: BOOLEAN_OPTIONS,
         },
@@ -252,7 +253,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormSelect',
         label: '时间格式',
-        name: 'format',
+        name: ['config', 'format'],
         'x-component-props': {
           placeholder: '请选择时间格式',
           options: [
@@ -270,7 +271,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormSelect',
         label: '时间选择类型',
-        name: 'timeType',
+        name: ['config', 'timeType'],
         'x-component-props': {
           options: [
             { label: '日期（默认）', value: TimePickerTypeEnum.Day },
@@ -315,7 +316,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormRadio.Group',
         label: '是否支持多文件上传',
-        name: 'multiple',
+        name: ['config', 'multiple'],
         'x-component-props': {
           options: BOOLEAN_OPTIONS,
         },
@@ -327,7 +328,7 @@ export const TYPE_CONFIGS: Record<
       {
         type: 'ProFormRadio.Group',
         label: '是否支持多张图片上传',
-        name: 'multiple',
+        name: ['config', 'multiple'],
         'x-component-props': {
           options: BOOLEAN_OPTIONS,
         },
