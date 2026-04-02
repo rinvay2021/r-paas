@@ -51,6 +51,27 @@ const Layout: React.FC = () => {
         route={route}
         location={location}
         className={`${prefix}-layout`}
+        token={{
+          header: {
+            colorBgHeader: '#2c2c2c',
+            colorHeaderTitle: '#ffffff',
+            colorTextMenu: 'rgba(255,255,255,0.75)',
+            colorTextMenuSelected: '#ffffff',
+            colorTextMenuActive: '#ffffff',
+            colorBgMenuItemSelected: 'rgba(255,255,255,0.15)',
+            colorBgMenuItemHover: 'rgba(255,255,255,0.1)',
+          },
+          sider: {
+            colorMenuBackground: '#2c2c2c',
+            colorTextMenu: 'rgba(255,255,255,0.75)',
+            colorTextMenuSelected: '#ffffff',
+            colorTextMenuActive: '#ffffff',
+            colorBgMenuItemSelected: 'rgba(255,255,255,0.15)',
+            colorBgMenuItemHover: 'rgba(255,255,255,0.1)',
+            colorTextMenuTitle: '#ffffff',
+            colorMenuItemDivider: 'rgba(255,255,255,0.06)',
+          },
+        }}
         menuItemRender={(item, dom) => {
           return <div onClick={() => handleMenuClick(item)}>{dom}</div>;
         }}

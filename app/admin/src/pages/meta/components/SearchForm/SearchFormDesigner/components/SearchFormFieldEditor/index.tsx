@@ -409,7 +409,7 @@ const SearchFormFieldEditor: React.ForwardRefRenderFunction<
                 fixed: 'right',
                 render: (_, field) => (
                   <Button
-                    type="link"
+                    type="text"
                     icon={<DeleteOutlined />}
                     onClick={() => {
                       remove(field.name);
@@ -447,7 +447,7 @@ const SearchFormFieldEditor: React.ForwardRefRenderFunction<
           return isFieldSearchable(fieldType as FieldTypeEnum);
         }}
       >
-        <Button type="link" icon={<PlusOutlined />}>
+        <Button type="text" icon={<PlusOutlined />}>
           添加字段
         </Button>
       </FieldSelector>

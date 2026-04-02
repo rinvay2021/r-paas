@@ -12,7 +12,7 @@ interface ButtonSelectorProps {
 const ButtonSelector: React.FC<ButtonSelectorProps> = ({ value, onChange }) => {
   return (
     <ButtonSelectorModal value={value} onChange={onChange}>
-      <Button icon={<BgColorsOutlined />} type="link">
+      <Button icon={<BgColorsOutlined />} type="text">
         选择按钮
       </Button>
     </ButtonSelectorModal>

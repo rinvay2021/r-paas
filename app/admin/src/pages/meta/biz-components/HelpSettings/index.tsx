@@ -12,7 +12,7 @@ interface HelpSettingsButtonProps {
 const HelpSettingsButton: React.FC<HelpSettingsButtonProps> = ({ value, onChange }) => {
   return (
     <HelpSettings value={value} onChange={onChange}>
-      <Button icon={<QuestionCircleOutlined />} type="link">
+      <Button icon={<QuestionCircleOutlined />} type="text">
         点击设置
       </Button>
     </HelpSettings>

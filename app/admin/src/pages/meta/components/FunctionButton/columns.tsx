@@ -86,7 +86,7 @@ export const useColumns = (operators: ColumnsOperators): ColumnsType<FunctionBut
                   handleDelete?.(record);
                 }}
               >
-                <a key="delete">删除</a>
+                <a key="delete" style={{ color: "inherit" }}>删除</a>
               </Popconfirm>
             </Space>
           );

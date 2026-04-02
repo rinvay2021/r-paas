@@ -16,7 +16,7 @@ const { Text } = Typography;
 
 const ACTION_TYPE_MAP: Record<string, { label: string; color: string }> = {
   create: { label: '创建', color: 'green' },
-  update: { label: '更新', color: 'blue' },
+  update: { label: '更新', color: 'default' },
   delete: { label: '删除', color: 'red' },
 };
 

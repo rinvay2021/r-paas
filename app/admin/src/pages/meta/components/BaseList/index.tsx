@@ -105,7 +105,7 @@ const BaseList: React.FC = () => {
           style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
         >
           <Empty description="暂无列表页，去添加一个吧">
-            <Button type="primary" onClick={() => setListModalOpen(true)}>
+            <Button type="default" onClick={() => setListModalOpen(true)}>
               新建列表
             </Button>
           </Empty>
@@ -141,7 +141,7 @@ const BaseList: React.FC = () => {
                     <Button type="dashed" onClick={setPreview}>
                       取消
                     </Button>
-                    <Button color="primary" variant="filled" onClick={handleSaveList}>
+                    <Button color="default" variant="outlined" onClick={handleSaveList}>
                       保存
                     </Button>
                   </>

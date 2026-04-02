@@ -136,7 +136,7 @@ const BaseView: React.FC = () => {
           style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
         >
           <Empty description="暂无视图，去添加一个吧">
-            <Button type="primary" onClick={() => setViewModalOpen(true)}>
+            <Button type="default" onClick={() => setViewModalOpen(true)}>
               新建视图
             </Button>
           </Empty>
@@ -172,7 +172,7 @@ const BaseView: React.FC = () => {
                     <Button type="dashed" onClick={setPreview}>
                       取消
                     </Button>
-                    <Button color="primary" variant="filled" onClick={handleSaveView}>
+                    <Button color="default" variant="outlined" onClick={handleSaveView}>
                       保存
                     </Button>
                   </>

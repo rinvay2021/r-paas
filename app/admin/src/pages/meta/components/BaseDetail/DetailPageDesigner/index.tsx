@@ -126,7 +126,7 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
                             <div className="container-title">对象配置（子）</div>
                             <div className="container-actions">
                               <Button
-                                type="link"
+                                type="text"
                                 icon={<DeleteOutlined />}
                                 onClick={() => remove(name)}
                               />

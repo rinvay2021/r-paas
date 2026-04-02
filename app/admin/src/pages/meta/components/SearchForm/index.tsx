@@ -105,7 +105,7 @@ const SearchForm: React.FC = () => {
           style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
         >
           <Empty description="暂无搜索表单，去添加一个吧">
-            <Button type="primary" onClick={() => setSearchFormModalOpen(true)}>
+            <Button type="default" onClick={() => setSearchFormModalOpen(true)}>
               新建搜索表单
             </Button>
           </Empty>
@@ -141,7 +141,7 @@ const SearchForm: React.FC = () => {
                     <Button type="dashed" onClick={setPreview}>
                       取消
                     </Button>
-                    <Button color="primary" variant="filled" onClick={handleSaveSearchForm}>
+                    <Button color="default" variant="outlined" onClick={handleSaveSearchForm}>
                       保存
                     </Button>
                   </>

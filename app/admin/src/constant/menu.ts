@@ -20,6 +20,7 @@ export const SUB_MENU_TYPES = [
 
 export const LAYOUT_SETTING: ProSettings = {
   layout: 'mix',
+  contentWidth: 'Fluid',
 };
 
 export const TITLE = 'R-PaaS';

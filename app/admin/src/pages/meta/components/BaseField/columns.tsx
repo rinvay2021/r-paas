@@ -66,6 +66,7 @@ export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldList
             <Space direction="horizontal" size="small">
               <a
                 key="edit"
+                style={{ color: 'inherit' }}
                 onClick={() => {
                   handleEdit?.(record);
                 }}
@@ -78,7 +79,7 @@ export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldList
                   handleDelete?.(record);
                 }}
               >
-                <a key="delete">删除</a>
+                <a key="delete" style={{ color: "inherit" }}>删除</a>
               </Popconfirm>
               <Popconfirm
                 title={isEnabled ? '确定要停用吗？' : '确定要启用吗？'}
@@ -86,7 +87,7 @@ export const useColumns = (oprators: ColumnsOprators): ColumnsType<BaseFieldList
                   handleEnable?.(record);
                 }}
               >
-                <a key="enable">{isEnabled ? '停用' : '启用'}</a>
+                <a key="enable" style={{ color: "inherit" }}>{isEnabled ? "停用" : "启用"}</a>
               </Popconfirm>
             </Space>
           );

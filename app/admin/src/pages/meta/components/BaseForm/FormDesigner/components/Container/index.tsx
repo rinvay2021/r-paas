@@ -81,7 +81,7 @@ const Field: React.FC<FieldProps> = props => {
       <MenuOutlined className="field-drag" />
       <div className="field-content">{field.fieldName}</div>
       <Button
-        type="link"
+        type="text"
         size="small"
         icon={<CloseCircleOutlined />}
         onClick={e => {
@@ -201,14 +201,14 @@ export const Container: React.FC<ContainerProps> = props => {
               onUpdateField(container.id, newFields);
             }}
           >
-            <Button type="link" icon={<PlusOutlined />} onClick={e => e.stopPropagation()} />
+            <Button type="text" icon={<PlusOutlined />} onClick={e => e.stopPropagation()} />
           </FieldSelector>
           {containers.length > 1 && (
             <Popconfirm
               title="确定要删除该区块吗？"
               onConfirm={() => onRemoveContainer(container.id)}
             >
-              <Button type="link" icon={<DeleteOutlined />} onClick={e => e.stopPropagation()} />
+              <Button type="text" icon={<DeleteOutlined />} onClick={e => e.stopPropagation()} />
             </Popconfirm>
           )}
         </div>

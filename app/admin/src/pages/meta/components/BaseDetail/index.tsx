@@ -114,7 +114,7 @@ const BaseDetail: React.FC = () => {
           style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
         >
           <Empty description="暂无详情页，去添加一个吧">
-            <Button type="primary" onClick={() => setDetailModalOpen(true)}>
+            <Button type="default" onClick={() => setDetailModalOpen(true)}>
               新建详情页
             </Button>
           </Empty>
@@ -150,7 +150,7 @@ const BaseDetail: React.FC = () => {
                     <Button type="dashed" onClick={setPreview}>
                       取消
                     </Button>
-                    <Button color="primary" variant="filled" onClick={handleSaveDetail}>
+                    <Button color="default" variant="outlined" onClick={handleSaveDetail}>
                       保存
                     </Button>
                   </>

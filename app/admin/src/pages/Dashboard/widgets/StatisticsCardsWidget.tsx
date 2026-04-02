@@ -19,7 +19,7 @@ const STAT_CONFIGS = [
   {
     key: 'metaObjectCount',
     title: '元数据对象',
-    icon: <DatabaseOutlined style={{ fontSize: 20, color: '#1890ff' }} />,
+    icon: <DatabaseOutlined style={{ fontSize: 20, color: '#333333' }} />,
   },
   {
     key: 'fieldCount',

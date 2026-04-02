@@ -62,7 +62,7 @@ const LinkageSettingsButton: React.FC<LinkageSettingsButtonProps> = ({
 
   return (
     <>
-      <Button icon={<GatewayOutlined />} type="link" onClick={() => setOpen(true)}>
+      <Button icon={<GatewayOutlined />} type="text" onClick={() => setOpen(true)}>
         {ruleCount > 0 ? `已配置 ${ruleCount} 条规则` : '点击设置'}
       </Button>
       <LinkageModal

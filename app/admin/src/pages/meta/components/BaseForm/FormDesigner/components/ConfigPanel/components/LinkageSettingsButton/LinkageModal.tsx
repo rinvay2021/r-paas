@@ -366,7 +366,7 @@ const LinkageModal: React.FC<LinkageModalProps> = ({ open, value, fields, onOk, 
       <div className="linkage-modal-footer">
         <Space>
           <Button onClick={onCancel}>取消</Button>
-          <Button type="primary" onClick={handleSave}>
+          <Button type="default" onClick={handleSave}>
             保存
           </Button>
         </Space>

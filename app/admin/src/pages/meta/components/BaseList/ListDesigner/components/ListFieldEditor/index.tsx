@@ -197,7 +197,7 @@ const ListFieldEditor: React.ForwardRefRenderFunction<
                 fixed: 'right',
                 render: (_, field) => (
                   <Button
-                    type="link"
+                    type="text"
                     icon={<DeleteOutlined />}
                     onClick={() => {
                       remove(field.name);
@@ -229,7 +229,7 @@ const ListFieldEditor: React.ForwardRefRenderFunction<
         </Form.List>
       </DndProvider>
       <FieldSelector existingFields={existingFields} onConfirm={handleAddFields}>
-        <Button type="link" icon={<PlusOutlined />}>
+        <Button type="text" icon={<PlusOutlined />}>
           添加字段
         </Button>
       </FieldSelector>

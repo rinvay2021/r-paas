@@ -10,7 +10,7 @@ import AuthProvider from './contexts/AuthContext';
 
 function App() {
   return (
-    <ConfigProvider>
+    <ConfigProvider theme={{ token: { colorPrimary: '#141414' } }}>
       <Provider>
         <AuthProvider>
           <BrowserRouter>

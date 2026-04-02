@@ -155,7 +155,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
 
       <div className="menu-form-footer">
         <Space>
-          <Button type="primary" icon={<SaveOutlined />} onClick={handleSave}>
+          <Button type="default" icon={<SaveOutlined />} onClick={handleSave}>
             保存
           </Button>
           <Button danger icon={<DeleteOutlined />} onClick={handleDelete}>

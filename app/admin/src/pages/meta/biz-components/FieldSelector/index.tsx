@@ -172,7 +172,7 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
       <div className="field-selector-footer">
         <Space>
           <Button onClick={handleCancel}>取消</Button>
-          <Button type="primary" onClick={handleConfirm} disabled={selectedKeys.length === 0}>
+          <Button type="default" onClick={handleConfirm} disabled={selectedKeys.length === 0}>
             确定({selectedKeys.length})
           </Button>
         </Space>

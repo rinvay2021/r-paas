@@ -104,7 +104,7 @@ const BaseForm: React.FC = () => {
           style={{ height: `${height + META_PAGE_TAB_HEIGHT}px` }}
         >
           <Empty description="暂无详情页，去添加一个吧">
-            <Button type="primary" onClick={() => setFormModalOpen(true)}>
+            <Button type="default" onClick={() => setFormModalOpen(true)}>
               新建表单
             </Button>
           </Empty>
@@ -140,7 +140,7 @@ const BaseForm: React.FC = () => {
                     <Button type="dashed" onClick={setPreview}>
                       取消
                     </Button>
-                    <Button color="primary" variant="filled" onClick={handleSaveForm}>
+                    <Button color="default" variant="outlined" onClick={handleSaveForm}>
                       保存
                     </Button>
                   </>

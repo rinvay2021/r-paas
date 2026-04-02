@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
           onChange={value => setConfigurableType(value)}
         />
         {/* 新建对象 */}
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateModalOpen(true)}>
+        <Button type="default" icon={<PlusOutlined />} onClick={() => setCreateModalOpen(true)}>
           新建对象
         </Button>
       </Flex>

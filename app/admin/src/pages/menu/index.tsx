@@ -228,12 +228,12 @@ const Menu: React.FC = () => {
         <div className={`${prefix}-menu-config-title`}>菜单配置</div>
         <Space>
           {pendingChanges && (
-            <Button type="primary" icon={<SaveOutlined />} onClick={handleSaveChanges} danger>
+            <Button type="default" icon={<SaveOutlined />} onClick={handleSaveChanges} danger>
               保存变更
             </Button>
           )}
           <Button
-            type="primary"
+            type="default"
             icon={<PlusOutlined />}
             onClick={handleOpenCreateModal}
             loading={loading}

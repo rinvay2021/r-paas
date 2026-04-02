@@ -11,7 +11,7 @@ const { Text, Link } = Typography;
 const ICON_MAP = {
   error: <WarningOutlined style={{ color: '#ff4d4f' }} />,
   warning: <InfoCircleOutlined style={{ color: '#faad14' }} />,
-  info: <InfoCircleOutlined style={{ color: '#1890ff' }} />,
+  info: <InfoCircleOutlined style={{ color: '#333333' }} />,
 };
 
 const HealthCheckWidget: React.FC<WidgetProps> = () => {

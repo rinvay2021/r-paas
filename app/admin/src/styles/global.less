@@ -1,3 +1,22 @@
+// 全局统一链接和操作按钮颜色为黑灰，覆盖 antd 默认蓝色
+a {
+  color: #333;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.ant-btn-text,
+.ant-btn-link {
+  color: #333 !important;
+
+  &:hover {
+    color: #000 !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
 .ant-modal-wrap {
   display: flex;
   align-items: center;
