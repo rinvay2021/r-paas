@@ -122,7 +122,8 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
   const { token } = theme.useToken();
   const config = searchFormData.searchFormConfig || {};
   const collapseRows = config.collapseRows || 1;
-  const isCollapsible = config.isCollapsible !== false;
+  // 只有明确配置 isCollapsible=true 才折叠，默认不折叠
+  const isCollapsible = config.isCollapsible === true;
   const colsPerRow = config.cols || 4;
   const colSpan = Math.floor(24 / colsPerRow);
 
@@ -184,7 +185,7 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
             style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 12 }}
           >
             <Space style={{ justifyContent: 'flex-end', width: '100%' }}>
-              {isCollapsible && visibleFields.length > colsPerRow && (
+              {isCollapsible && visibleFields.length > collapseRows * colsPerRow && (
                 <Button
                   type="text"
                   icon={collapsed ? <DownOutlined /> : <UpOutlined />}
