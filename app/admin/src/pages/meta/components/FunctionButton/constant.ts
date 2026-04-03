@@ -45,13 +45,13 @@ export const LIST_BUTTON_EVENT_OPTIONS = [
 
 /** 列表行事件选项 */
 export const LIST_ROW_BUTTON_EVENT_OPTIONS = [
-  { label: '修改', value: ButtonEvent.Update },
+  { label: '编辑', value: ButtonEvent.Update },
   { label: '删除', value: ButtonEvent.Delete },
 ];
 
 /** 详情页事件选项 */
 export const DETAIL_PAGE_BUTTON_EVENT_OPTIONS = [
-  { label: '修改', value: ButtonEvent.Update },
+  { label: '编辑', value: ButtonEvent.Update },
   { label: '删除', value: ButtonEvent.Delete },
 ];
 

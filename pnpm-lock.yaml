@@ -211,6 +211,12 @@ importers:
       '@r-paas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      wujie:
+        specifier: ^1.0.29
+        version: 1.0.29
+      wujie-react:
+        specifier: ^1.0.29
+        version: 1.0.29(react@18.3.1)
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
@@ -224,13 +230,25 @@ importers:
 
   app/renderer:
     dependencies:
+      '@r-paas/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       react:
         specifier: ^18.0.0
         version: 18.3.1
       react-dom:
         specifier: ^18.0.0
         version: 18.3.1(react@18.3.1)
+      wujie:
+        specifier: ^1.0.29
+        version: 1.0.29
+      wujie-react:
+        specifier: ^1.0.29
+        version: 1.0.29(react@18.3.1)
     devDependencies:
+      '@types/node':
+        specifier: ^18.0.0
+        version: 18.19.68
       '@types/react':
         specifier: ^18.0.0
         version: 18.3.17
@@ -239,13 +257,13 @@ importers:
         version: 18.3.5(@types/react@18.3.17)
       '@vitejs/plugin-react':
         specifier: ^3.0.0
-        version: 3.1.0(vite@4.5.5(@types/node@20.5.1)(less@4.2.1)(terser@5.37.0))
+        version: 3.1.0(vite@4.5.5(@types/node@18.19.68)(less@4.2.1)(terser@5.37.0))
       typescript:
         specifier: ^5.0.0
         version: 5.7.2
       vite:
         specifier: ^4.0.0
-        version: 4.5.5(@types/node@20.5.1)(less@4.2.1)(terser@5.37.0)
+        version: 4.5.5(@types/node@18.19.68)(less@4.2.1)(terser@5.37.0)
 
   packages/meta:
     dependencies:
@@ -5742,6 +5760,14 @@ packages:
       utf-8-validate:
         optional: true
 
+  wujie-react@1.0.29:
+    resolution: {integrity: sha1-Rxzr/iPskBaQGnOTZDoINr8avqw=, tarball: http://r.npm.sankuai.com/wujie-react/download/wujie-react-1.0.29.tgz}
+    peerDependencies:
+      react: '>=16.0.0'
+
+  wujie@1.0.29:
+    resolution: {integrity: sha1-rybJzik3Q911+69RyHBUn5UHEsg=, tarball: http://r.npm.sankuai.com/wujie/download/wujie-1.0.29.tgz}
+
   xml-name-validator@4.0.0:
     resolution: {integrity: sha1-eaAG4uYxSahgDxVDDwpHJdFSSDU=, tarball: http://r.npm.sankuai.com/xml-name-validator/download/xml-name-validator-4.0.0.tgz}
     engines: {node: '>=12'}
@@ -6473,7 +6499,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.7.2)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -7485,17 +7511,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@3.1.0(vite@4.5.5(@types/node@20.5.1)(less@4.2.1)(terser@5.37.0))':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.0)
-      magic-string: 0.27.0
-      react-refresh: 0.14.2
-      vite: 4.5.5(@types/node@20.5.1)(less@4.2.1)(terser@5.37.0)
-    transitivePeerDependencies:
-      - supports-color
-
   JSONStream@1.3.5:
     dependencies:
       jsonparse: 1.3.1
@@ -8094,7 +8109,7 @@ snapshots:
     dependencies:
       toggle-selection: 1.0.6
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.7.2)
@@ -12117,17 +12132,6 @@ snapshots:
       less: 4.2.1
       terser: 5.37.0
 
-  vite@4.5.5(@types/node@20.5.1)(less@4.2.1)(terser@5.37.0):
-    dependencies:
-      esbuild: 0.18.20
-      postcss: 8.4.49
-      rollup: 3.29.5
-    optionalDependencies:
-      '@types/node': 20.5.1
-      fsevents: 2.3.3
-      less: 4.2.1
-      terser: 5.37.0
-
   w3c-xmlserializer@4.0.0:
     dependencies:
       xml-name-validator: 4.0.0
@@ -12240,6 +12244,16 @@ snapshots:
       signal-exit: 4.1.0
 
   ws@8.18.0: {}
+
+  wujie-react@1.0.29(react@18.3.1):
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.3.1
+      wujie: 1.0.29
+
+  wujie@1.0.29:
+    dependencies:
+      '@babel/runtime': 7.26.0
 
   xml-name-validator@4.0.0: {}
 

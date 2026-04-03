@@ -19,7 +19,7 @@ import {
   JSON_CONFIG,
   getButtonEventOptionsByLevel,
 } from '../constant';
-import { ButtonConfigItem, ButtonModalProps, ButtonEventType } from '../type';
+import { ButtonConfigItem, ButtonModalProps, ButtonEventType, ButtonEvent } from '../type';
 import { metaService } from '@/api/meta';
 
 const ComponentMap = {
@@ -31,41 +31,60 @@ const ComponentMap = {
   'ProFormRadio.Group': () => null,
 };
 
+/** 需要配置表单的事件 */
+const FORM_REQUIRED_EVENTS = [ButtonEvent.Create, ButtonEvent.Update];
+
 const ButtonModal: React.FC<ButtonModalProps> = params => {
   const { id, appCode, metaObjectCode, visible, onVisibleChange, onFinish } = params;
 
   const formInstance = React.useRef<FormInstance>();
   const [, forceUpdate] = React.useState({});
 
-  // 是否是编辑
   const isEdit = Boolean(id);
-  // 公共配置
   const commonConfigs = useCommonConfigs(isEdit);
 
-  // 编辑时获取按钮信息
+  // 加载当前 metaObject 下的表单列表
+  const { data: formsData } = useRequest(
+    () => metaService.queryForms({ appCode, metaObjectCode }),
+    { ready: !!(appCode && metaObjectCode) },
+  );
+  const formOptions = (formsData?.data?.list || []).map(f => ({
+    label: f.formName,
+    value: f.formCode,
+  }));
+
+  // 编辑时回填数据
   useRequest(() => metaService.getActionButtonById?.(id) || Promise.resolve({ data: {} }), {
     manual: false,
     onSuccess: resp => {
-      formInstance?.current?.setFieldsValue(resp?.data);
+      const data = resp?.data || {};
+      // buttonConfig 是对象，回填时把 form 字段单独提取到 _formCode 虚拟字段
+      formInstance?.current?.setFieldsValue({
+        ...data,
+        _formCode: data.buttonConfig?.formCode,
+        buttonConfig: data.buttonConfig ? JSON.stringify(data.buttonConfig, null, 2) : undefined,
+      });
     },
     ready: isEdit,
   });
 
-  const handleFormValuesChange = (changedValues, allValues) => {
-    // 当级别变化时，重置事件类型和事件字段
+  const handleFormValuesChange = (changedValues: any) => {
     if (changedValues.buttonLevel) {
       formInstance?.current?.setFieldsValue({
         buttonEventType: undefined,
         buttonEvent: undefined,
+        _formCode: undefined,
       });
     }
-    // 当事件类型变化时，重置事件字段
     if (changedValues.buttonEventType) {
       formInstance?.current?.setFieldsValue({
         buttonEvent: undefined,
+        _formCode: undefined,
       });
     }
-    // 触发重新渲染以显示/隐藏动态字段
+    if (changedValues.buttonEvent) {
+      formInstance?.current?.setFieldsValue({ _formCode: undefined });
+    }
     forceUpdate({});
   };
 
@@ -73,7 +92,6 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
     return map(configs, config => {
       const Component = ComponentMap[config.type];
       if (!Component) return null;
-
       return (
         <Component
           key={config.name}
@@ -89,13 +107,10 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
   const renderButtonEventField = () => {
     const buttonLevel = formInstance?.current?.getFieldValue('buttonLevel');
     const buttonEventType = formInstance?.current?.getFieldValue('buttonEventType');
-
     if (!buttonLevel || !buttonEventType) return null;
 
     if (buttonEventType === ButtonEventType.System) {
-      // 系统事件 - 下拉单选
       const eventOptions = getButtonEventOptionsByLevel(buttonLevel);
-
       return (
         <ProFormSelect
           key="buttonEvent"
@@ -107,7 +122,6 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
         />
       );
     } else {
-      // 自定义事件 - 文本输入框
       return (
         <ProFormText
           key="buttonEvent"
@@ -120,10 +134,33 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
     }
   };
 
+  /** 根据当前事件动态渲染按钮级别属性配置 */
+  const renderEventConfig = () => {
+    const buttonEvent = formInstance?.current?.getFieldValue('buttonEvent');
+    const buttonEventType = formInstance?.current?.getFieldValue('buttonEventType');
+
+    if (buttonEventType !== ButtonEventType.System) return null;
+    if (!buttonEvent || !FORM_REQUIRED_EVENTS.includes(buttonEvent)) return null;
+
+    return (
+      <Row gutter={[16, 0]}>
+        <Col xs={24} sm={24} md={12}>
+          <ProFormSelect
+            name="_formCode"
+            label="关联表单"
+            tooltip="选择该按钮操作的表单，用于新建/编辑场景"
+            placeholder="请选择关联表单"
+            options={formOptions}
+            rules={[{ required: true, message: '请选择关联表单' }]}
+          />
+        </Col>
+      </Row>
+    );
+  };
+
   const renderTwoColumnLayout = (configs: ButtonConfigItem[]) => {
     const items = renderFormItems(configs);
     if (!items || items.length === 0) return null;
-
     return (
       <Row gutter={[16, 0]}>
         {items.map((item, index) => (
@@ -141,49 +178,49 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
       title={isEdit ? '编辑功能按钮' : '新建功能按钮'}
       formRef={formInstance}
       onOpenChange={onVisibleChange}
-      modalProps={{
-        destroyOnClose: true,
-      }}
+      modalProps={{ destroyOnClose: true }}
       onValuesChange={handleFormValuesChange}
       onFinish={async values => {
-        let result;
+        // 把 _formCode 合并进 buttonConfig.form，_formCode 不上传
+        const { _formCode, buttonConfig: rawConfig, ...rest } = values;
 
-        // 处理 buttonConfig - 如果是字符串则转换为对象
+        let parsedConfig: Record<string, any> = {};
+        if (rawConfig) {
+          try {
+            parsedConfig = typeof rawConfig === 'string' ? JSON.parse(rawConfig) : rawConfig;
+          } catch {
+            message.error('扩展配置 JSON 格式有误');
+            return false;
+          }
+        }
+        if (_formCode) {
+          parsedConfig.formCode = _formCode;
+        }
+
         const formData = {
-          ...values,
-          buttonConfig: values.buttonConfig
-            ? typeof values.buttonConfig === 'string'
-              ? JSON.parse(values.buttonConfig)
-              : values.buttonConfig
-            : undefined,
+          ...rest,
+          buttonConfig: Object.keys(parsedConfig).length ? parsedConfig : undefined,
         };
 
+        let result;
         if (isEdit) {
-          result = await metaService.updateActionButton?.({
-            ...formData,
-            _id: id,
-          });
+          result = await metaService.updateActionButton?.({ ...formData, _id: id });
         } else {
-          result = await metaService.createActionButton?.({
-            ...formData,
-            appCode,
-            metaObjectCode,
-          });
+          result = await metaService.createActionButton?.({ ...formData, appCode, metaObjectCode });
         }
 
         message.success(result?.message);
-        // 保存回调
         onFinish?.(result?.data);
         return true;
       }}
     >
-      {/* 基础配置 - 两列布局 */}
+      {/* 基础配置 */}
       {renderTwoColumnLayout(commonConfigs)}
 
-      {/* 帮助设置 - 两列布局 */}
+      {/* 帮助设置 */}
       {renderTwoColumnLayout(HELP_SETTINGS_CONFIGS)}
 
-      {/* 按钮级别和事件类型 - 两列布局 */}
+      {/* 按钮级别 + 事件类型 */}
       <Row gutter={[16, 0]}>
         <Col xs={24} sm={24} md={12}>
           {renderFormItems(BUTTON_LEVEL_CONFIG)}
@@ -193,14 +230,17 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
         </Col>
       </Row>
 
-      {/* 事件 - 动态渲染 */}
+      {/* 事件 */}
       <Row gutter={[16, 0]}>
         <Col xs={24} sm={24} md={12}>
           {renderButtonEventField()}
         </Col>
       </Row>
 
-      {/* JSON配置 - 全宽 */}
+      {/* 事件级别属性（关联表单等） */}
+      {renderEventConfig()}
+
+      {/* 扩展 JSON 配置 */}
       {renderFormItems(JSON_CONFIG)}
     </ModalForm>
   );

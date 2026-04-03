@@ -8,7 +8,7 @@ import { useMeta } from '@/store/metaAtom';
 import { metaService } from '@/api/meta';
 import { ActionButtonDto } from '@/api/meta/interface';
 import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
-import { ComponentType } from '@/pages/meta/components/BaseDetail/types';
+// import { ComponentType } from '@/pages/meta/components/BaseDetail/types';
 import { ButtonSelectorModalProps } from './type';
 
 const ButtonSelectorModal: React.FC<ButtonSelectorModalProps> = ({
@@ -63,7 +63,7 @@ const ButtonSelectorModal: React.FC<ButtonSelectorModalProps> = ({
       return {
         key: button._id,
         /** 按钮等级过滤 */
-        disabled: button.buttonLevel !== ComponentType.List,
+        disabled: !includes([ButtonLevel.List, ButtonLevel.ListRow], button.buttonLevel),
         title: button.buttonName,
       };
     });

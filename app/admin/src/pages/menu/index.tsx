@@ -70,11 +70,12 @@ const Menu: React.FC = () => {
       }));
   }, [menus]);
 
-  // 视图选项
+  // 视图选项（带对象编码方便区分同名视图）
   const viewOptions = React.useMemo(() => {
     return views.map(v => ({
       value: v.viewCode,
-      label: v.viewName,
+      label: `${v.viewName}（${v.metaObjectCode}）`,
+      metaObjectCode: v.metaObjectCode,
     }));
   }, [views]);
 
@@ -110,9 +111,11 @@ const Menu: React.FC = () => {
     }
     try {
       const values = await form.validateFields();
+      const selectedView = views.find((v: any) => v.viewCode === values.viewCode);
       await metaService.createMenu({
         ...values,
         appCode,
+        metaObjectCode: selectedView?.metaObjectCode || undefined,
       });
       message.success('创建成功');
       setCreateModalOpen(false);

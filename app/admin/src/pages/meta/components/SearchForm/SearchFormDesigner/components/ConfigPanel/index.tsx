@@ -25,6 +25,7 @@ const ConfigPanel: React.ForwardRefRenderFunction<SearchFormConfigRef, SearchFor
       </ProForm.Item> */}
       <ProFormSwitch name="isCollapsible" label="是否可折叠" />
       <ProFormDigit name="collapseRows" label="折叠行数" min={1} max={10} />
+      <ProFormDigit name="cols" label="每行列数" min={1} max={6} initialValue={4} />
     </ProForm>
   );
 };

@@ -1,0 +1,208 @@
+import React from 'react';
+import dayjs from 'dayjs';
+import {
+  Form, Row, Col, Button, Input, InputNumber,
+  DatePicker, TimePicker, Select, TreeSelect, Cascader,
+  Space, theme,
+} from 'antd';
+import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
+import type { SearchFormData, SearchFormField } from '@/api/renderer/interface';
+
+interface MetaSearchFormProps {
+  searchFormData: SearchFormData;
+  onSearch?: (values: Record<string, any>) => void;
+}
+
+const Cond = {
+  EQUAL: '=',
+  NOT_EQUAL: '!=',
+  LIKE: 'like',
+  GT: '>',
+  GTE: '>=',
+  LT: '<',
+  LTE: '<=',
+  BETWEEN: 'between',
+  IN: 'in',
+  NOT_IN: 'not_in',
+  IS_NULL: 'is_null',
+  IS_NOT_NULL: 'is_not_null',
+} as const;
+
+const isRange = (c: string) => c === Cond.BETWEEN;
+const isMulti = (c: string) => c === Cond.IN || c === Cond.NOT_IN;
+const isNoInput = (c: string) => c === Cond.IS_NULL || c === Cond.IS_NOT_NULL;
+
+/** 渲染搜索控件，范围控件也只占 1 列 */
+function renderSearchControl(sf: SearchFormField): React.ReactNode {
+  const fieldType = sf.fieldInfo?.fieldType || 'Text';
+  const condition = sf.condition || Cond.EQUAL;
+  const placeholder = sf.placeholder || `请输入${sf.displayName || sf.fieldName}`;
+  const options = sf.fieldInfo?.config?.options || [];
+
+  if (isNoInput(condition)) {
+    return <Input disabled placeholder="无需输入" style={{ width: '100%' }} />;
+  }
+
+  const popupContainer = (trigger: HTMLElement) => trigger.parentElement!;
+
+  if (fieldType === 'DatePicker') {
+    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+    return <DatePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+  }
+  if (fieldType === 'MonthPicker') {
+    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
+    return <DatePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
+  }
+  if (fieldType === 'YearPicker') {
+    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
+    return <DatePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
+  }
+  if (fieldType === 'TimePicker') {
+    if (isRange(condition)) return <TimePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+    return <TimePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+  }
+
+  if (fieldType === 'Text_Number') {
+    if (isRange(condition)) {
+      return (
+        <Input.Group compact style={{ display: 'flex' }}>
+          <InputNumber style={{ flex: 1, minWidth: 0 }} placeholder="最小" />
+          <Input style={{ width: 24, textAlign: 'center', pointerEvents: 'none', padding: '0 4px' }} placeholder="~" disabled />
+          <InputNumber style={{ flex: 1, minWidth: 0 }} placeholder="最大" />
+        </Input.Group>
+      );
+    }
+    return <InputNumber style={{ width: '100%' }} placeholder={placeholder} />;
+  }
+
+  if (fieldType === 'SingleSelect' || fieldType === 'SingleRadio') {
+    if (isMulti(condition)) {
+      return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
+    }
+    return <Select style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
+  }
+
+  if (fieldType === 'MultipleSelect' || fieldType === 'MultipleCheckbox') {
+    return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
+  }
+
+  if (fieldType === 'TreeSelect') {
+    const treeData = sf.fieldInfo?.config?.treeData || [];
+    return <TreeSelect style={{ width: '100%' }} placeholder={placeholder} treeData={treeData} allowClear />;
+  }
+  if (fieldType === 'Cascader') {
+    return <Cascader style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
+  }
+
+  return <Input placeholder={placeholder} allowClear />;
+}
+
+const DATE_FIELD_TYPES = ['DatePicker', 'MonthPicker', 'YearPicker', 'TimePicker'];
+
+function parseDateValue(value: any, fieldType: string, condition: string): any {
+  if (!value || !DATE_FIELD_TYPES.includes(fieldType)) return value;
+  if (isRange(condition) && Array.isArray(value)) {
+    return value.map((v) => (v ? dayjs(v) : null));
+  }
+  return typeof value === 'string' && value ? dayjs(value) : value;
+}
+
+function buildInitialValues(fields: SearchFormField[]): Record<string, any> {
+  const values: Record<string, any> = {};
+  fields.forEach((sf) => {
+    if (sf.defaultValueType === 'custom' && sf.defaultValue !== undefined && sf.defaultValue !== '') {
+      const fieldType = sf.fieldInfo?.fieldType || 'Text';
+      values[sf.fieldName] = parseDateValue(sf.defaultValue, fieldType, sf.condition);
+    }
+  });
+  return values;
+}
+
+const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearch }) => {
+  const { token } = theme.useToken();
+  const config = searchFormData.searchFormConfig || {};
+  const collapseRows = config.collapseRows || 1;
+  const isCollapsible = config.isCollapsible !== false;
+  const colsPerRow = config.cols || 4;
+  const colSpan = Math.floor(24 / colsPerRow);
+
+  const visibleFields = (searchFormData.searchFormFields || []).filter(
+    (sf) => sf.isVisible !== false,
+  );
+
+  const initialValues = React.useMemo(
+    () => buildInitialValues(visibleFields),
+    [searchFormData.searchFormCode],
+  );
+
+  const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [searchFormData.searchFormCode]);
+
+  const [collapsed, setCollapsed] = React.useState(isCollapsible);
+  const maxVisible = collapsed ? collapseRows * colsPerRow : visibleFields.length;
+  const displayFields = visibleFields.slice(0, maxVisible);
+
+  const handleSearch = () => {
+    form.validateFields().then((values) => onSearch?.(values));
+  };
+
+  const handleReset = () => {
+    form.resetFields();
+    form.setFieldsValue(initialValues);
+    onSearch?.(initialValues);
+  };
+
+  // 按钮推到行末：计算最后一行剩余空位
+  const totalSlots = displayFields.length + 1;
+  const usedInLastRow = totalSlots % colsPerRow || colsPerRow;
+  const btnOffset = colsPerRow - usedInLastRow;
+
+  return (
+    <div style={{ background: token.colorBgContainer, borderRadius: token.borderRadius, marginBottom: 8 }}>
+      <Form form={form} layout="inline" initialValues={initialValues}>
+        <Row gutter={[16, 0]} style={{ width: '100%' }}>
+          {displayFields.map((sf) => (
+            <Col key={sf.fieldName} span={colSpan}>
+              <Form.Item
+                name={sf.fieldName}
+                label={sf.displayName || sf.fieldName}
+                style={{ marginBottom: 12, width: '100%' }}
+                labelCol={{ style: { whiteSpace: 'nowrap', width: 72, flexShrink: 0 } }}
+                wrapperCol={{ style: { flex: 1, minWidth: 0 } }}
+              >
+                {renderSearchControl(sf)}
+              </Form.Item>
+            </Col>
+          ))}
+
+          <Col
+            span={colSpan}
+            offset={btnOffset * colSpan}
+            style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 12 }}
+          >
+            <Space style={{ justifyContent: 'flex-end', width: '100%' }}>
+              {isCollapsible && visibleFields.length > colsPerRow && (
+                <Button
+                  type="text"
+                  icon={collapsed ? <DownOutlined /> : <UpOutlined />}
+                  onClick={() => setCollapsed(!collapsed)}
+                >
+                  {collapsed ? '展开' : '收起'}
+                </Button>
+              )}
+              <Button onClick={handleReset}>重置</Button>
+              <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+                搜索
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      </Form>
+    </div>
+  );
+};
+
+export default MetaSearchForm;

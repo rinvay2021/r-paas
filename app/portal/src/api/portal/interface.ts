@@ -14,6 +14,7 @@ export interface PortalMenu {
   menuDesc?: string;
   parentId?: string | null;
   viewCode?: string;
+  metaObjectCode?: string;
   orderNum: number;
   level: number;
 }

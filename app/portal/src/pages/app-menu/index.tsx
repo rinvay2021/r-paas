@@ -1,8 +1,9 @@
 import React from 'react';
-import { Breadcrumb, Empty, Spin, Tag } from 'antd';
+import { Empty, Spin } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import WujieReact from 'wujie-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { portalService } from '@/api/portal';
@@ -11,44 +12,61 @@ import type { PortalMenu } from '@/api/portal/interface';
 
 import './index.less';
 
+const RENDERER_ORIGIN = 'http://localhost:3005';
+
 function buildMenuTree(menus: PortalMenu[]) {
-  const rootMenus = menus.filter(m => !m.parentId);
+  const rootMenus = menus.filter(m => !m.parentId).sort((a, b) => a.orderNum - b.orderNum);
   const childMenus = menus.filter(m => !!m.parentId);
 
   return rootMenus.map(parent => {
-    const children = childMenus.filter(
-      c => String(c.parentId) === String(parent._id),
-    );
+    const children = childMenus
+      .filter(c => String(c.parentId) === String(parent._id))
+      .sort((a, b) => a.orderNum - b.orderNum);
+
     const item: any = {
       path: `/app/${parent.appCode}/menu/${parent.menuCode}`,
       name: parent.menuName,
+      menuData: parent,
     };
     if (children.length > 0) {
       item.routes = children.map(child => ({
         path: `/app/${child.appCode}/menu/${child.menuCode}`,
         name: child.menuName,
+        menuData: child,
       }));
     }
     return item;
   });
 }
 
-// 取第一个叶子菜单名（有子菜单取第一个子项，否则取自身）
-function getFirstLeafName(menus: PortalMenu[]): string | null {
-  const roots = menus.filter(m => !m.parentId);
+/** 取第一个叶子菜单 */
+function getFirstLeaf(menus: PortalMenu[]): PortalMenu | null {
+  const roots = menus.filter(m => !m.parentId).sort((a, b) => a.orderNum - b.orderNum);
   if (!roots.length) return null;
   const firstRoot = roots[0];
-  const children = menus.filter(m => String(m.parentId) === String(firstRoot._id));
-  return children.length ? children[0].menuName : firstRoot.menuName;
+  const children = menus
+    .filter(m => String(m.parentId) === String(firstRoot._id))
+    .sort((a, b) => a.orderNum - b.orderNum);
+  return children.length ? children[0] : firstRoot;
+}
+
+/** 根据菜单拼接 renderer URL */
+function buildRendererUrl(menu: PortalMenu): string | null {
+  if (!menu.viewCode || !menu.metaObjectCode) return null;
+  const params = new URLSearchParams({
+    appCode: menu.appCode,
+    metaObjectCode: menu.metaObjectCode,
+    viewCode: menu.viewCode,
+  });
+  return `${RENDERER_ORIGIN}/?${params.toString()}`;
 }
 
 const AppMenu: React.FC = () => {
   const { appCode } = useParams<{ appCode: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
   const { user } = useAuth();
 
-  const [selectedMenu, setSelectedMenu] = React.useState<string | null>(null);
+  const [selectedMenu, setSelectedMenu] = React.useState<PortalMenu | null>(null);
 
   const { data, loading } = useRequest(
     () => portalService.queryMenus({ appCode: appCode! }),
@@ -58,13 +76,20 @@ const AppMenu: React.FC = () => {
   const menuList: PortalMenu[] = data?.data?.list || [];
   const routes = buildMenuTree(menuList);
 
-  // 数据加载完成后默认选中第一个叶子菜单
+  // 默认选中第一个叶子菜单
   React.useEffect(() => {
     if (menuList.length && !selectedMenu) {
-      const first = getFirstLeafName(menuList);
+      const first = getFirstLeaf(menuList);
       if (first) setSelectedMenu(first);
     }
   }, [menuList]);
+
+  // 当前选中菜单的 path，用于 ProLayout 高亮 + 展开
+  const selectedPath = selectedMenu
+    ? `/app/${selectedMenu.appCode}/menu/${selectedMenu.menuCode}`
+    : undefined;
+
+  const rendererUrl = selectedMenu ? buildRendererUrl(selectedMenu) : null;
 
   return (
     <Spin spinning={loading} style={{ height: '100vh' }}>
@@ -72,7 +97,8 @@ const AppMenu: React.FC = () => {
         logo={LOGO}
         title={TITLE}
         route={{ path: '/', routes }}
-        location={location}
+        // 把选中 path 传给 location，ProLayout 自动高亮并展开父菜单
+        location={{ pathname: selectedPath }}
         className={`${prefix}-portal-app-menu`}
         layout="side"
         siderWidth={200}
@@ -88,8 +114,8 @@ const AppMenu: React.FC = () => {
             colorMenuItemDivider: 'rgba(255,255,255,0.06)',
           },
         }}
-        menuItemRender={(item, dom) => (
-          <div onClick={() => setSelectedMenu(item.name as string)}>{dom}</div>
+        menuItemRender={(item: any, dom) => (
+          <div onClick={() => item.menuData && setSelectedMenu(item.menuData)}>{dom}</div>
         )}
         actionsRender={() => [
           <span
@@ -109,12 +135,23 @@ const AppMenu: React.FC = () => {
         <div className={`${prefix}-portal-app-menu-content`}>
           {selectedMenu ? (
             <div className={`${prefix}-portal-app-menu-page`}>
+              {/* 只展示标题 */}
               <div className={`${prefix}-portal-app-menu-page-header`}>
-                <Breadcrumb items={[{ title: appCode }, { title: selectedMenu }]} />
-                <h2 className={`${prefix}-portal-app-menu-page-title`}>{selectedMenu}</h2>
+                <h2 className={`${prefix}-portal-app-menu-page-title`}>{selectedMenu.menuName}</h2>
               </div>
-              <div className={`${prefix}-portal-app-menu-placeholder`}>
-                <Tag color="default">功能开发中</Tag>
+
+              <div className={`${prefix}-portal-app-menu-view`}>
+                {rendererUrl ? (
+                  <WujieReact
+                    key={rendererUrl}
+                    name={`renderer-${selectedMenu.menuCode}`}
+                    url={rendererUrl}
+                    width="100%"
+                    height="100%"
+                  />
+                ) : (
+                  <Empty description="该菜单未绑定视图，请在管理后台配置 viewCode 和 metaObjectCode" />
+                )}
               </div>
             </div>
           ) : (

@@ -42,11 +42,12 @@
     border-radius: 8px;
     padding: 16px 20px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 
     &-header {
-      padding-bottom: 12px;
-      border-bottom: 1px solid #ebebeb;
-      margin-bottom: 16px;
+      flex-shrink: 0;
+      margin-bottom: 12px;
     }
 
     &-title {
@@ -57,13 +58,18 @@
     }
   }
 
-  &-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 240px;
-    color: #ccc;
-    font-size: 13px;
+  &-view {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+    // wujie 容器铺满
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
   }
 
   &-welcome {

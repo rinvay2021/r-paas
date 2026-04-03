@@ -1,4 +1,5 @@
 import { Form } from 'antd';
+import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
 
 /** ==================== common start ==================== */
 /** 分页查询DTO */
@@ -330,6 +331,8 @@ export interface SearchFormConfig {
   isCollapsible?: boolean;
   /** 折叠行数 */
   collapseRows?: number;
+  /** 每行列数，默认 4 */
+  cols?: number;
 }
 
 /** 搜索表单字段 */
@@ -438,7 +441,7 @@ export interface ActionButtonDto {
   /** 帮助链接 */
   buttonHelpLink?: string;
   /** 级别 */
-  buttonLevel: string;
+  buttonLevel: ButtonLevel;
   /** 事件类型 */
   buttonEventType: string;
   /** 事件 */
@@ -473,6 +476,8 @@ export interface MenuDto {
   parentId?: string | null;
   /** 关联视图编码 */
   viewCode?: string;
+  /** 关联视图所属对象编码 */
+  metaObjectCode?: string;
   /** 排序号 */
   orderNum: number;
   /** 层级 */

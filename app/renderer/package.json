@@ -8,14 +8,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@r-paas/shared": "workspace:*",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "wujie": "^1.0.29",
+    "wujie-react": "^1.0.29"
   },
   "devDependencies": {
+    "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^3.0.0",
     "typescript": "^5.0.0",
     "vite": "^4.0.0"
   }
-} 
+}

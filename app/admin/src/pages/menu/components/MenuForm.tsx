@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { Form, Input, TreeSelect, Select, Button, Space, Empty, Divider } from 'antd';
 import { SaveOutlined, DeleteOutlined } from '@ant-design/icons';
-import type { MenuDto } from '@/api/meta/interface';
-import { useMetaViews } from '@/store/metaViewAtom';
+import type { MenuDto, ViewDto } from '@/api/meta/interface';
+import { metaService } from '@/api/meta';
+import { useParams } from 'react-router-dom';
 import './MenuForm.less';
 
 const { TextArea } = Input;
@@ -16,14 +17,21 @@ interface MenuFormProps {
 
 const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) => {
   const [form] = Form.useForm();
-  const views = useMetaViews();
+  const { appCode } = useParams<{ appCode: string }>();
+  const [views, setViews] = React.useState<ViewDto[]>([]);
+
+  // 直接加载该 app 下所有视图（不依赖 metaObjectCode 上下文）
+  useEffect(() => {
+    if (!appCode) return;
+    metaService.queryViews({ appCode }).then(res => {
+      setViews(res?.data?.list || []);
+    }).catch(() => setViews([]));
+  }, [appCode]);
 
   // 初始化表单值
   useEffect(() => {
     if (menu) {
-      // 先重置表单，清空所有字段
       form.resetFields();
-      // 然后设置新的值
       form.setFieldsValue({
         menuName: menu.menuName,
         menuCode: menu.menuCode,
@@ -40,33 +48,29 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
   const parentMenuOptions = useMemo(() => {
     return menus
       .filter(m => m.level === 1 && m._id !== menu?._id)
-      .map(m => ({
-        value: m._id,
-        title: m.menuName,
-      }));
+      .map(m => ({ value: m._id, title: m.menuName }));
   }, [menus, menu]);
 
   // 视图选项
   const viewOptions = useMemo(() => {
     return views.map(v => ({
       value: v.viewCode,
-      label: v.viewName,
+      label: `${v.viewName}（${v.metaObjectCode}）`,
     }));
   }, [views]);
 
-  // 保存
+  // 保存：选中视图时自动带上 metaObjectCode
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
-      await onSave(values);
+      const selectedView = views.find(v => v.viewCode === values.viewCode);
+      await onSave({
+        ...values,
+        metaObjectCode: selectedView?.metaObjectCode || undefined,
+      });
     } catch (error) {
       console.error('表单验证失败', error);
     }
-  };
-
-  // 删除
-  const handleDelete = async () => {
-    await onDelete();
   };
 
   if (!menu) {
@@ -80,13 +84,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
   return (
     <div className="menu-form-wrapper">
       <div className="menu-form-content">
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{
-            parentId: null,
-          }}
-        >
+        <Form form={form} layout="vertical" initialValues={{ parentId: null }}>
           <Form.Item
             name="menuName"
             label="菜单名称"
@@ -126,7 +124,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
             />
           </Form.Item>
 
-          <Form.Item name="viewCode" label="关联视图" tooltip="选择该菜单要展示的视图">
+          <Form.Item name="viewCode" label="关联视图" tooltip="选择该菜单要展示的视图，选项格式：视图名称（对象编码）">
             <Select
               showSearch
               allowClear
@@ -140,13 +138,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
           </Form.Item>
 
           <Form.Item name="menuDesc" label="描述">
-            <TextArea
-              rows={4}
-              placeholder="请输入菜单描述"
-              maxLength={200}
-              showCount
-              size="large"
-            />
+            <TextArea rows={4} placeholder="请输入菜单描述" maxLength={200} showCount size="large" />
           </Form.Item>
         </Form>
       </div>
@@ -158,7 +150,7 @@ const MenuForm: React.FC<MenuFormProps> = ({ menu, menus, onSave, onDelete }) =>
           <Button type="default" icon={<SaveOutlined />} onClick={handleSave}>
             保存
           </Button>
-          <Button danger icon={<DeleteOutlined />} onClick={handleDelete}>
+          <Button danger icon={<DeleteOutlined />} onClick={() => onDelete()}>
             删除
           </Button>
         </Space>
