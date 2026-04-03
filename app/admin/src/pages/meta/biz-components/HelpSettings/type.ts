@@ -1,20 +1,11 @@
 import type { ReactNode } from 'react';
 
-export enum HelpType {
-  TOOLTIP = 'tooltip',
-  LINK = 'link',
-}
-
-export enum TipType {
-  INFO = 'info',
-  WARNING = 'warning',
-  ERROR = 'error',
-  SUCCESS = 'success',
-}
+// 从 @r-paas/meta re-export，保持现有引用不变
+export { HelpType, TipType } from '@r-paas/meta';
 
 export interface HelpSettingsValue {
-  type?: TipType;
-  tipType?: HelpType[];
+  type?: import('@r-paas/meta').TipType;
+  tipType?: import('@r-paas/meta').HelpType[];
   tooltip?: string;
   linkUrl?: string;
   linkText?: string;

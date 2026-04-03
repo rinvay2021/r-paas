@@ -160,6 +160,9 @@ const BaseList: React.FC = () => {
         ) : (
           <DetailPagePreview
             height={height}
+            appCode={appCode}
+            metaObjectCode={metaObjectCode}
+            listCode={activeList?.listCode}
             onEdit={setEditing}
             onDelete={handleDeleteList}
             onSetting={handleSettingList}

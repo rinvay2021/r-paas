@@ -10,9 +10,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@r-paas/shared": "workspace:*",
-    "wujie": "^1.0.29",
-    "wujie-react": "^1.0.29"
+    "@r-paas/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

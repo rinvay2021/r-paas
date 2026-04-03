@@ -15,4 +15,10 @@ export const rendererApi = {
   getDetail(params: { appCode: string; metaObjectCode: string; detailPageCode: string }) {
     return http.post<RenderDetailResponse>('/renderer/detail', params);
   },
+  getList(params: { appCode: string; metaObjectCode: string; listCode: string }) {
+    return http.post<{ list: import('@r-paas/meta').ListData }>('/renderer/list', params);
+  },
+  getSearchForm(params: { appCode: string; metaObjectCode: string; searchFormCode: string }) {
+    return http.post<{ searchForm: import('@r-paas/meta').SearchFormData }>('/renderer/search-form', params);
+  },
 };

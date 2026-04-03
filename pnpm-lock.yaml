@@ -74,6 +74,12 @@ importers:
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
+      wujie:
+        specifier: ^1.0.29
+        version: 1.0.29
+      wujie-react:
+        specifier: ^1.0.29
+        version: 1.0.29(react@18.2.0)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.2
@@ -192,6 +198,9 @@ importers:
 
   app/admin:
     dependencies:
+      '@r-paas/meta':
+        specifier: workspace:*
+        version: link:../../packages/meta
       '@r-paas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -211,12 +220,6 @@ importers:
       '@r-paas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      wujie:
-        specifier: ^1.0.29
-        version: 1.0.29
-      wujie-react:
-        specifier: ^1.0.29
-        version: 1.0.29(react@18.3.1)
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
@@ -230,86 +233,31 @@ importers:
 
   app/renderer:
     dependencies:
+      '@r-paas/meta':
+        specifier: workspace:*
+        version: link:../../packages/meta
       '@r-paas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      react:
-        specifier: ^18.0.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
-      wujie:
-        specifier: ^1.0.29
-        version: 1.0.29
-      wujie-react:
-        specifier: ^1.0.29
-        version: 1.0.29(react@18.3.1)
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
         version: 18.19.68
-      '@types/react':
-        specifier: ^18.0.0
-        version: 18.3.17
-      '@types/react-dom':
-        specifier: ^18.0.0
-        version: 18.3.5(@types/react@18.3.17)
       '@vitejs/plugin-react':
         specifier: ^3.0.0
         version: 3.1.0(vite@4.5.5(@types/node@18.19.68)(less@4.2.1)(terser@5.37.0))
-      typescript:
-        specifier: ^5.0.0
-        version: 5.7.2
       vite:
         specifier: ^4.0.0
         version: 4.5.5(@types/node@18.19.68)(less@4.2.1)(terser@5.37.0)
 
   packages/meta:
-    dependencies:
-      '@ant-design/icons':
-        specifier: ^5.0.0
-        version: 5.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      antd:
-        specifier: ^5.0.0
-        version: 5.22.5(moment@2.30.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      classnames:
-        specifier: ^2.3.2
-        version: 2.5.1
-      react:
-        specifier: ^18.0.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.0.0
-        version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@rollup/plugin-commonjs':
-        specifier: ^24.1.0
-        version: 24.1.0(rollup@3.29.5)
-      '@rollup/plugin-node-resolve':
-        specifier: ^15.0.2
-        version: 15.3.1(rollup@3.29.5)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.0
-        version: 11.1.6(rollup@3.29.5)(tslib@2.8.1)(typescript@5.7.2)
-      autoprefixer:
-        specifier: ^10.4.14
-        version: 10.4.20(postcss@8.4.49)
-      less:
-        specifier: ^4.1.3
-        version: 4.2.1
-      postcss:
-        specifier: ^8.4.21
-        version: 8.4.49
-      rollup:
-        specifier: ^3.20.2
-        version: 3.29.5
-      rollup-plugin-dts:
-        specifier: ^5.3.0
-        version: 5.3.1(rollup@3.29.5)(typescript@5.7.2)
-      rollup-plugin-postcss:
-        specifier: ^4.0.2
-        version: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))
+      tsup:
+        specifier: ^7.2.0
+        version: 7.3.0(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.7.2
 
   packages/shared:
     dependencies:
@@ -1342,46 +1290,6 @@ packages:
     resolution: {integrity: sha1-V2GOV5QqXwExN0qf2wFn4loRf9w=, tarball: http://r.npm.sankuai.com/@remix-run/router/download/@remix-run/router-1.5.0.tgz}
     engines: {node: '>=14'}
 
-  '@rollup/plugin-commonjs@24.1.0':
-    resolution: {integrity: sha1-eeVL2Du2Q5Z2FDHu5sRBUu8yIQA=, tarball: http://r.npm.sankuai.com/@rollup/plugin-commonjs/download/@rollup/plugin-commonjs-24.1.0.tgz}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.68.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-node-resolve@15.3.1':
-    resolution: {integrity: sha1-ZgCJU8JSS+eGqjGdSeMvISgpang=, tarball: http://r.npm.sankuai.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-15.3.1.tgz}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.78.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-typescript@11.1.6':
-    resolution: {integrity: sha1-ckI31ewSYJ7AFCn2GdKj59TRsis=, tarball: http://r.npm.sankuai.com/@rollup/plugin-typescript/download/@rollup/plugin-typescript-11.1.6.tgz}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.14.0||^3.0.0||^4.0.0
-      tslib: '*'
-      typescript: '>=3.7.0'
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-      tslib:
-        optional: true
-
-  '@rollup/pluginutils@5.1.4':
-    resolution: {integrity: sha1-u5Tx+eqqyUTaI3dnzf7mxbImLUo=, tarball: http://r.npm.sankuai.com/@rollup/pluginutils/download/@rollup/pluginutils-5.1.4.tgz}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
   '@rollup/rollup-android-arm-eabi@4.28.1':
     resolution: {integrity: sha1-f0xNjNXMq26V1nUNvgAyHB8weR4=, tarball: http://r.npm.sankuai.com/@rollup/rollup-android-arm-eabi/download/@rollup/rollup-android-arm-eabi-4.28.1.tgz}
     cpu: [arm]
@@ -1518,10 +1426,6 @@ packages:
     resolution: {integrity: sha1-9UShSNOrNYAcH2M6dEH9h8LkhL8=, tarball: http://r.npm.sankuai.com/@tootallnate/once/download/@tootallnate/once-2.0.0.tgz}
     engines: {node: '>= 10'}
 
-  '@trysound/sax@0.2.0':
-    resolution: {integrity: sha1-zMqrdYr1Z2Hre/N69vA/Mm3XmK0=, tarball: http://r.npm.sankuai.com/@trysound/sax/download/@trysound/sax-0.2.0.tgz}
-    engines: {node: '>=10.13.0'}
-
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha1-buRkAGhfEw4ngSjHs4t+Ax/1svI=, tarball: http://r.npm.sankuai.com/@tsconfig/node10/download/@tsconfig/node10-1.0.11.tgz}
 
@@ -1603,11 +1507,6 @@ packages:
   '@types/react-dom@18.0.0':
     resolution: {integrity: sha1-sT+NCY5LDEXfTx7RI4MxQ7DHEUE=, tarball: http://r.npm.sankuai.com/@types/react-dom/download/@types/react-dom-18.0.0.tgz}
 
-  '@types/react-dom@18.3.5':
-    resolution: {integrity: sha1-Rfn4c5jF3OoIW3FcWN3PH69l9xY=, tarball: http://r.npm.sankuai.com/@types/react-dom/download/@types/react-dom-18.3.5.tgz}
-    peerDependencies:
-      '@types/react': ^18.0.0
-
   '@types/react-grid-layout@2.1.0':
     resolution: {integrity: sha1-5gQ/9HOn9nBFE784erQXIruPJLI=, tarball: http://r.npm.sankuai.com/@types/react-grid-layout/download/@types/react-grid-layout-2.1.0.tgz}
     deprecated: This is a stub types definition. react-grid-layout provides its own type definitions, so you do not need this installed.
@@ -1617,12 +1516,6 @@ packages:
 
   '@types/react@18.0.0':
     resolution: {integrity: sha1-S+iqOi0Er8OsLMHKQ9ObC9QSiQw=, tarball: http://r.npm.sankuai.com/@types/react/download/@types/react-18.0.0.tgz}
-
-  '@types/react@18.3.17':
-    resolution: {integrity: sha1-2Gyg4IHHpel5t9sXX5UVpBA4zqc=, tarball: http://r.npm.sankuai.com/@types/react/download/@types/react-18.3.17.tgz}
-
-  '@types/resolve@1.20.2':
-    resolution: {integrity: sha1-l9JuAM1KBCO0r2IKvs8+b0QreXU=, tarball: http://r.npm.sankuai.com/@types/resolve/download/@types/resolve-1.20.2.tgz}
 
   '@types/scheduler@0.23.0':
     resolution: {integrity: sha1-CmZVs+Jwjqq8oAtzcvr9enkqewk=, tarball: http://r.npm.sankuai.com/@types/scheduler/download/@types/scheduler-0.23.0.tgz}
@@ -1892,13 +1785,6 @@ packages:
     resolution: {integrity: sha1-YCzUtG6EStTv/JKoARo8RuAjjcI=, tarball: http://r.npm.sankuai.com/at-least-node/download/at-least-node-1.0.0.tgz}
     engines: {node: '>= 4.0.0'}
 
-  autoprefixer@10.4.20:
-    resolution: {integrity: sha1-XK7BTUOXbvQuMty0vWKHjpa+Wzs=, tarball: http://r.npm.sankuai.com/autoprefixer/download/autoprefixer-10.4.20.tgz}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.1.0
-
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha1-pcw3XWoDwu/IelU/PgsVIt7xSEY=, tarball: http://r.npm.sankuai.com/available-typed-arrays/download/available-typed-arrays-1.0.7.tgz}
     engines: {node: '>= 0.4'}
@@ -1958,9 +1844,6 @@ packages:
 
   bl@4.1.0:
     resolution: {integrity: sha1-RRU1JkGCvsL7vIOmKrmM8R2fezo=, tarball: http://r.npm.sankuai.com/bl/download/bl-4.1.0.tgz}
-
-  boolbase@1.0.0:
-    resolution: {integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=, tarball: http://r.npm.sankuai.com/boolbase/download/boolbase-1.0.0.tgz}
 
   brace-expansion@1.1.11:
     resolution: {integrity: sha1-PH/L9SnYcibz0vUrlm/1Jx60Qd0=, tarball: http://r.npm.sankuai.com/brace-expansion/download/brace-expansion-1.1.11.tgz}
@@ -2035,9 +1918,6 @@ packages:
   camelcase@6.3.0:
     resolution: {integrity: sha1-VoW5XrIJrJwMF3Rnd4ychN9Yupo=, tarball: http://r.npm.sankuai.com/camelcase/download/camelcase-6.3.0.tgz}
     engines: {node: '>=10'}
-
-  caniuse-api@3.0.0:
-    resolution: {integrity: sha1-Xk2Q4idJYdRikZl99Znj7QCO5MA=, tarball: http://r.npm.sankuai.com/caniuse-api/download/caniuse-api-3.0.0.tgz}
 
   caniuse-lite@1.0.30001690:
     resolution: {integrity: sha1-8tFeOq+OGPdrK4wUgaveBjuBBMg=, tarball: http://r.npm.sankuai.com/caniuse-lite/download/caniuse-lite-1.0.30001690.tgz}
@@ -2156,17 +2036,10 @@ packages:
     resolution: {integrity: sha1-n9YCvZNilOnp70aj9NaWQESxgGg=, tarball: http://r.npm.sankuai.com/commander/download/commander-4.1.1.tgz}
     engines: {node: '>= 6'}
 
-  commander@7.2.0:
-    resolution: {integrity: sha1-o2y1fQtQHOEI5NIFWaFQo5HZerc=, tarball: http://r.npm.sankuai.com/commander/download/commander-7.2.0.tgz}
-    engines: {node: '>= 10'}
-
   commitizen@4.3.1:
     resolution: {integrity: sha1-8ODkt64/r8kuREu7ePLe1aHUMRo=, tarball: http://r.npm.sankuai.com/commitizen/download/commitizen-4.3.1.tgz}
     engines: {node: '>= 12'}
     hasBin: true
-
-  commondir@1.0.1:
-    resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=, tarball: http://r.npm.sankuai.com/commondir/download/commondir-1.0.1.tgz}
 
   compare-func@2.0.0:
     resolution: {integrity: sha1-+2XnXtvd/S5WhVTotbBf/3pR/LM=, tarball: http://r.npm.sankuai.com/compare-func/download/compare-func-2.0.0.tgz}
@@ -2176,9 +2049,6 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, tarball: http://r.npm.sankuai.com/concat-map/download/concat-map-0.0.1.tgz}
-
-  concat-with-sourcemaps@1.1.0:
-    resolution: {integrity: sha1-1OqT8FriV5CVG5nns7CeOQikCC4=, tarball: http://r.npm.sankuai.com/concat-with-sourcemaps/download/concat-with-sourcemaps-1.1.0.tgz}
 
   conventional-changelog-angular@6.0.0:
     resolution: {integrity: sha1-qalJTCi3FliJFE/VuRVzxKqcpUE=, tarball: http://r.npm.sankuai.com/conventional-changelog-angular/download/conventional-changelog-angular-6.0.0.tgz}
@@ -2257,30 +2127,13 @@ packages:
     resolution: {integrity: sha1-ilj+ePANzXDDcEUXWd+/rwPo7p8=, tarball: http://r.npm.sankuai.com/cross-spawn/download/cross-spawn-7.0.6.tgz}
     engines: {node: '>= 8'}
 
-  css-declaration-sorter@6.4.1:
-    resolution: {integrity: sha1-KL6sfCC61/F3W+OnEp1+rkCaOnE=, tarball: http://r.npm.sankuai.com/css-declaration-sorter/download/css-declaration-sorter-6.4.1.tgz}
-    engines: {node: ^10 || ^12 || >=14}
-    peerDependencies:
-      postcss: ^8.0.9
-
   css-functions-list@3.2.3:
     resolution: {integrity: sha1-lWUrDCTw9ZspGp/DhgQaGdT0Db4=, tarball: http://r.npm.sankuai.com/css-functions-list/download/css-functions-list-3.2.3.tgz}
     engines: {node: '>=12 || >=16'}
 
-  css-select@4.3.0:
-    resolution: {integrity: sha1-23EpsoRmYv2GKM/ElquytZ5BUps=, tarball: http://r.npm.sankuai.com/css-select/download/css-select-4.3.0.tgz}
-
-  css-tree@1.1.3:
-    resolution: {integrity: sha1-60hw+2/XcHMn7JXC/yqwm16NuR0=, tarball: http://r.npm.sankuai.com/css-tree/download/css-tree-1.1.3.tgz}
-    engines: {node: '>=8.0.0'}
-
   css-tree@2.3.1:
     resolution: {integrity: sha1-ECZM4eVELoVy/IL75JBkT/VLXCA=, tarball: http://r.npm.sankuai.com/css-tree/download/css-tree-2.3.1.tgz}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
-
-  css-what@6.1.0:
-    resolution: {integrity: sha1-+17/z3bx3eosgb36pN5E55uscPQ=, tarball: http://r.npm.sankuai.com/css-what/download/css-what-6.1.0.tgz}
-    engines: {node: '>= 6'}
 
   css.escape@1.5.1:
     resolution: {integrity: sha1-QuJ9T6BK4y+TGktNQZH6nN3ul8s=, tarball: http://r.npm.sankuai.com/css.escape/download/css.escape-1.5.1.tgz}
@@ -2289,28 +2142,6 @@ packages:
     resolution: {integrity: sha1-N3QZGZA7hoVl4cCep0dEXNGJg+4=, tarball: http://r.npm.sankuai.com/cssesc/download/cssesc-3.0.0.tgz}
     engines: {node: '>=4'}
     hasBin: true
-
-  cssnano-preset-default@5.2.14:
-    resolution: {integrity: sha1-MJ3vT3t+FtcaskOAUgkzMNmrRdg=, tarball: http://r.npm.sankuai.com/cssnano-preset-default/download/cssnano-preset-default-5.2.14.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  cssnano-utils@3.1.0:
-    resolution: {integrity: sha1-lWhNCMkVEe38cNJjYzjKN+86aGE=, tarball: http://r.npm.sankuai.com/cssnano-utils/download/cssnano-utils-3.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  cssnano@5.1.15:
-    resolution: {integrity: sha1-3tZrVIDVEn/LRNrBLqWpg3VRNr8=, tarball: http://r.npm.sankuai.com/cssnano/download/cssnano-5.1.15.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  csso@4.2.0:
-    resolution: {integrity: sha1-6jpWE0bo3J9UbW/r7dUBh884lSk=, tarball: http://r.npm.sankuai.com/csso/download/csso-4.2.0.tgz}
-    engines: {node: '>=8.0.0'}
 
   cssom@0.3.8:
     resolution: {integrity: sha1-nxJ29bK0Y/IRTT8sdSUK+MGjb0o=, tarball: http://r.npm.sankuai.com/cssom/download/cssom-0.3.8.tgz}
@@ -2475,23 +2306,10 @@ packages:
   dom-accessibility-api@0.5.16:
     resolution: {integrity: sha1-WnQp5gZus2ZNkR4z+w5F3o6whFM=, tarball: http://r.npm.sankuai.com/dom-accessibility-api/download/dom-accessibility-api-0.5.16.tgz}
 
-  dom-serializer@1.4.1:
-    resolution: {integrity: sha1-3l1Bsa6ikCFdxFptrorc8dMuLTA=, tarball: http://r.npm.sankuai.com/dom-serializer/download/dom-serializer-1.4.1.tgz}
-
-  domelementtype@2.3.0:
-    resolution: {integrity: sha1-XEXo6GmVJiYzHXqrMm0B2vZdWJ0=, tarball: http://r.npm.sankuai.com/domelementtype/download/domelementtype-2.3.0.tgz}
-
   domexception@4.0.0:
     resolution: {integrity: sha1-StG+VsytyG/HbQMzU5magDfQNnM=, tarball: http://r.npm.sankuai.com/domexception/download/domexception-4.0.0.tgz}
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
-
-  domhandler@4.3.1:
-    resolution: {integrity: sha1-jXkgM0FvWdaLwDpap7AYwcqJJ5w=, tarball: http://r.npm.sankuai.com/domhandler/download/domhandler-4.3.1.tgz}
-    engines: {node: '>= 4'}
-
-  domutils@2.8.0:
-    resolution: {integrity: sha1-RDfe9dtuLR9dbuhZvZXKfQIEgTU=, tarball: http://r.npm.sankuai.com/domutils/download/domutils-2.8.0.tgz}
 
   dot-prop@5.3.0:
     resolution: {integrity: sha1-kMzOcIzZzYLMTcjD3dmr3VWyDog=, tarball: http://r.npm.sankuai.com/dot-prop/download/dot-prop-5.3.0.tgz}
@@ -2529,9 +2347,6 @@ packages:
   enquirer@2.4.1:
     resolution: {integrity: sha1-kzNLP710/HCXsiSrSo+35Av0rlY=, tarball: http://r.npm.sankuai.com/enquirer/download/enquirer-2.4.1.tgz}
     engines: {node: '>=8.6'}
-
-  entities@2.2.0:
-    resolution: {integrity: sha1-CY3JDruD2N/6CJ1VJWs1HTTE2lU=, tarball: http://r.npm.sankuai.com/entities/download/entities-2.2.0.tgz}
 
   entities@4.5.0:
     resolution: {integrity: sha1-XSaOpecRPsdMTQM7eepaNaSI+0g=, tarball: http://r.npm.sankuai.com/entities/download/entities-4.5.0.tgz}
@@ -2751,18 +2566,9 @@ packages:
     resolution: {integrity: sha1-LupSkHAvJquP5TcDcP+GyWXSESM=, tarball: http://r.npm.sankuai.com/estraverse/download/estraverse-5.3.0.tgz}
     engines: {node: '>=4.0'}
 
-  estree-walker@0.6.1:
-    resolution: {integrity: sha1-UwSRQ/QMbrkYsjZx0f4yGfOhs2I=, tarball: http://r.npm.sankuai.com/estree-walker/download/estree-walker-0.6.1.tgz}
-
-  estree-walker@2.0.2:
-    resolution: {integrity: sha1-UvAQF4wqTBF6d1fP6UKtt9LaTKw=, tarball: http://r.npm.sankuai.com/estree-walker/download/estree-walker-2.0.2.tgz}
-
   esutils@2.0.3:
     resolution: {integrity: sha1-dNLrTeC42hKTcRkQ1Qd1ubcQ72Q=, tarball: http://r.npm.sankuai.com/esutils/download/esutils-2.0.3.tgz}
     engines: {node: '>=0.10.0'}
-
-  eventemitter3@4.0.7:
-    resolution: {integrity: sha1-Lem2j2Uo1WRO9cWVJqG0oHMGFp8=, tarball: http://r.npm.sankuai.com/eventemitter3/download/eventemitter3-4.0.7.tgz}
 
   eventemitter3@5.0.1:
     resolution: {integrity: sha1-U/X/0KSSrIAHIbtCxmuEHelkI8Q=, tarball: http://r.npm.sankuai.com/eventemitter3/download/eventemitter3-5.0.1.tgz}
@@ -2890,9 +2696,6 @@ packages:
     resolution: {integrity: sha1-uhB22qqlv9fpnBpssCqgpc/5DUg=, tarball: http://r.npm.sankuai.com/form-data/download/form-data-4.0.1.tgz}
     engines: {node: '>= 6'}
 
-  fraction.js@4.3.7:
-    resolution: {integrity: sha1-BsoAhRV+Qv2n+ecm55/vxAaIQPc=, tarball: http://r.npm.sankuai.com/fraction.js/download/fraction.js-4.3.7.tgz}
-
   fs-extra@11.2.0:
     resolution: {integrity: sha1-5w4X361kIyKH0BkpOZ4Op8hrDls=, tarball: http://r.npm.sankuai.com/fs-extra/download/fs-extra-11.2.0.tgz}
     engines: {node: '>=14.14'}
@@ -2926,9 +2729,6 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha1-BAT+TuK6L2B/Dg7DyAuumUEzuDQ=, tarball: http://r.npm.sankuai.com/functions-have-names/download/functions-have-names-1.2.3.tgz}
-
-  generic-names@4.0.0:
-    resolution: {integrity: sha1-C9ii/SP+jqFsvQonms1pwGkz2aM=, tarball: http://r.npm.sankuai.com/generic-names/download/generic-names-4.0.0.tgz}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha1-MqbudsPX9S1GsrGuXZP+qFgKJeA=, tarball: http://r.npm.sankuai.com/gensync/download/gensync-1.0.0-beta.2.tgz}
@@ -2976,11 +2776,6 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha1-uN8PuAK7+o6JvR2Ti04WV47UTys=, tarball: http://r.npm.sankuai.com/glob/download/glob-7.2.3.tgz}
-    deprecated: Glob versions prior to v9 are no longer supported
-
-  glob@8.1.0:
-    resolution: {integrity: sha1-04j2Vlk+9wjuPjRkD9+5mp/Rwz4=, tarball: http://r.npm.sankuai.com/glob/download/glob-8.1.0.tgz}
-    engines: {node: '>=12'}
     deprecated: Glob versions prior to v9 are no longer supported
 
   glob@9.3.5:
@@ -3132,15 +2927,6 @@ packages:
     resolution: {integrity: sha1-pS+AvzjaGVLrXGgXkHGYcaGnJQE=, tarball: http://r.npm.sankuai.com/iconv-lite/download/iconv-lite-0.6.3.tgz}
     engines: {node: '>=0.10.0'}
 
-  icss-replace-symbols@1.1.0:
-    resolution: {integrity: sha1-Bupvg2ead0njhs/h/oEq5dsiPe0=, tarball: http://r.npm.sankuai.com/icss-replace-symbols/download/icss-replace-symbols-1.1.0.tgz}
-
-  icss-utils@5.1.0:
-    resolution: {integrity: sha1-xr5oWKvQE9do6YNmrkfiXViHsa4=, tarball: http://r.npm.sankuai.com/icss-utils/download/icss-utils-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >= 14}
-    peerDependencies:
-      postcss: ^8.1.0
-
   ieee754@1.2.1:
     resolution: {integrity: sha1-jrehCmP/8l0VpXsAFYbRd9Gw01I=, tarball: http://r.npm.sankuai.com/ieee754/download/ieee754-1.2.1.tgz}
 
@@ -3153,17 +2939,9 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  import-cwd@3.0.0:
-    resolution: {integrity: sha1-IIRVR3GAFRJuqbNna3WS+4vUz5I=, tarball: http://r.npm.sankuai.com/import-cwd/download/import-cwd-3.0.0.tgz}
-    engines: {node: '>=8'}
-
   import-fresh@3.3.0:
     resolution: {integrity: sha1-NxYsJfy566oublPVtNiM4X2eDCs=, tarball: http://r.npm.sankuai.com/import-fresh/download/import-fresh-3.3.0.tgz}
     engines: {node: '>=6'}
-
-  import-from@3.0.0:
-    resolution: {integrity: sha1-BVz+w4zVon2AV8pRN219O/CJGWY=, tarball: http://r.npm.sankuai.com/import-from/download/import-from-3.0.0.tgz}
-    engines: {node: '>=8'}
 
   import-lazy@4.0.0:
     resolution: {integrity: sha1-6OtidIOgpD2jwD8+NVSL5csMwVM=, tarball: http://r.npm.sankuai.com/import-lazy/download/import-lazy-4.0.0.tgz}
@@ -3295,9 +3073,6 @@ packages:
     resolution: {integrity: sha1-7elrf+HicLPERl46RlZYdkkm1i4=, tarball: http://r.npm.sankuai.com/is-map/download/is-map-2.0.3.tgz}
     engines: {node: '>= 0.4'}
 
-  is-module@1.0.0:
-    resolution: {integrity: sha1-Mlj7afeMFNW4FdZkM2tM/7ZEFZE=, tarball: http://r.npm.sankuai.com/is-module/download/is-module-1.0.0.tgz}
-
   is-negative-zero@2.0.3:
     resolution: {integrity: sha1-ztkDoCespjgbd3pXQwadc3akl0c=, tarball: http://r.npm.sankuai.com/is-negative-zero/download/is-negative-zero-2.0.3.tgz}
     engines: {node: '>= 0.4'}
@@ -3328,9 +3103,6 @@ packages:
 
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha1-Fx7W8Z46xVQ5Tt94yqBXhKRb67U=, tarball: http://r.npm.sankuai.com/is-potential-custom-element-name/download/is-potential-custom-element-name-1.0.1.tgz}
-
-  is-reference@1.2.1:
-    resolution: {integrity: sha1-iy2sCzcfS8mU/eq6nrVC0DAC0Lc=, tarball: http://r.npm.sankuai.com/is-reference/download/is-reference-1.2.1.tgz}
 
   is-regex@1.2.1:
     resolution: {integrity: sha1-dtcKPtEO+b5I61d4h9dCBb8MrSI=, tarball: http://r.npm.sankuai.com/is-regex/download/is-regex-1.2.1.tgz}
@@ -3750,10 +3522,6 @@ packages:
     resolution: {integrity: sha1-RTuM2JYb+5Et6nfrbBaP6Myj06E=, tarball: http://r.npm.sankuai.com/load-tsconfig/download/load-tsconfig-0.2.5.tgz}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  loader-utils@3.3.1:
-    resolution: {integrity: sha1-c1uaGf1jZIynrb0xwjJ9/igTBOU=, tarball: http://r.npm.sankuai.com/loader-utils/download/loader-utils-3.3.1.tgz}
-    engines: {node: '>= 12.13.0'}
-
   locate-path@5.0.0:
     resolution: {integrity: sha1-Gvujlq/WdqbUJQTQpno6frn2KqA=, tarball: http://r.npm.sankuai.com/locate-path/download/locate-path-5.0.0.tgz}
     engines: {node: '>=8'}
@@ -3844,9 +3612,6 @@ packages:
     resolution: {integrity: sha1-5KNBO0urbZjSvs/9SLSiV+/9u/M=, tarball: http://r.npm.sankuai.com/magic-string/download/magic-string-0.27.0.tgz}
     engines: {node: '>=12'}
 
-  magic-string@0.30.17:
-    resolution: {integrity: sha1-RQpElnPSRg5bvPupphkWoXFMdFM=, tarball: http://r.npm.sankuai.com/magic-string/download/magic-string-0.30.17.tgz}
-
   make-dir@2.1.0:
     resolution: {integrity: sha1-XwMQ4YuL6JjMBwCSlaMK5B6R5vU=, tarball: http://r.npm.sankuai.com/make-dir/download/make-dir-2.1.0.tgz}
     engines: {node: '>=6'}
@@ -3875,9 +3640,6 @@ packages:
 
   mathml-tag-names@2.1.3:
     resolution: {integrity: sha1-TdrdZzCOeAzxakdoWHjuJ7c2oKM=, tarball: http://r.npm.sankuai.com/mathml-tag-names/download/mathml-tag-names-2.1.3.tgz}
-
-  mdn-data@2.0.14:
-    resolution: {integrity: sha1-cRP8QoGRfWPOKbQ0RvcB5owlulA=, tarball: http://r.npm.sankuai.com/mdn-data/download/mdn-data-2.0.14.tgz}
 
   mdn-data@2.0.30:
     resolution: {integrity: sha1-zk32+Ar2z74hjs1cVSuhPE36CMw=, tarball: http://r.npm.sankuai.com/mdn-data/download/mdn-data-2.0.30.tgz}
@@ -4023,14 +3785,6 @@ packages:
     resolution: {integrity: sha1-Dc1p/yOhybEf0JeDFmRKA4ghamU=, tarball: http://r.npm.sankuai.com/normalize-path/download/normalize-path-3.0.0.tgz}
     engines: {node: '>=0.10.0'}
 
-  normalize-range@0.1.2:
-    resolution: {integrity: sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=, tarball: http://r.npm.sankuai.com/normalize-range/download/normalize-range-0.1.2.tgz}
-    engines: {node: '>=0.10.0'}
-
-  normalize-url@6.1.0:
-    resolution: {integrity: sha1-QNCIW1Nd7/4/MUe+yHfQX+TFZoo=, tarball: http://r.npm.sankuai.com/normalize-url/download/normalize-url-6.1.0.tgz}
-    engines: {node: '>=10'}
-
   npm-run-path@4.0.1:
     resolution: {integrity: sha1-t+zR5e1T2o43pV4cImnguX7XSOo=, tarball: http://r.npm.sankuai.com/npm-run-path/download/npm-run-path-4.0.1.tgz}
     engines: {node: '>=8'}
@@ -4038,9 +3792,6 @@ packages:
   npm-run-path@5.3.0:
     resolution: {integrity: sha1-4jNT0Ou5MX8XTpNBfkpNgtAknp8=, tarball: http://r.npm.sankuai.com/npm-run-path/download/npm-run-path-5.3.0.tgz}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
-  nth-check@2.1.1:
-    resolution: {integrity: sha1-yeq0KO/842zWuSySS9sADvHx7R0=, tarball: http://r.npm.sankuai.com/nth-check/download/nth-check-2.1.1.tgz}
 
   nwsapi@2.2.16:
     resolution: {integrity: sha1-F3dgu6AsNR3x0mROIgwx3+yM20M=, tarball: http://r.npm.sankuai.com/nwsapi/download/nwsapi-2.2.16.tgz}
@@ -4114,10 +3865,6 @@ packages:
     resolution: {integrity: sha1-GxRyVirnoPdC8PPT03GOpm/5wJw=, tarball: http://r.npm.sankuai.com/p-filter/download/p-filter-2.1.0.tgz}
     engines: {node: '>=8'}
 
-  p-finally@1.0.0:
-    resolution: {integrity: sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=, tarball: http://r.npm.sankuai.com/p-finally/download/p-finally-1.0.0.tgz}
-    engines: {node: '>=4'}
-
   p-limit@2.3.0:
     resolution: {integrity: sha1-PdM8ZHohT9//2DWTPrCG2g3CHbE=, tarball: http://r.npm.sankuai.com/p-limit/download/p-limit-2.3.0.tgz}
     engines: {node: '>=6'}
@@ -4137,14 +3884,6 @@ packages:
   p-map@2.1.0:
     resolution: {integrity: sha1-MQko/u+cnsxltosXaTAYpmXOoXU=, tarball: http://r.npm.sankuai.com/p-map/download/p-map-2.1.0.tgz}
     engines: {node: '>=6'}
-
-  p-queue@6.6.2:
-    resolution: {integrity: sha1-IGip3PjmfdDsPnory3aBD6qF5CY=, tarball: http://r.npm.sankuai.com/p-queue/download/p-queue-6.6.2.tgz}
-    engines: {node: '>=8'}
-
-  p-timeout@3.2.0:
-    resolution: {integrity: sha1-x+F6vJcdKnli74NiazXWNazyPf4=, tarball: http://r.npm.sankuai.com/p-timeout/download/p-timeout-3.2.0.tgz}
-    engines: {node: '>=8'}
 
   p-try@2.2.0:
     resolution: {integrity: sha1-yyhoVA4xPWHeWPr741zpAE1VQOY=, tarball: http://r.npm.sankuai.com/p-try/download/p-try-2.2.0.tgz}
@@ -4213,10 +3952,6 @@ packages:
     resolution: {integrity: sha1-O6ODNzNkbZ0+SZWUbBNlpn+wekI=, tarball: http://r.npm.sankuai.com/picomatch/download/picomatch-2.3.1.tgz}
     engines: {node: '>=8.6'}
 
-  picomatch@4.0.2:
-    resolution: {integrity: sha1-d8dCkx6PO4gglGx2zQwfE3MNHas=, tarball: http://r.npm.sankuai.com/picomatch/download/picomatch-4.0.2.tgz}
-    engines: {node: '>=12'}
-
   pidtree@0.6.0:
     resolution: {integrity: sha1-kK17bULVhB5p4KJBnvOPiIOqBXw=, tarball: http://r.npm.sankuai.com/pidtree/download/pidtree-0.6.0.tgz}
     engines: {node: '>=0.10'}
@@ -4225,10 +3960,6 @@ packages:
   pify@4.0.1:
     resolution: {integrity: sha1-SyzSXFDVmHNcUCkiJP2MbfQeMjE=, tarball: http://r.npm.sankuai.com/pify/download/pify-4.0.1.tgz}
     engines: {node: '>=6'}
-
-  pify@5.0.0:
-    resolution: {integrity: sha1-H17KP16H6+wozG1UoOSq8ArMEn8=, tarball: http://r.npm.sankuai.com/pify/download/pify-5.0.0.tgz}
-    engines: {node: '>=10'}
 
   pirates@4.0.6:
     resolution: {integrity: sha1-MBiuMuz8/2wpuiJny/IRZqwfNrk=, tarball: http://r.npm.sankuai.com/pirates/download/pirates-4.0.6.tgz}
@@ -4242,59 +3973,6 @@ packages:
     resolution: {integrity: sha1-ibtjxvraLD6QrcSmR77us5zHv48=, tarball: http://r.npm.sankuai.com/possible-typed-array-names/download/possible-typed-array-names-1.0.0.tgz}
     engines: {node: '>= 0.4'}
 
-  postcss-calc@8.2.4:
-    resolution: {integrity: sha1-d7nCm/y+igf/ZpPchwUIKIiXOaU=, tarball: http://r.npm.sankuai.com/postcss-calc/download/postcss-calc-8.2.4.tgz}
-    peerDependencies:
-      postcss: ^8.2.2
-
-  postcss-colormin@5.3.1:
-    resolution: {integrity: sha1-hsJ8Ju1roA2Wx54I8/+0GNHRmI8=, tarball: http://r.npm.sankuai.com/postcss-colormin/download/postcss-colormin-5.3.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-convert-values@5.1.3:
-    resolution: {integrity: sha1-BJmLubprZaoxA11mmmrzQsX505M=, tarball: http://r.npm.sankuai.com/postcss-convert-values/download/postcss-convert-values-5.1.3.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-discard-comments@5.1.2:
-    resolution: {integrity: sha1-jfXoHSklryeAB1hAwVJvBmDlNpY=, tarball: http://r.npm.sankuai.com/postcss-discard-comments/download/postcss-discard-comments-5.1.2.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-discard-duplicates@5.1.0:
-    resolution: {integrity: sha1-nrT+hFZwak7r1tO3t3fQe60D6Eg=, tarball: http://r.npm.sankuai.com/postcss-discard-duplicates/download/postcss-discard-duplicates-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-discard-empty@5.1.1:
-    resolution: {integrity: sha1-5XdiND/39QP+U/ylU9GNfww2nGw=, tarball: http://r.npm.sankuai.com/postcss-discard-empty/download/postcss-discard-empty-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-discard-overridden@5.1.0:
-    resolution: {integrity: sha1-foxbUzJXR+nZATG7iGNSgvtKJ24=, tarball: http://r.npm.sankuai.com/postcss-discard-overridden/download/postcss-discard-overridden-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-load-config@3.1.4:
-    resolution: {integrity: sha1-GrJXH6+EuweId+HQeQXqvp69qFU=, tarball: http://r.npm.sankuai.com/postcss-load-config/download/postcss-load-config-3.1.4.tgz}
-    engines: {node: '>= 10'}
-    peerDependencies:
-      postcss: '>=8.0.9'
-      ts-node: '>=9.0.0'
-    peerDependenciesMeta:
-      postcss:
-        optional: true
-      ts-node:
-        optional: true
-
   postcss-load-config@4.0.2:
     resolution: {integrity: sha1-cVnc9iYRjTPimfSF1q/kr/fEo+M=, tarball: http://r.npm.sankuai.com/postcss-load-config/download/postcss-load-config-4.0.2.tgz}
     engines: {node: '>= 14'}
@@ -4306,143 +3984,6 @@ packages:
         optional: true
       ts-node:
         optional: true
-
-  postcss-merge-longhand@5.1.7:
-    resolution: {integrity: sha1-JKG99ALZ7w5w9Wjzm9wDRNVo+xY=, tarball: http://r.npm.sankuai.com/postcss-merge-longhand/download/postcss-merge-longhand-5.1.7.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-merge-rules@5.1.4:
-    resolution: {integrity: sha1-Lyb6XKy3WxQC4hN4n2dmrl5AMTw=, tarball: http://r.npm.sankuai.com/postcss-merge-rules/download/postcss-merge-rules-5.1.4.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-minify-font-values@5.1.0:
-    resolution: {integrity: sha1-8d8AFKcmCD0mDTvYXXOF+4nR8Bs=, tarball: http://r.npm.sankuai.com/postcss-minify-font-values/download/postcss-minify-font-values-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-minify-gradients@5.1.1:
-    resolution: {integrity: sha1-8f4bT0mBNKUGgkDC8l1G/NI2uiw=, tarball: http://r.npm.sankuai.com/postcss-minify-gradients/download/postcss-minify-gradients-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-minify-params@5.1.4:
-    resolution: {integrity: sha1-wGpseHEosyCLOMk2TPxAyKpdc1I=, tarball: http://r.npm.sankuai.com/postcss-minify-params/download/postcss-minify-params-5.1.4.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-minify-selectors@5.2.1:
-    resolution: {integrity: sha1-1OfmtGFHuBF+qTJakVqAHV/mVsY=, tarball: http://r.npm.sankuai.com/postcss-minify-selectors/download/postcss-minify-selectors-5.2.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-modules-extract-imports@3.1.0:
-    resolution: {integrity: sha1-tEl8uFqcDEtaq+t1m7JejYnxUAI=, tarball: http://r.npm.sankuai.com/postcss-modules-extract-imports/download/postcss-modules-extract-imports-3.1.0.tgz}
-    engines: {node: ^10 || ^12 || >= 14}
-    peerDependencies:
-      postcss: ^8.1.0
-
-  postcss-modules-local-by-default@4.2.0:
-    resolution: {integrity: sha1-0VD0ODeDHa4l5AhVluhPb11uw2g=, tarball: http://r.npm.sankuai.com/postcss-modules-local-by-default/download/postcss-modules-local-by-default-4.2.0.tgz}
-    engines: {node: ^10 || ^12 || >= 14}
-    peerDependencies:
-      postcss: ^8.1.0
-
-  postcss-modules-scope@3.2.1:
-    resolution: {integrity: sha1-G7zN3LOY8delEeCi0dBHcYr0B4w=, tarball: http://r.npm.sankuai.com/postcss-modules-scope/download/postcss-modules-scope-3.2.1.tgz}
-    engines: {node: ^10 || ^12 || >= 14}
-    peerDependencies:
-      postcss: ^8.1.0
-
-  postcss-modules-values@4.0.0:
-    resolution: {integrity: sha1-18Xn5ow7s8myfL9Iyguz/7RgLJw=, tarball: http://r.npm.sankuai.com/postcss-modules-values/download/postcss-modules-values-4.0.0.tgz}
-    engines: {node: ^10 || ^12 || >= 14}
-    peerDependencies:
-      postcss: ^8.1.0
-
-  postcss-modules@4.3.1:
-    resolution: {integrity: sha1-UXwGwJ6rB9Ezrg7/yixRCruhgEg=, tarball: http://r.npm.sankuai.com/postcss-modules/download/postcss-modules-4.3.1.tgz}
-    peerDependencies:
-      postcss: ^8.0.0
-
-  postcss-normalize-charset@5.1.0:
-    resolution: {integrity: sha1-kwLeCykJS1LCWemyz43Ah5h58O0=, tarball: http://r.npm.sankuai.com/postcss-normalize-charset/download/postcss-normalize-charset-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-display-values@5.1.0:
-    resolution: {integrity: sha1-cqu65YCBlg6e3XIA/PIauDJcPag=, tarball: http://r.npm.sankuai.com/postcss-normalize-display-values/download/postcss-normalize-display-values-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-positions@5.1.1:
-    resolution: {integrity: sha1-75cnnYlAh7WTJbRcR/HoY9rvu5I=, tarball: http://r.npm.sankuai.com/postcss-normalize-positions/download/postcss-normalize-positions-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-repeat-style@5.1.1:
-    resolution: {integrity: sha1-6euWgFIE9HZt9m/QntLhNUVCD7I=, tarball: http://r.npm.sankuai.com/postcss-normalize-repeat-style/download/postcss-normalize-repeat-style-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-string@5.1.0:
-    resolution: {integrity: sha1-QRlhFp4HMIyCwfjFXz6KM3dX4ig=, tarball: http://r.npm.sankuai.com/postcss-normalize-string/download/postcss-normalize-string-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-timing-functions@5.1.0:
-    resolution: {integrity: sha1-1WFEEPjwsjiOnyQKpgEbpvUtr7s=, tarball: http://r.npm.sankuai.com/postcss-normalize-timing-functions/download/postcss-normalize-timing-functions-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-unicode@5.1.1:
-    resolution: {integrity: sha1-9nKX/KP+p/F+DSyqQHaa/Eh6oDA=, tarball: http://r.npm.sankuai.com/postcss-normalize-unicode/download/postcss-normalize-unicode-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-url@5.1.0:
-    resolution: {integrity: sha1-7Z2IyoLiGr75n3Q0V9NymgQq3Nw=, tarball: http://r.npm.sankuai.com/postcss-normalize-url/download/postcss-normalize-url-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-normalize-whitespace@5.1.1:
-    resolution: {integrity: sha1-CKGg0f+henzG7+HmydqWnMRJPPo=, tarball: http://r.npm.sankuai.com/postcss-normalize-whitespace/download/postcss-normalize-whitespace-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-ordered-values@5.1.3:
-    resolution: {integrity: sha1-tv0r0Q+TeyPYa8gpxp53Ms526jg=, tarball: http://r.npm.sankuai.com/postcss-ordered-values/download/postcss-ordered-values-5.1.3.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-reduce-initial@5.1.2:
-    resolution: {integrity: sha1-eYzXez4DPq5xBcGMnTcdmJ4TgtY=, tarball: http://r.npm.sankuai.com/postcss-reduce-initial/download/postcss-reduce-initial-5.1.2.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-reduce-transforms@5.1.0:
-    resolution: {integrity: sha1-Mztw53WLgC890N3+mLscz++Wtuk=, tarball: http://r.npm.sankuai.com/postcss-reduce-transforms/download/postcss-reduce-transforms-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
 
   postcss-resolve-nested-selector@0.1.6:
     resolution: {integrity: sha1-PYTeyAnzTeAgNyxBsDmVaWaJZoY=, tarball: http://r.npm.sankuai.com/postcss-resolve-nested-selector/download/postcss-resolve-nested-selector-0.1.6.tgz}
@@ -4456,22 +3997,6 @@ packages:
   postcss-selector-parser@6.1.2:
     resolution: {integrity: sha1-J+y0H7Djtrp6HshP/zR/c0x5Kd4=, tarball: http://r.npm.sankuai.com/postcss-selector-parser/download/postcss-selector-parser-6.1.2.tgz}
     engines: {node: '>=4'}
-
-  postcss-selector-parser@7.0.0:
-    resolution: {integrity: sha1-Qb2LVvF3wJPKSUNfZXMb7+Jda5w=, tarball: http://r.npm.sankuai.com/postcss-selector-parser/download/postcss-selector-parser-7.0.0.tgz}
-    engines: {node: '>=4'}
-
-  postcss-svgo@5.1.0:
-    resolution: {integrity: sha1-CjF0AM7XifIzoogm53Uj8VhX2A0=, tarball: http://r.npm.sankuai.com/postcss-svgo/download/postcss-svgo-5.1.0.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
-
-  postcss-unique-selectors@5.1.1:
-    resolution: {integrity: sha1-qfJz0erNCemqYIj0sFB7GLG1QbY=, tarball: http://r.npm.sankuai.com/postcss-unique-selectors/download/postcss-unique-selectors-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
 
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha1-cjwJkgg2um0+WvAZ+SvAlxwC5RQ=, tarball: http://r.npm.sankuai.com/postcss-value-parser/download/postcss-value-parser-4.2.0.tgz}
@@ -4500,10 +4025,6 @@ packages:
   pretty-format@29.7.0:
     resolution: {integrity: sha1-ykLHWDEPNlv6caC9oKgHFgt3aBI=, tarball: http://r.npm.sankuai.com/pretty-format/download/pretty-format-29.7.0.tgz}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-
-  promise.series@0.2.0:
-    resolution: {integrity: sha1-LMfr6Vn8OmYZwEq029yeRS2GS70=, tarball: http://r.npm.sankuai.com/promise.series/download/promise.series-0.2.0.tgz}
-    engines: {node: '>=0.12'}
 
   prompts@2.4.2:
     resolution: {integrity: sha1-e1fnOzpIAprRDr1E90sBcipMsGk=, tarball: http://r.npm.sankuai.com/prompts/download/prompts-2.4.2.tgz}
@@ -4806,11 +4327,6 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  react-dom@18.3.1:
-    resolution: {integrity: sha1-wiZdeVEbV9R5s90/36UVNklMXLQ=, tarball: http://r.npm.sankuai.com/react-dom/download/react-dom-18.3.1.tgz}
-    peerDependencies:
-      react: ^18.3.1
-
   react-draggable@4.5.0:
     resolution: {integrity: sha1-CydMy2ll/Pl+04/PfjzCI7xIzfU=, tarball: http://r.npm.sankuai.com/react-draggable/download/react-draggable-4.5.0.tgz}
     peerDependencies:
@@ -4863,10 +4379,6 @@ packages:
 
   react@18.2.0:
     resolution: {integrity: sha1-VVvZhZKIMlX6AN4U8RUakXtdd9U=, tarball: http://r.npm.sankuai.com/react/download/react-18.2.0.tgz}
-    engines: {node: '>=0.10.0'}
-
-  react@18.3.1:
-    resolution: {integrity: sha1-SauJIAnFOTNiW9FrJTP8dUyrKJE=, tarball: http://r.npm.sankuai.com/react/download/react-18.3.1.tgz}
     engines: {node: '>=0.10.0'}
 
   reactcss@1.2.3:
@@ -4999,22 +4511,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  rollup-plugin-dts@5.3.1:
-    resolution: {integrity: sha1-woQSaaOly5hrd5GwMo5qF466EI8=, tarball: http://r.npm.sankuai.com/rollup-plugin-dts/download/rollup-plugin-dts-5.3.1.tgz}
-    engines: {node: '>=v14.21.3'}
-    peerDependencies:
-      rollup: ^3.0
-      typescript: ^4.1 || ^5.0
-
-  rollup-plugin-postcss@4.0.2:
-    resolution: {integrity: sha1-FelGLzlHUFmzaM4OScgA+ksfcFA=, tarball: http://r.npm.sankuai.com/rollup-plugin-postcss/download/rollup-plugin-postcss-4.0.2.tgz}
-    engines: {node: '>=10'}
-    peerDependencies:
-      postcss: 8.x
-
-  rollup-pluginutils@2.8.2:
-    resolution: {integrity: sha1-cvKvB0i1kjZNvTOJ5gDlqURKNR4=, tarball: http://r.npm.sankuai.com/rollup-pluginutils/download/rollup-pluginutils-2.8.2.tgz}
-
   rollup@3.29.5:
     resolution: {integrity: sha1-ii5HenWLUg+3ja8EvKTFIsHailQ=, tarball: http://r.npm.sankuai.com/rollup/download/rollup-3.29.5.tgz}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
@@ -5041,9 +4537,6 @@ packages:
 
   safe-buffer@5.2.1:
     resolution: {integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=, tarball: http://r.npm.sankuai.com/safe-buffer/download/safe-buffer-5.2.1.tgz}
-
-  safe-identifier@0.4.2:
-    resolution: {integrity: sha1-z2v8oxwol8WICS0XUNMO9QHVn8s=, tarball: http://r.npm.sankuai.com/safe-identifier/download/safe-identifier-0.4.2.tgz}
 
   safe-regex-test@1.1.0:
     resolution: {integrity: sha1-f4fftnoxUHguqvGFg/9dFxGsEME=, tarball: http://r.npm.sankuai.com/safe-regex-test/download/safe-regex-test-1.1.0.tgz}
@@ -5193,10 +4686,6 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=, tarball: http://r.npm.sankuai.com/sprintf-js/download/sprintf-js-1.0.3.tgz}
 
-  stable@0.1.8:
-    resolution: {integrity: sha1-g26zyDgv4pNv6vVEYxAXzn1Ho88=, tarball: http://r.npm.sankuai.com/stable/download/stable-0.1.8.tgz}
-    deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
-
   stack-utils@2.0.6:
     resolution: {integrity: sha1-qvB0gWnAL8M8gjKrzPkz9Uocw08=, tarball: http://r.npm.sankuai.com/stack-utils/download/stack-utils-2.0.6.tgz}
     engines: {node: '>=10'}
@@ -5211,9 +4700,6 @@ packages:
 
   string-convert@0.2.1:
     resolution: {integrity: sha1-aYLMMEn7tM2F+LJFaLnZvznu/5c=, tarball: http://r.npm.sankuai.com/string-convert/download/string-convert-0.2.1.tgz}
-
-  string-hash@1.1.3:
-    resolution: {integrity: sha1-6Kr8CsGFW0Zmkp7X3RJ1311sgRs=, tarball: http://r.npm.sankuai.com/string-hash/download/string-hash-1.1.3.tgz}
 
   string-length@4.0.2:
     resolution: {integrity: sha1-qKjce9XBqCubPIuH4SX2aHG25Xo=, tarball: http://r.npm.sankuai.com/string-length/download/string-length-4.0.2.tgz}
@@ -5289,17 +4775,8 @@ packages:
     resolution: {integrity: sha1-MfEoGzgyYwQ0gxwxDAHMzajL4AY=, tarball: http://r.npm.sankuai.com/strip-json-comments/download/strip-json-comments-3.1.1.tgz}
     engines: {node: '>=8'}
 
-  style-inject@0.3.0:
-    resolution: {integrity: sha1-0hxHev/skYEcyCNVgypwDSK/jdM=, tarball: http://r.npm.sankuai.com/style-inject/download/style-inject-0.3.0.tgz}
-
   style-search@0.1.0:
     resolution: {integrity: sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI=, tarball: http://r.npm.sankuai.com/style-search/download/style-search-0.1.0.tgz}
-
-  stylehacks@5.1.1:
-    resolution: {integrity: sha1-eTSjTrWdcVIUn6adbp5W8vw0vMk=, tarball: http://r.npm.sankuai.com/stylehacks/download/stylehacks-5.1.1.tgz}
-    engines: {node: ^10 || ^12 || >=14.0}
-    peerDependencies:
-      postcss: ^8.2.15
 
   stylelint-config-prettier@9.0.5:
     resolution: {integrity: sha1-n3i78xxzB8ot8t1g9CxwFO6dpW4=, tarball: http://r.npm.sankuai.com/stylelint-config-prettier/download/stylelint-config-prettier-9.0.5.tgz}
@@ -5353,11 +4830,6 @@ packages:
 
   svg-tags@1.0.0:
     resolution: {integrity: sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=, tarball: http://r.npm.sankuai.com/svg-tags/download/svg-tags-1.0.0.tgz}
-
-  svgo@2.8.0:
-    resolution: {integrity: sha1-T/gMzmcQ3CeV8MfHQQHmdkz8zSQ=, tarball: http://r.npm.sankuai.com/svgo/download/svgo-2.8.0.tgz}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
 
   swr@2.3.0:
     resolution: {integrity: sha1-ZvpFAj79QZn0585gjCVXCaE1lD0=, tarball: http://r.npm.sankuai.com/swr/download/swr-2.3.0.tgz}
@@ -5784,10 +5256,6 @@ packages:
 
   yallist@4.0.0:
     resolution: {integrity: sha1-m7knkNnA7/7GO+c1GeEaNQGaOnI=, tarball: http://r.npm.sankuai.com/yallist/download/yallist-4.0.0.tgz}
-
-  yaml@1.10.2:
-    resolution: {integrity: sha1-IwHF/78StGfejaIzOkWeKeeSDks=, tarball: http://r.npm.sankuai.com/yaml/download/yaml-1.10.2.tgz}
-    engines: {node: '>= 6'}
 
   yaml@2.3.1:
     resolution: {integrity: sha1-Av4JddI81EEkKqcgTgn8KKwqwzs=, tarball: http://r.npm.sankuai.com/yaml/download/yaml-2.3.1.tgz}
@@ -6499,7 +5967,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.7.2)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -7131,44 +6599,6 @@ snapshots:
 
   '@remix-run/router@1.5.0': {}
 
-  '@rollup/plugin-commonjs@24.1.0(rollup@3.29.5)':
-    dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@3.29.5)
-      commondir: 1.0.1
-      estree-walker: 2.0.2
-      glob: 8.1.0
-      is-reference: 1.2.1
-      magic-string: 0.27.0
-    optionalDependencies:
-      rollup: 3.29.5
-
-  '@rollup/plugin-node-resolve@15.3.1(rollup@3.29.5)':
-    dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@3.29.5)
-      '@types/resolve': 1.20.2
-      deepmerge: 4.3.1
-      is-module: 1.0.0
-      resolve: 1.22.10
-    optionalDependencies:
-      rollup: 3.29.5
-
-  '@rollup/plugin-typescript@11.1.6(rollup@3.29.5)(tslib@2.8.1)(typescript@5.7.2)':
-    dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@3.29.5)
-      resolve: 1.22.10
-      typescript: 5.7.2
-    optionalDependencies:
-      rollup: 3.29.5
-      tslib: 2.8.1
-
-  '@rollup/pluginutils@5.1.4(rollup@3.29.5)':
-    dependencies:
-      '@types/estree': 1.0.6
-      estree-walker: 2.0.2
-      picomatch: 4.0.2
-    optionalDependencies:
-      rollup: 3.29.5
-
   '@rollup/rollup-android-arm-eabi@4.28.1':
     optional: true
 
@@ -7271,8 +6701,6 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@trysound/sax@0.2.0': {}
-
   '@tsconfig/node10@1.0.11': {}
 
   '@tsconfig/node12@1.0.11': {}
@@ -7360,10 +6788,6 @@ snapshots:
     dependencies:
       '@types/react': 18.0.0
 
-  '@types/react-dom@18.3.5(@types/react@18.3.17)':
-    dependencies:
-      '@types/react': 18.3.17
-
   '@types/react-grid-layout@2.1.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       react-grid-layout: 2.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -7380,13 +6804,6 @@ snapshots:
       '@types/prop-types': 15.7.14
       '@types/scheduler': 0.23.0
       csstype: 3.1.3
-
-  '@types/react@18.3.17':
-    dependencies:
-      '@types/prop-types': 15.7.14
-      csstype: 3.1.3
-
-  '@types/resolve@1.20.2': {}
 
   '@types/scheduler@0.23.0': {}
 
@@ -7755,16 +7172,6 @@ snapshots:
 
   at-least-node@1.0.0: {}
 
-  autoprefixer@10.4.20(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      caniuse-lite: 1.0.30001690
-      fraction.js: 4.3.7
-      normalize-range: 0.1.2
-      picocolors: 1.1.1
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
@@ -7854,8 +7261,6 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
-  boolbase@1.0.0: {}
-
   brace-expansion@1.1.11:
     dependencies:
       balanced-match: 1.0.2
@@ -7935,13 +7340,6 @@ snapshots:
   camelcase@5.3.1: {}
 
   camelcase@6.3.0: {}
-
-  caniuse-api@3.0.0:
-    dependencies:
-      browserslist: 4.24.3
-      caniuse-lite: 1.0.30001690
-      lodash.memoize: 4.1.2
-      lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001690: {}
 
@@ -8045,8 +7443,6 @@ snapshots:
 
   commander@4.1.1: {}
 
-  commander@7.2.0: {}
-
   commitizen@4.3.1(@types/node@18.19.68)(typescript@5.7.2):
     dependencies:
       cachedir: 2.3.0
@@ -8067,8 +7463,6 @@ snapshots:
       - '@types/node'
       - typescript
 
-  commondir@1.0.1: {}
-
   compare-func@2.0.0:
     dependencies:
       array-ify: 1.0.0
@@ -8077,10 +7471,6 @@ snapshots:
   compute-scroll-into-view@3.1.0: {}
 
   concat-map@0.0.1: {}
-
-  concat-with-sourcemaps@1.1.0:
-    dependencies:
-      source-map: 0.6.1
 
   conventional-changelog-angular@6.0.0:
     dependencies:
@@ -8109,7 +7499,7 @@ snapshots:
     dependencies:
       toggle-selection: 1.0.6
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2))(typescript@5.7.2):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.7.2))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))(typescript@5.7.2):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.7.2)
@@ -8170,83 +7560,16 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-declaration-sorter@6.4.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
   css-functions-list@3.2.3: {}
-
-  css-select@4.3.0:
-    dependencies:
-      boolbase: 1.0.0
-      css-what: 6.1.0
-      domhandler: 4.3.1
-      domutils: 2.8.0
-      nth-check: 2.1.1
-
-  css-tree@1.1.3:
-    dependencies:
-      mdn-data: 2.0.14
-      source-map: 0.6.1
 
   css-tree@2.3.1:
     dependencies:
       mdn-data: 2.0.30
       source-map-js: 1.2.1
 
-  css-what@6.1.0: {}
-
   css.escape@1.5.1: {}
 
   cssesc@3.0.0: {}
-
-  cssnano-preset-default@5.2.14(postcss@8.4.49):
-    dependencies:
-      css-declaration-sorter: 6.4.1(postcss@8.4.49)
-      cssnano-utils: 3.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-calc: 8.2.4(postcss@8.4.49)
-      postcss-colormin: 5.3.1(postcss@8.4.49)
-      postcss-convert-values: 5.1.3(postcss@8.4.49)
-      postcss-discard-comments: 5.1.2(postcss@8.4.49)
-      postcss-discard-duplicates: 5.1.0(postcss@8.4.49)
-      postcss-discard-empty: 5.1.1(postcss@8.4.49)
-      postcss-discard-overridden: 5.1.0(postcss@8.4.49)
-      postcss-merge-longhand: 5.1.7(postcss@8.4.49)
-      postcss-merge-rules: 5.1.4(postcss@8.4.49)
-      postcss-minify-font-values: 5.1.0(postcss@8.4.49)
-      postcss-minify-gradients: 5.1.1(postcss@8.4.49)
-      postcss-minify-params: 5.1.4(postcss@8.4.49)
-      postcss-minify-selectors: 5.2.1(postcss@8.4.49)
-      postcss-normalize-charset: 5.1.0(postcss@8.4.49)
-      postcss-normalize-display-values: 5.1.0(postcss@8.4.49)
-      postcss-normalize-positions: 5.1.1(postcss@8.4.49)
-      postcss-normalize-repeat-style: 5.1.1(postcss@8.4.49)
-      postcss-normalize-string: 5.1.0(postcss@8.4.49)
-      postcss-normalize-timing-functions: 5.1.0(postcss@8.4.49)
-      postcss-normalize-unicode: 5.1.1(postcss@8.4.49)
-      postcss-normalize-url: 5.1.0(postcss@8.4.49)
-      postcss-normalize-whitespace: 5.1.1(postcss@8.4.49)
-      postcss-ordered-values: 5.1.3(postcss@8.4.49)
-      postcss-reduce-initial: 5.1.2(postcss@8.4.49)
-      postcss-reduce-transforms: 5.1.0(postcss@8.4.49)
-      postcss-svgo: 5.1.0(postcss@8.4.49)
-      postcss-unique-selectors: 5.1.1(postcss@8.4.49)
-
-  cssnano-utils@3.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  cssnano@5.1.15(postcss@8.4.49):
-    dependencies:
-      cssnano-preset-default: 5.2.14(postcss@8.4.49)
-      lilconfig: 2.1.0
-      postcss: 8.4.49
-      yaml: 1.10.2
-
-  csso@4.2.0:
-    dependencies:
-      css-tree: 1.1.3
 
   cssom@0.3.8: {}
 
@@ -8404,27 +7727,9 @@ snapshots:
 
   dom-accessibility-api@0.5.16: {}
 
-  dom-serializer@1.4.1:
-    dependencies:
-      domelementtype: 2.3.0
-      domhandler: 4.3.1
-      entities: 2.2.0
-
-  domelementtype@2.3.0: {}
-
   domexception@4.0.0:
     dependencies:
       webidl-conversions: 7.0.0
-
-  domhandler@4.3.1:
-    dependencies:
-      domelementtype: 2.3.0
-
-  domutils@2.8.0:
-    dependencies:
-      dom-serializer: 1.4.1
-      domelementtype: 2.3.0
-      domhandler: 4.3.1
 
   dot-prop@5.3.0:
     dependencies:
@@ -8459,8 +7764,6 @@ snapshots:
     dependencies:
       ansi-colors: 4.1.3
       strip-ansi: 6.0.1
-
-  entities@2.2.0: {}
 
   entities@4.5.0: {}
 
@@ -8858,13 +8161,7 @@ snapshots:
 
   estraverse@5.3.0: {}
 
-  estree-walker@0.6.1: {}
-
-  estree-walker@2.0.2: {}
-
   esutils@2.0.3: {}
-
-  eventemitter3@4.0.7: {}
 
   eventemitter3@5.0.1: {}
 
@@ -9013,8 +8310,6 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  fraction.js@4.3.7: {}
-
   fs-extra@11.2.0:
     dependencies:
       graceful-fs: 4.2.11
@@ -9057,10 +8352,6 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
-
-  generic-names@4.0.0:
-    dependencies:
-      loader-utils: 3.3.1
 
   gensync@1.0.0-beta.2: {}
 
@@ -9126,14 +8417,6 @@ snapshots:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
-
-  glob@8.1.0:
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 5.1.6
-      once: 1.4.0
 
   glob@9.3.5:
     dependencies:
@@ -9282,12 +8565,6 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  icss-replace-symbols@1.1.0: {}
-
-  icss-utils@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
   ieee754@1.2.1: {}
 
   ignore@5.3.2: {}
@@ -9295,18 +8572,10 @@ snapshots:
   image-size@0.5.5:
     optional: true
 
-  import-cwd@3.0.0:
-    dependencies:
-      import-from: 3.0.0
-
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
       resolve-from: 4.0.0
-
-  import-from@3.0.0:
-    dependencies:
-      resolve-from: 5.0.0
 
   import-lazy@4.0.0: {}
 
@@ -9437,8 +8706,6 @@ snapshots:
 
   is-map@2.0.3: {}
 
-  is-module@1.0.0: {}
-
   is-negative-zero@2.0.3: {}
 
   is-number-object@1.1.1:
@@ -9457,10 +8724,6 @@ snapshots:
   is-plain-object@5.0.0: {}
 
   is-potential-custom-element-name@1.0.1: {}
-
-  is-reference@1.2.1:
-    dependencies:
-      '@types/estree': 1.0.6
 
   is-regex@1.2.1:
     dependencies:
@@ -10087,8 +9350,6 @@ snapshots:
 
   load-tsconfig@0.2.5: {}
 
-  loader-utils@3.3.1: {}
-
   locate-path@5.0.0:
     dependencies:
       p-locate: 4.1.0
@@ -10164,10 +9425,6 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  magic-string@0.30.17:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.0
-
   make-dir@2.1.0:
     dependencies:
       pify: 4.0.1
@@ -10191,8 +9448,6 @@ snapshots:
   math-intrinsics@1.1.0: {}
 
   mathml-tag-names@2.1.3: {}
-
-  mdn-data@2.0.14: {}
 
   mdn-data@2.0.30: {}
 
@@ -10337,10 +9592,6 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  normalize-range@0.1.2: {}
-
-  normalize-url@6.1.0: {}
-
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
@@ -10348,10 +9599,6 @@ snapshots:
   npm-run-path@5.3.0:
     dependencies:
       path-key: 4.0.0
-
-  nth-check@2.1.1:
-    dependencies:
-      boolbase: 1.0.0
 
   nwsapi@2.2.16: {}
 
@@ -10444,8 +9691,6 @@ snapshots:
     dependencies:
       p-map: 2.1.0
 
-  p-finally@1.0.0: {}
-
   p-limit@2.3.0:
     dependencies:
       p-try: 2.2.0
@@ -10463,15 +9708,6 @@ snapshots:
       p-limit: 3.1.0
 
   p-map@2.1.0: {}
-
-  p-queue@6.6.2:
-    dependencies:
-      eventemitter3: 4.0.7
-      p-timeout: 3.2.0
-
-  p-timeout@3.2.0:
-    dependencies:
-      p-finally: 1.0.0
 
   p-try@2.2.0: {}
 
@@ -10521,13 +9757,9 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  picomatch@4.0.2: {}
-
   pidtree@0.6.0: {}
 
   pify@4.0.1: {}
-
-  pify@5.0.0: {}
 
   pirates@4.0.6: {}
 
@@ -10537,50 +9769,6 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-calc@8.2.4(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-selector-parser: 6.1.2
-      postcss-value-parser: 4.2.0
-
-  postcss-colormin@5.3.1(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      caniuse-api: 3.0.0
-      colord: 2.9.3
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-convert-values@5.1.3(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-discard-comments@5.1.2(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-discard-duplicates@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-discard-empty@5.1.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-discard-overridden@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-load-config@3.1.4(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2)):
-    dependencies:
-      lilconfig: 2.1.0
-      yaml: 1.10.2
-    optionalDependencies:
-      postcss: 8.4.49
-      ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.7.2)
-
   postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2)):
     dependencies:
       lilconfig: 3.1.3
@@ -10588,140 +9776,6 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.49
       ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.7.2)
-
-  postcss-merge-longhand@5.1.7(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-      stylehacks: 5.1.1(postcss@8.4.49)
-
-  postcss-merge-rules@5.1.4(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      caniuse-api: 3.0.0
-      cssnano-utils: 3.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-selector-parser: 6.1.2
-
-  postcss-minify-font-values@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-minify-gradients@5.1.1(postcss@8.4.49):
-    dependencies:
-      colord: 2.9.3
-      cssnano-utils: 3.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-minify-params@5.1.4(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      cssnano-utils: 3.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-minify-selectors@5.2.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-selector-parser: 6.1.2
-
-  postcss-modules-extract-imports@3.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-modules-local-by-default@4.2.0(postcss@8.4.49):
-    dependencies:
-      icss-utils: 5.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-selector-parser: 7.0.0
-      postcss-value-parser: 4.2.0
-
-  postcss-modules-scope@3.2.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-selector-parser: 7.0.0
-
-  postcss-modules-values@4.0.0(postcss@8.4.49):
-    dependencies:
-      icss-utils: 5.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-
-  postcss-modules@4.3.1(postcss@8.4.49):
-    dependencies:
-      generic-names: 4.0.0
-      icss-replace-symbols: 1.1.0
-      lodash.camelcase: 4.3.0
-      postcss: 8.4.49
-      postcss-modules-extract-imports: 3.1.0(postcss@8.4.49)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.4.49)
-      postcss-modules-scope: 3.2.1(postcss@8.4.49)
-      postcss-modules-values: 4.0.0(postcss@8.4.49)
-      string-hash: 1.1.3
-
-  postcss-normalize-charset@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-
-  postcss-normalize-display-values@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-positions@5.1.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-repeat-style@5.1.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-string@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-timing-functions@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-unicode@5.1.1(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-url@5.1.0(postcss@8.4.49):
-    dependencies:
-      normalize-url: 6.1.0
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-normalize-whitespace@5.1.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-ordered-values@5.1.3(postcss@8.4.49):
-    dependencies:
-      cssnano-utils: 3.1.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-
-  postcss-reduce-initial@5.1.2(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      caniuse-api: 3.0.0
-      postcss: 8.4.49
-
-  postcss-reduce-transforms@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
 
   postcss-resolve-nested-selector@0.1.6: {}
 
@@ -10733,22 +9787,6 @@ snapshots:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
-
-  postcss-selector-parser@7.0.0:
-    dependencies:
-      cssesc: 3.0.0
-      util-deprecate: 1.0.2
-
-  postcss-svgo@5.1.0(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-      svgo: 2.8.0
-
-  postcss-unique-selectors@5.1.1(postcss@8.4.49):
-    dependencies:
-      postcss: 8.4.49
-      postcss-selector-parser: 6.1.2
 
   postcss-value-parser@4.2.0: {}
 
@@ -10777,8 +9815,6 @@ snapshots:
       '@jest/schemas': 29.6.3
       ansi-styles: 5.2.0
       react-is: 18.3.1
-
-  promise.series@0.2.0: {}
 
   prompts@2.4.2:
     dependencies:
@@ -11174,12 +10210,6 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.2
 
-  react-dom@18.3.1(react@18.3.1):
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.1
-      scheduler: 0.23.2
-
   react-draggable@4.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       clsx: 2.1.1
@@ -11230,10 +10260,6 @@ snapshots:
       react: 18.2.0
 
   react@18.2.0:
-    dependencies:
-      loose-envify: 1.4.0
-
-  react@18.3.1:
     dependencies:
       loose-envify: 1.4.0
 
@@ -11382,37 +10408,6 @@ snapshots:
     dependencies:
       glob: 9.3.5
 
-  rollup-plugin-dts@5.3.1(rollup@3.29.5)(typescript@5.7.2):
-    dependencies:
-      magic-string: 0.30.17
-      rollup: 3.29.5
-      typescript: 5.7.2
-    optionalDependencies:
-      '@babel/code-frame': 7.26.2
-
-  rollup-plugin-postcss@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2)):
-    dependencies:
-      chalk: 4.1.2
-      concat-with-sourcemaps: 1.1.0
-      cssnano: 5.1.15(postcss@8.4.49)
-      import-cwd: 3.0.0
-      p-queue: 6.6.2
-      pify: 5.0.0
-      postcss: 8.4.49
-      postcss-load-config: 3.1.4(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.7.2))
-      postcss-modules: 4.3.1(postcss@8.4.49)
-      promise.series: 0.2.0
-      resolve: 1.22.10
-      rollup-pluginutils: 2.8.2
-      safe-identifier: 0.4.2
-      style-inject: 0.3.0
-    transitivePeerDependencies:
-      - ts-node
-
-  rollup-pluginutils@2.8.2:
-    dependencies:
-      estree-walker: 0.6.1
-
   rollup@3.29.5:
     optionalDependencies:
       fsevents: 2.3.3
@@ -11461,8 +10456,6 @@ snapshots:
       isarray: 2.0.5
 
   safe-buffer@5.2.1: {}
-
-  safe-identifier@0.4.2: {}
 
   safe-regex-test@1.1.0:
     dependencies:
@@ -11619,8 +10612,6 @@ snapshots:
 
   sprintf-js@1.0.3: {}
 
-  stable@0.1.8: {}
-
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
@@ -11633,8 +10624,6 @@ snapshots:
   string-argv@0.3.2: {}
 
   string-convert@0.2.1: {}
-
-  string-hash@1.1.3: {}
 
   string-length@4.0.2:
     dependencies:
@@ -11733,15 +10722,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  style-inject@0.3.0: {}
-
   style-search@0.1.0: {}
-
-  stylehacks@5.1.1(postcss@8.4.49):
-    dependencies:
-      browserslist: 4.24.3
-      postcss: 8.4.49
-      postcss-selector-parser: 6.1.2
 
   stylelint-config-prettier@9.0.5(stylelint@15.11.0(typescript@5.7.2)):
     dependencies:
@@ -11834,16 +10815,6 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svg-tags@1.0.0: {}
-
-  svgo@2.8.0:
-    dependencies:
-      '@trysound/sax': 0.2.0
-      commander: 7.2.0
-      css-select: 4.3.0
-      css-tree: 1.1.3
-      csso: 4.2.0
-      picocolors: 1.1.1
-      stable: 0.1.8
 
   swr@2.3.0(react@18.2.0):
     dependencies:
@@ -12245,10 +11216,10 @@ snapshots:
 
   ws@8.18.0: {}
 
-  wujie-react@1.0.29(react@18.3.1):
+  wujie-react@1.0.29(react@18.2.0):
     dependencies:
       prop-types: 15.8.1
-      react: 18.3.1
+      react: 18.2.0
       wujie: 1.0.29
 
   wujie@1.0.29:
@@ -12264,8 +11235,6 @@ snapshots:
   yallist@3.1.1: {}
 
   yallist@4.0.0: {}
-
-  yaml@1.10.2: {}
 
   yaml@2.3.1: {}
 

@@ -160,6 +160,9 @@ const SearchForm: React.FC = () => {
         ) : (
           <SearchFormPreview
             height={height}
+            appCode={appCode}
+            metaObjectCode={metaObjectCode}
+            searchFormCode={activeSearchForm?.searchFormCode}
             onEdit={setEditing}
             onDelete={handleDeleteSearchForm}
             onSetting={handleSettingSearchForm}

@@ -8,7 +8,7 @@ import { useRequest } from 'ahooks';
 import { rendererApi } from '@/api/renderer';
 import MetaActionButtons from '@/components/MetaActionButtons';
 import MetaList from '@/components/MetaList';
-import MetaSearchForm from '@/components/MetaSearchForm';
+import MetaView from '@/components/MetaView';
 import type {
   DetailPageContainer, ListData, ViewData, SearchFormData,
   FormData, FormContainer, ContainerField,
@@ -144,7 +144,13 @@ const DetailPage: React.FC = () => {
             items={subContainers.map((sub: DetailPageContainer, idx: number) => ({
               key: String(idx),
               label: sub.title || `子对象 ${idx + 1}`,
-              children: <SubObjectRenderer container={sub} />,
+              children: (
+                <SubObjectRenderer
+                  container={sub}
+                  appCode={appCode}
+                  metaObjectCode={sub.metaObjectCode || metaObjectCode}
+                />
+              ),
             }))}
           />
         </div>
@@ -154,7 +160,11 @@ const DetailPage: React.FC = () => {
 };
 
 /** 子对象渲染器 */
-const SubObjectRenderer: React.FC<{ container: DetailPageContainer }> = ({ container }) => {
+const SubObjectRenderer: React.FC<{
+  container: DetailPageContainer;
+  appCode: string;
+  metaObjectCode: string;
+}> = ({ container, appCode, metaObjectCode }) => {
   if (!container.componentData) {
     return <Empty description="暂无数据" />;
   }
@@ -172,7 +182,11 @@ const SubObjectRenderer: React.FC<{ container: DetailPageContainer }> = ({ conta
             />
           </div>
         )}
-        <MetaList listData={listData} />
+        <MetaList
+          listData={listData}
+          appCode={appCode}
+          metaObjectCode={metaObjectCode}
+        />
       </div>
     );
   }
@@ -180,22 +194,11 @@ const SubObjectRenderer: React.FC<{ container: DetailPageContainer }> = ({ conta
   if (container.componentType === 'View') {
     const viewData = container.componentData as { view: ViewData; list: ListData; searchForm: SearchFormData };
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {viewData.searchForm && (
-          <MetaSearchForm
-            searchFormData={viewData.searchForm}
-            onSearch={(v) => console.log('sub search:', v)}
-          />
-        )}
-        {container.buttons && container.buttons.length > 0 && (
-          <MetaActionButtons
-            buttons={container.buttons}
-            level="page"
-            onButtonClick={(btn) => console.log('sub button:', btn)}
-          />
-        )}
-        {viewData.list && <MetaList listData={viewData.list} />}
-      </div>
+      <MetaView
+        viewData={viewData}
+        appCode={appCode}
+        metaObjectCode={metaObjectCode}
+      />
     );
   }
 

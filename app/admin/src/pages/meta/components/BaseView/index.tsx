@@ -191,6 +191,9 @@ const BaseView: React.FC = () => {
         ) : (
           <ViewPreview
             height={height}
+            appCode={appCode}
+            metaObjectCode={metaObjectCode}
+            viewCode={activeView?.viewCode}
             onEdit={setEditing}
             onDelete={handleDeleteView}
             onSetting={handleSettingView}

@@ -1,21 +1,2 @@
-import { HelpSettingsValue, HelpType, TipType } from './type';
-
-export const defaultValue: HelpSettingsValue = {
-  type: TipType.INFO,
-  tipType: [],
-  tooltip: undefined,
-  linkUrl: undefined,
-  linkText: undefined,
-};
-
-export const TIP_TYPE_OPTIONS = [
-  { label: '信息', value: TipType.INFO },
-  { label: '警告', value: TipType.WARNING },
-  { label: '错误', value: TipType.ERROR },
-  { label: '成功', value: TipType.SUCCESS },
-];
-
-export const HELP_TYPE_OPTIONS = [
-  { label: '帮助提示', value: HelpType.TOOLTIP },
-  { label: '链接', value: HelpType.LINK },
-];
+// 从 @r-paas/meta re-export，保持现有引用路径不变
+export { HELP_TYPE_OPTIONS, TIP_TYPE_OPTIONS, HELP_SETTINGS_DEFAULT_VALUE as defaultValue } from '@r-paas/meta';

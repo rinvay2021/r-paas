@@ -169,6 +169,9 @@ const BaseDetail: React.FC = () => {
         ) : (
           <DetailPagePreview
             height={height}
+            appCode={appCode}
+            metaObjectCode={metaObjectCode}
+            detailPageCode={activeDetail?.detailPageCode}
             onEdit={setEditing}
             onDelete={handleDeleteDetail}
             onSetting={handleSettingDetail}

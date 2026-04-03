@@ -1,18 +1,27 @@
 import React from 'react';
-import { Button, Form, Input, Popconfirm, Space } from 'antd';
+import { Button, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { prefix } from '@/constant';
 import './index.less';
 
+const RENDERER_ORIGIN = 'http://localhost:3005';
+
 interface PreviewFormProps {
   height: number;
+  appCode?: string;
+  metaObjectCode?: string;
+  formCode?: string;
   onEdit?: () => void;
   onDelete?: () => void;
   onSetting?: () => void;
 }
 
 const PreviewForm: React.FC<PreviewFormProps> = props => {
-  const { height, onEdit, onDelete, onSetting } = props;
+  const { height, appCode, metaObjectCode, formCode, onEdit, onDelete, onSetting } = props;
+
+  const iframeSrc = appCode && metaObjectCode && formCode
+    ? `${RENDERER_ORIGIN}/?appCode=${appCode}&metaObjectCode=${metaObjectCode}&formCode=${formCode}`
+    : null;
 
   return (
     <div
@@ -35,17 +44,19 @@ const PreviewForm: React.FC<PreviewFormProps> = props => {
         </Popconfirm>
       </Space>
 
-      {/* 表单内容区域 */}
-      {/* TODO：后续替换真实的表单渲染控件 */}
+      {/* 表单预览区域 */}
       <div className={`${prefix}-form-content`}>
-        <Form className={`${prefix}-form`} layout="vertical">
-          {/* 模拟一些表单项来测试滚动 */}
-          {Array.from({ length: 20 }, (_, index) => (
-            <Form.Item key={index} label={`表单项 ${index + 1}`} required={index % 3 === 0}>
-              <Input placeholder={`请输入表单项 ${index + 1}`} />
-            </Form.Item>
-          ))}
-        </Form>
+        {iframeSrc ? (
+          <iframe
+            src={iframeSrc}
+            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 8 }}
+            title="form-preview"
+          />
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#bbb' }}>
+            暂无预览
+          </div>
+        )}
       </div>
     </div>
   );

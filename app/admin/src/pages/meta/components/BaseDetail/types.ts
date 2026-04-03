@@ -1,11 +1,2 @@
-/** 详情页面类型 */
-export enum PageType {
-  TagTiled = 'TagTiled',
-  OnePage = 'OnePage',
-}
-
-/** 组件类型 */
-export enum ComponentType {
-  List = 'List',
-  View = 'View',
-}
+// 从 @r-paas/meta re-export，保持现有引用不变
+export { DetailPageType as PageType, DetailComponentType as ComponentType } from '@r-paas/meta';

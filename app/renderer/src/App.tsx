@@ -4,6 +4,8 @@ import { ConfigProvider, Spin, Result } from 'antd';
 const FormPage = React.lazy(() => import('@/pages/FormPage'));
 const DetailPage = React.lazy(() => import('@/pages/DetailPage'));
 const ViewPage = React.lazy(() => import('@/pages/ViewPage'));
+const ListPage = React.lazy(() => import('@/pages/ListPage'));
+const SearchFormPage = React.lazy(() => import('@/pages/SearchFormPage'));
 
 // 错误边界
 class ErrorBoundary extends React.Component<
@@ -40,11 +42,14 @@ function getPageType() {
   if (params.get('formCode')) return 'form';
   if (params.get('detailPageCode')) return 'detail';
   if (params.get('viewCode')) return 'view';
+  if (params.get('listCode')) return 'list';
+  if (params.get('searchFormCode')) return 'searchForm';
   return null;
 }
 
 function App() {
-  const pageType = getPageType();
+  // 在组件内计算，确保 wujie 环境下 location 已正确初始化
+  const pageType = React.useMemo(() => getPageType(), []);
 
   // 顶层表单弹窗状态（供 ViewPage 通过全局函数触发）
   const [modalFormParams, setModalFormParams] = React.useState<{
@@ -67,6 +72,7 @@ function App() {
     };
   }, []);
 
+  console.log(pageType, 'pageType =====')
 
   return (
     <ConfigProvider theme={{ token: { borderRadius: 6 } }}>
@@ -81,6 +87,8 @@ function App() {
           {pageType === 'form' && <FormPage />}
           {pageType === 'detail' && <DetailPage />}
           {pageType === 'view' && <ViewPage />}
+          {pageType === 'list' && <ListPage />}
+          {pageType === 'searchForm' && <SearchFormPage />}
           {!pageType && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
               <Result

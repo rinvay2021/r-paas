@@ -159,6 +159,9 @@ const BaseForm: React.FC = () => {
         ) : (
           <PreviewForm
             height={height}
+            appCode={appCode}
+            metaObjectCode={metaObjectCode}
+            formCode={activeForm?.formCode}
             onEdit={setEditing}
             onDelete={handleDeleteForm}
             onSetting={handleSettingForm}

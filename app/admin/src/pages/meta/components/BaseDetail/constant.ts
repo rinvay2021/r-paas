@@ -1,23 +1,2 @@
-import { PageType, ComponentType } from './types';
-
-export const DETAIL_PAGE_OPTIONS = [
-  {
-    label: '平铺',
-    value: PageType.TagTiled,
-  },
-  {
-    label: '垂直',
-    value: PageType.OnePage,
-  },
-];
-
-export const COMPONENT_TYPE_OPTIONS = [
-  {
-    label: '列表',
-    value: ComponentType.List,
-  },
-  {
-    label: '视图',
-    value: ComponentType.View,
-  },
-];
+// 从 @r-paas/meta re-export，保持现有引用路径不变
+export { DETAIL_PAGE_OPTIONS, COMPONENT_TYPE_OPTIONS } from '@r-paas/meta';
