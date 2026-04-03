@@ -14,6 +14,7 @@ interface MetaListProps {
   onButtonClick?: (btn: ActionButton, record: any) => void;
   refreshKey?: number;
   searchParams?: Array<{ fieldCode: string; condition: string; value: any }>;
+  scrollY?: number;
 }
 
 /** 列头标题：有 helpTip 时加 Tooltip */
@@ -38,6 +39,7 @@ const MetaList: React.FC<MetaListProps> = ({
   onButtonClick,
   refreshKey,
   searchParams,
+  scrollY,
 }) => {
   const config = listData.listConfig || {};
   const frozenColumnNum = config.frozenColumnNum || 0;
@@ -135,7 +137,7 @@ const MetaList: React.FC<MetaListProps> = ({
         showTotal: (t) => `共 ${t} 条`,
         onChange: (p, ps) => { setPage(p); setPageSize(ps); },
       }}
-      scroll={{ x: 'max-content' }}
+      scroll={{ x: 'max-content', y: scrollY }}
       size="middle"
       bordered={false}
     />

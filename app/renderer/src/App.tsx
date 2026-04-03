@@ -72,10 +72,28 @@ function App() {
     };
   }, []);
 
-  console.log(pageType, 'pageType =====')
-
   return (
-    <ConfigProvider theme={{ token: { borderRadius: 6 } }}>
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 6,
+          colorPrimary: '#1a1a1a',
+          colorLink: '#1a1a1a',
+          colorLinkHover: '#333',
+          colorLinkActive: '#000',
+        },
+        components: {
+          Button: {
+            colorPrimary: '#1a1a1a',
+            colorPrimaryHover: '#333',
+            colorPrimaryActive: '#000',
+          },
+          Table: {
+            colorPrimary: '#1a1a1a',
+          },
+        },
+      }}
+    >
       <ErrorBoundary>
         <React.Suspense
           fallback={
