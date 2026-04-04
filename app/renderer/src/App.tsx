@@ -56,6 +56,7 @@ function App() {
     appCode: string;
     metaObjectCode: string;
     formCode: string;
+    recordId?: string;
   } | null>(null);
 
   // 挂载全局函数，ViewPage 调用此函数打开表单

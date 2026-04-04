@@ -1,13 +1,49 @@
 import React from 'react';
 import { Skeleton, Result, Button, Space, Typography, message, Form } from 'antd';
 import { useRequest } from 'ahooks';
+import dayjs from 'dayjs';
 import { rendererApi } from '@/api/renderer';
 import { dataApi } from '@/api/data';
 import MetaForm from '@/components/MetaForm';
 
+const DATE_FIELD_TYPES = ['DatePicker', 'MonthPicker', 'YearPicker', 'TimePicker'];
+
+/** 将记录数据中的日期字段按表单字段类型转换为 dayjs */
+function transformRecordValues(
+  record: Record<string, any>,
+  containers: any[],
+): Record<string, any> {
+  // 构建 fieldCode -> fieldType 的映射
+  const typeMap: Record<string, string> = {};
+  (containers || []).forEach((container: any) => {
+    (container.fields || []).forEach((field: any) => {
+      if (field.fieldCode && field.fieldType) {
+        typeMap[field.fieldCode] = field.fieldType;
+      }
+    });
+  });
+
+  const values: Record<string, any> = {};
+  Object.keys(record).forEach(key => {
+    if (key.startsWith('_')) return; // 跳过系统字段
+    const val = record[key];
+    const fieldType = typeMap[key];
+    if (fieldType && DATE_FIELD_TYPES.includes(fieldType) && val) {
+      values[key] = dayjs(val);
+    } else {
+      values[key] = val;
+    }
+  });
+  return values;
+}
+
 interface FormPageProps {
-  // 当作弹窗嵌入时由 App.tsx 传入，覆盖 URL 参数
-  overrideParams?: { appCode: string; metaObjectCode: string; formCode: string };
+  overrideParams?: {
+    appCode: string;
+    metaObjectCode: string;
+    formCode: string;
+    recordId?: string; // 有 recordId 时为编辑模式
+  };
   onClose?: (submitted?: boolean) => void;
 }
 
@@ -16,15 +52,33 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
   const appCode = overrideParams?.appCode || urlParams.get('appCode') || '';
   const metaObjectCode = overrideParams?.metaObjectCode || urlParams.get('metaObjectCode') || '';
   const formCode = overrideParams?.formCode || urlParams.get('formCode') || '';
+  const recordId = overrideParams?.recordId || urlParams.get('recordId') || '';
+  const isEdit = !!recordId;
 
-  const { data, loading, error } = useRequest(
+  // 加载表单元数据
+  const { data: formMeta, loading: formLoading, error } = useRequest(
     () => rendererApi.getForm({ appCode, metaObjectCode, formCode }),
     { ready: !!(appCode && metaObjectCode && formCode) },
   );
 
-  const formData = data?.data?.form;
+  const formData = formMeta?.data?.form;
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = React.useState(false);
+
+  // 编辑模式：加载记录数据
+  const { data: recordData, loading: recordLoading } = useRequest(
+    () => dataApi.detail({ appCode, metaObjectCode, id: recordId }),
+    { ready: isEdit && !!(appCode && metaObjectCode && recordId) },
+  );
+
+  // formData 和 recordData 都就绪后，转换日期字段并预填表单
+  React.useEffect(() => {
+    if (!isEdit || !formData || !recordData?.data) return;
+    const values = transformRecordValues(recordData.data, formData.containers || []);
+    form.setFieldsValue(values);
+  }, [formData, recordData]);
+
+  const loading = formLoading || recordLoading;
 
   // ── 拖拽 ──────────────────────────────────────────────
   const [pos, setPos] = React.useState<{ x: number; y: number } | null>(null);
@@ -65,7 +119,6 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
     if (onClose) {
       onClose();
     } else {
-      // 独立页面模式：通知父级
       try { window.parent.postMessage({ type: 'form:cancel' }, '*'); } catch {}
     }
   };
@@ -79,15 +132,20 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
     }
     try {
       setSubmitting(true);
-      await dataApi.create({ appCode, metaObjectCode, data: values });
-      message.success('提交成功');
+      if (isEdit) {
+        await dataApi.update({ appCode, metaObjectCode, id: recordId, data: values });
+        message.success('更新成功');
+      } else {
+        await dataApi.create({ appCode, metaObjectCode, data: values });
+        message.success('提交成功');
+      }
       if (onClose) {
-        onClose(true); // true 表示提交成功，通知刷新
+        onClose(true);
       } else {
         try { window.parent.postMessage({ type: 'form:submit' }, '*'); } catch {}
       }
     } catch (err: any) {
-      message.error(err?.message || '提交失败');
+      message.error(err?.message || '操作失败');
     } finally {
       setSubmitting(false);
     }
@@ -123,7 +181,6 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
           boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
           display: 'flex',
           flexDirection: 'column',
-          // 不设 overflow: hidden，让日期等弹窗能正常显示在卡片外
         }}
       >
         {/* 标题栏 */}
@@ -141,7 +198,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
           }}
         >
           <Typography.Text style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>
-            {formData?.formName || '表单'}
+            {isEdit ? `编辑 - ${formData?.formName || ''}` : (formData?.formName || '表单')}
           </Typography.Text>
         </div>
 
@@ -150,7 +207,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
           {loading ? (
             <Skeleton active paragraph={{ rows: 8 }} />
           ) : formData ? (
-            <MetaForm formData={formData} mode="create" form={form} />
+            <MetaForm formData={formData} mode={isEdit ? 'edit' : 'create'} form={form} />
           ) : null}
         </div>
 
@@ -174,7 +231,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
                 onClick={handleSubmit}
                 style={{ background: '#1a1a1a', borderColor: '#1a1a1a' }}
               >
-                提交
+                {isEdit ? '保存' : '提交'}
               </Button>
             </Space>
           </div>

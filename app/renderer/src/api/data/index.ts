@@ -4,6 +4,12 @@ export const dataApi = {
   create(params: { appCode: string; metaObjectCode: string; data: Record<string, any> }) {
     return http.post('/data/create', params);
   },
+  detail(params: { appCode: string; metaObjectCode: string; id: string }) {
+    return http.post<Record<string, any>>('/data/detail', params);
+  },
+  update(params: { appCode: string; metaObjectCode: string; id: string; data: Record<string, any> }) {
+    return http.post('/data/update', params);
+  },
   query(params: {
     appCode: string;
     metaObjectCode: string;

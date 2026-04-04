@@ -100,12 +100,14 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
     };
   }, []);
 
-  const handleButtonClick = (btn: ActionButton) => {
-    if (btn.buttonEvent === 'Create' && btn.buttonConfig?.formCode) {
-      const openForm = (window as any).__openFormModal;
-      if (openForm) {
-        openForm({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode });
-      }
+  const handleButtonClick = (btn: ActionButton, record?: any) => {
+    const openForm = (window as any).__openFormModal;
+    if (!openForm || !btn.buttonConfig?.formCode) return;
+
+    if (btn.buttonEvent === 'Create') {
+      openForm({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode });
+    } else if (btn.buttonEvent === 'Update' && record?._id) {
+      openForm({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode, recordId: record._id });
     }
   };
 
@@ -126,7 +128,7 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
       {list && (
         <>
           {pageButtons.length > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8, padding: '0 12px' }}>
               <MetaActionButtons
                 buttons={pageButtons}
                 level="page"
@@ -151,7 +153,7 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
               refreshKey={listKey}
               searchParams={searchParams}
               scrollY={scrollY}
-              onButtonClick={(btn, record) => console.log('row button:', btn, record)}
+              onButtonClick={handleButtonClick}
             />
           </div>
         </>
