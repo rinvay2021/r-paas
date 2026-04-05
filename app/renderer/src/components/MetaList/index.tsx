@@ -12,6 +12,7 @@ interface MetaListProps {
   appCode: string;
   metaObjectCode: string;
   onButtonClick?: (btn: ActionButton, record: any) => void;
+  onSelectionChange?: (selectedRows: any[]) => void;
   refreshKey?: number;
   searchParams?: Array<{ fieldCode: string; condition: string; value: any }>;
   scrollY?: number;
@@ -37,6 +38,7 @@ const MetaList: React.FC<MetaListProps> = ({
   appCode,
   metaObjectCode,
   onButtonClick,
+  onSelectionChange,
   refreshKey,
   searchParams,
   scrollY,
@@ -47,16 +49,19 @@ const MetaList: React.FC<MetaListProps> = ({
 
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(defaultPageSize);
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<React.Key[]>([]);
 
   const { data, loading, refresh } = useRequest(
     () => dataApi.query({ appCode, metaObjectCode, page, pageSize, searchParams }),
     { refreshDeps: [appCode, metaObjectCode, page, pageSize, searchParams] },
   );
 
-  // refreshKey 变化时回到第1页重新查询
+  // refreshKey 变化时回到第1页重新查询，同时清空选中
   React.useEffect(() => {
     if (refreshKey !== undefined) {
       setPage(1);
+      setSelectedRowKeys([]);
+      onSelectionChange?.([]);
       refresh();
     }
   }, [refreshKey]);
@@ -127,7 +132,14 @@ const MetaList: React.FC<MetaListProps> = ({
       dataSource={records}
       rowKey="_id"
       loading={loading}
-      rowSelection={config.showCheckbox ? { type: 'checkbox' } : undefined}
+      rowSelection={config.showCheckbox ? {
+        type: 'checkbox',
+        selectedRowKeys,
+        onChange: (keys, rows) => {
+          setSelectedRowKeys(keys);
+          onSelectionChange?.(rows);
+        },
+      } : undefined}
       pagination={{
         current: page,
         pageSize,

@@ -68,12 +68,15 @@ interface MetaActionButtonsProps {
   level?: 'page' | 'row';
   onButtonClick?: (button: ActionButton, record?: any) => void;
   record?: any;
+  /** 点击需要二次确认的按钮前调用，返回 false 则跳过确认直接调 onButtonClick（用于前置校验） */
+  onBeforeConfirm?: (button: ActionButton) => boolean;
 }
 
 const MetaActionButtons: React.FC<MetaActionButtonsProps> = ({
   buttons,
   level = 'page',
   onButtonClick,
+  onBeforeConfirm,
   record,
 }) => {
   const filtered = (buttons || [])
@@ -124,6 +127,15 @@ const MetaActionButtons: React.FC<MetaActionButtonsProps> = ({
 
     // 危险操作二次确认
     if (confirm) {
+      // 前置校验不通过（如未选中）：直接触发 onButtonClick 让上层处理提示，不弹 Popconfirm
+      const passCheck = onBeforeConfirm ? onBeforeConfirm(btn) : true;
+      if (!passCheck) {
+        return React.cloneElement(withTooltip as React.ReactElement, {
+          key: btn.buttonCode,
+          onClick: () => onButtonClick?.(btn, record),
+        });
+      }
+
       return (
         <Popconfirm
           key={btn.buttonCode}
