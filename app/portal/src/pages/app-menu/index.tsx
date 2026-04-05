@@ -135,11 +135,6 @@ const AppMenu: React.FC = () => {
         <div className={`${prefix}-portal-app-menu-content`}>
           {selectedMenu ? (
             <div className={`${prefix}-portal-app-menu-page`}>
-              {/* 只展示标题 */}
-              <div className={`${prefix}-portal-app-menu-page-header`}>
-                <h2 className={`${prefix}-portal-app-menu-page-title`}>{selectedMenu.menuName}</h2>
-              </div>
-
               <div className={`${prefix}-portal-app-menu-view`}>
                 {rendererUrl ? (
                   <WujieReact

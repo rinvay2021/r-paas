@@ -7,6 +7,7 @@ import { metaService } from '@/api/meta';
 import { useElementHeight } from '@/hooks';
 import { NUMBER_CONSTANTS } from '@/constant';
 import { useMeta } from '@/store/metaAtom';
+import { useRefreshMetaButtons } from '@/store/metaButtons';
 import type { UpdateActionButtonDto, QueryActionButtonDto } from '@/api/meta/interface';
 import { META_FIELD_LIST_HEIGHT } from '../../constant';
 import ButtonModal from './ButtonModal';
@@ -17,6 +18,7 @@ import './index.less';
 
 const FunctionButton: React.FC = () => {
   const { appCode, metaObjectCode } = useMeta();
+  const refreshMetaButtons = useRefreshMetaButtons();
 
   const height = useElementHeight({
     elementId: 'meta-page-container',
@@ -84,6 +86,7 @@ const FunctionButton: React.FC = () => {
       const result = await metaService.deleteActionButton?.(record._id);
       message.success(result?.message || '删除成功');
       fetchButtons({ keyword });
+      refreshMetaButtons();
     } catch (error) {
       message.error('删除失败');
     }
@@ -164,7 +167,10 @@ const FunctionButton: React.FC = () => {
           metaObjectCode={metaObjectCode}
           visible={buttonModalVisible}
           onVisibleChange={handleVisibleChange}
-          onFinish={() => fetchButtons({ keyword })}
+          onFinish={() => {
+            fetchButtons({ keyword });
+            refreshMetaButtons();
+          }}
         />
       )}
     </Flex>

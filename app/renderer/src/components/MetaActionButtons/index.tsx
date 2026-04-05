@@ -9,24 +9,7 @@ import {
   ClearOutlined,
 } from '@ant-design/icons';
 import type { ActionButton } from '@/api/renderer/interface';
-
-// 与 admin FunctionButton 保持一致的枚举
-const ButtonLevel = {
-  View: 'View',
-  List: 'List',
-  ListRow: 'ListRow',
-  DetailPage: 'DetailPage',
-} as const;
-
-const ButtonEvent = {
-  Create: 'Create',
-  Update: 'Update',
-  Delete: 'Delete',
-  Export: 'Export',
-  Import: 'Import',
-  BatchDelete: 'BatchDelete',
-  BatchUpdate: 'BatchUpdate',
-} as const;
+import { ButtonLevel, ButtonEvent } from '@r-paas/meta';
 
 /** 根据 buttonEvent 返回图标 */
 function getEventIcon(event: string) {

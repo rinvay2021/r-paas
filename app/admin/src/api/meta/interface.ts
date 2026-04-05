@@ -254,11 +254,11 @@ export type DetailPageConfig = {
 /** 详情页容器类型 */
 export type DetailPageContainerType = 'MAIN_OBJECT' | 'SUB_OBJECT';
 
-/** 详情页页面显示类型 */
-export type DetailPagePageType = 'TagTiled' | 'OnePage';
+/** 详情页页面显示类型 - 使用 @r-paas/meta 的枚举 */
+export { DetailPageType as DetailPagePageType } from '@r-paas/meta';
 
-/** 详情页关联组件类型 */
-export type DetailPageComponentType = 'List' | 'View';
+/** 详情页关联组件类型 - 使用 @r-paas/meta 的枚举 */
+export { DetailComponentType as DetailPageComponentType } from '@r-paas/meta';
 
 /** 详情页主对象容器 */
 export type DetailPageMainObjectContainer = {

@@ -13,6 +13,7 @@ import type {
   DetailPageContainer, ListData, ViewData, SearchFormData,
   FormData, FormContainer, ContainerField,
 } from '@/api/renderer/interface';
+import { DetailComponentType } from '@r-paas/meta';
 
 /** 用 Descriptions 渲染表单数据（只读详情模式） */
 const FormDescriptions: React.FC<{ formData: FormData }> = ({ formData }) => {
@@ -169,7 +170,7 @@ const SubObjectRenderer: React.FC<{
     return <Empty description="暂无数据" />;
   }
 
-  if (container.componentType === 'List') {
+  if (container.componentType === DetailComponentType.List) {
     const listData = container.componentData as ListData;
     return (
       <div>
@@ -191,7 +192,7 @@ const SubObjectRenderer: React.FC<{
     );
   }
 
-  if (container.componentType === 'View') {
+  if (container.componentType === DetailComponentType.View) {
     const viewData = container.componentData as { view: ViewData; list: ListData; searchForm: SearchFormData };
     return (
       <MetaView
