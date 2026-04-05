@@ -1,8 +1,8 @@
 import type { FieldInfo } from '../field/types';
 
 export type ConditionOperator =
-  | '==' | '!=' | '>' | '<' | '>=' | '<='
-  | 'contains' | 'isEmpty' | 'isNotEmpty';
+  | 'eq' | 'neq' | 'gt' | 'lt' | 'gte' | 'lte'
+  | 'contains' | 'empty' | 'notEmpty';
 
 export interface LinkageCondition {
   field: string;
@@ -28,26 +28,65 @@ export interface LinkageSetting {
 
 export type LinkageSettings = LinkageSetting[];
 
+/** 帮助设置 */
+export interface FormHelpSettings {
+  type?: 'info' | 'warning' | 'error' | 'success';
+  tipType?: ('tooltip' | 'link')[];
+  tooltip?: string;
+  linkUrl?: string;
+  linkText?: string;
+}
+
+/** 布局设置 */
+export interface FormLayoutSettings {
+  title?: string;
+  labelAlign?: 'left' | 'right';
+  layout?: 'horizontal' | 'vertical';
+  size?: 'small' | 'middle' | 'large';
+  variant?: 'outlined' | 'filled' | 'borderless';
+  colon?: boolean;
+  labelWrap?: boolean;
+  columns?: number;
+}
+
 export interface FormConfig {
-  helpSettings?: Record<string, string>;
-  layoutSettings?: Record<string, any>;
+  helpSettings?: FormHelpSettings;
+  layoutSettings?: FormLayoutSettings;
   linkageSettings?: LinkageSetting[];
 }
+
+/** 字段更多设置 */
+export interface FieldExtraConfig {
+  defaultScopes?: ('create' | 'edit' | 'view')[];
+  linkable?: boolean;
+  openMode?: 'overlay' | 'newPage' | 'push';
+  linkUrl?: string;
+}
+
+export type ContainerMode = 'editable' | 'readonly' | 'hidden';
 
 export interface ContainerField extends FieldInfo {
   label?: string;
   required?: boolean;
   displayModes?: string[];
   isHidden?: boolean;
+  // 模式配置
+  createMode?: ContainerMode;
+  editMode?: ContainerMode;
+  viewMode?: ContainerMode;
+  // 字段配置
+  placeholder?: string;
+  tooltip?: string;
+  extraConfig?: FieldExtraConfig;
 }
 
 export interface FormContainer {
   id: string;
   title?: string;
   columns?: number;
-  createMode?: string;
-  editMode?: string;
-  viewMode?: string;
+  createMode?: ContainerMode;
+  editMode?: ContainerMode;
+  viewMode?: ContainerMode;
   isHidden?: boolean;
   fields?: ContainerField[];
 }

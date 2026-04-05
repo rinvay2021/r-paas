@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Modal, Button, Space, Card, Select, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
 import { FieldTypeEnum } from '@/pages/meta/components/BaseField/type';
+import { datasourceService } from '@/api/datasource';
+import { useMeta } from '@/store/metaAtom';
 import type {
   LinkageRule,
   LinkageSettings,
@@ -16,17 +18,17 @@ interface FieldOption {
   fieldCode: string;
   fieldName: string;
   fieldType: string;
+  datasourceCode?: string;
 }
 
 interface LinkageModalProps {
   open: boolean;
   value?: LinkageSettings;
-  fields: FieldOption[]; // 可用字段列表
+  fields: FieldOption[];
   onOk: (value: LinkageSettings) => void;
   onCancel: () => void;
 }
 
-// 数据源字段类型（有固定选项的字段）
 const DATA_SOURCE_FIELD_TYPES = [
   FieldTypeEnum.SingleSelect,
   FieldTypeEnum.MultipleSelect,
@@ -35,156 +37,92 @@ const DATA_SOURCE_FIELD_TYPES = [
 ];
 
 const LinkageModal: React.FC<LinkageModalProps> = ({ open, value, fields, onOk, onCancel }) => {
-  const [rules, setRules] = useState<LinkageRule[]>(Array.isArray(value) ? value : []);
+  const { appCode } = useMeta();
+  const [rules, setRules] = useState<LinkageRule[]>([]);
+  const [datasourceOptionsMap, setDatasourceOptionsMap] = useState<Record<string, { label: string; value: string }[]>>({});
 
-  // 当弹窗打开或 value 变化时，同步规则
-  React.useEffect(() => {
-    if (open) {
-      const rulesList = Array.isArray(value) ? value : [];
-      console.log('LinkageModal - 同步规则:', rulesList);
-      setRules(rulesList);
-    }
-  }, [open, value]);
+  useEffect(() => {
+    if (!open) return;
+    setRules(Array.isArray(value) ? value : []);
 
-  // 添加新规则
-  const handleAddRule = () => {
-    const newRule: LinkageRule = {
-      id: nanoid(),
-      condition: {
-        field: '',
-        operator: '==',
-        value: '',
-      },
-      actions: {},
-    };
-    setRules([...rules, newRule]);
-  };
+    const codesNeeded = fields
+      .filter(f => DATA_SOURCE_FIELD_TYPES.includes(f.fieldType as FieldTypeEnum) && f.datasourceCode)
+      .map(f => f.datasourceCode!);
 
-  // 删除规则
-  const handleDeleteRule = (ruleId: string) => {
-    setRules(rules.filter(rule => rule.id !== ruleId));
-  };
+    if (codesNeeded.length === 0 || !appCode) return;
 
-  // 更新规则条件（使用函数式更新避免闭包问题）
-  const handleUpdateCondition = (
-    ruleId: string,
-    field: keyof LinkageRule['condition'],
-    value: any
-  ) => {
-    console.log('handleUpdateCondition - 参数:', { ruleId, field, value });
-    setRules(prevRules => {
-      const newRules = prevRules.map(rule => {
-        if (rule.id === ruleId) {
-          const newCondition = {
-            ...rule.condition,
-            [field]: value,
-          };
-          console.log('handleUpdateCondition - 更新后的condition:', newCondition);
-          return {
-            ...rule,
-            condition: newCondition,
-          };
+    datasourceService.queryDatasources({ appCode, pageSize: -1 }).then(res => {
+      const list = res?.data?.list || [];
+      const map: Record<string, { label: string; value: string }[]> = {};
+      list.forEach(ds => {
+        if (codesNeeded.includes(ds.datasourceCode)) {
+          map[ds.datasourceCode] = (ds.options || [])
+            .filter(opt => opt.isEnabled !== 0)
+            .map(opt => ({ label: opt.optionName, value: opt.optionCode }));
         }
-        return rule;
       });
-      console.log('handleUpdateCondition - 更新后的rules:', newRules);
-      return newRules;
-    });
+      setDatasourceOptionsMap(map);
+    }).catch(() => {});
+  }, [open, value, fields, appCode]);
+
+  const handleAddRule = () => {
+    setRules(prev => [...prev, {
+      id: nanoid(),
+      condition: { field: '', operator: 'eq', value: '' },
+      actions: {},
+    }]);
   };
 
-  // 更新规则动作（使用函数式更新避免闭包问题）
-  const handleUpdateActions = (
-    ruleId: string,
-    actionType: keyof LinkageRule['actions'],
-    value: string[]
-  ) => {
-    setRules(prevRules =>
-      prevRules.map(rule => {
-        if (rule.id === ruleId) {
-          return {
-            ...rule,
-            actions: {
-              ...rule.actions,
-              [actionType]: value.length > 0 ? value : undefined,
-            },
-          };
-        }
-        return rule;
-      })
-    );
+  const handleDeleteRule = (ruleId: string) => {
+    setRules(prev => prev.filter(r => r.id !== ruleId));
   };
 
-  // 保存
-  const handleSave = () => {
-    console.log('LinkageModal - 保存规则:', rules);
-    onOk(rules);
+  const handleUpdateCondition = (ruleId: string, field: keyof LinkageRule['condition'], val: any) => {
+    setRules(prev => prev.map(r =>
+      r.id === ruleId ? { ...r, condition: { ...r.condition, [field]: val } } : r
+    ));
   };
 
-  // 字段选项
-  const fieldOptions = useMemo(() => {
-    const options = fields.map(field => ({
-      label: `${field.fieldName}(${field.fieldCode})`,
-      value: field.fieldCode,
-    }));
-    console.log('fieldOptions:', options);
-    return options;
-  }, [fields]);
-
-  // 判断操作符是否需要值
-  const needsValue = (operator: ConditionOperator) => {
-    return operator !== 'isEmpty' && operator !== 'isNotEmpty';
+  const handleUpdateActions = (ruleId: string, actionType: keyof LinkageRule['actions'], val: string[]) => {
+    setRules(prev => prev.map(r =>
+      r.id === ruleId
+        ? { ...r, actions: { ...r.actions, [actionType]: val.length > 0 ? val : undefined } }
+        : r
+    ));
   };
 
-  // 判断字段是否是数据源字段
-  const isDataSourceField = (fieldCode: string) => {
-    const field = fields.find(f => f.fieldCode === fieldCode);
-    return field && DATA_SOURCE_FIELD_TYPES.includes(field.fieldType as FieldTypeEnum);
-  };
+  const fieldOptions = useMemo(() =>
+    fields.map(f => ({
+      label: f.fieldName !== f.fieldCode ? `${f.fieldName}(${f.fieldCode})` : f.fieldName,
+      value: f.fieldCode,
+    })),
+    [fields]
+  );
 
-  // 获取字段的条件值选项（针对数据源字段）
-  const getFieldValueOptions = (fieldCode: string) => {
-    const field = fields.find(f => f.fieldCode === fieldCode);
-    if (!field) return [];
+  const needsValue = (op: ConditionOperator) => op !== 'empty' && op !== 'notEmpty';
 
-    // TODO: 这里应该从字段配置中获取实际的选项列表
-    // 现在先返回空数组，等待后续从字段配置中获取
-    // 对于 SingleSelect, MultipleSelect, SingleRadio, MultipleCheckbox
-    // 需要从字段的 dataSource 配置中获取选项
-    return [];
+  const getFieldDatasourceCode = (fieldCode: string) => {
+    const f = fields.find(f => f.fieldCode === fieldCode);
+    return f && DATA_SOURCE_FIELD_TYPES.includes(f.fieldType as FieldTypeEnum) ? f.datasourceCode : undefined;
   };
 
   return (
-    <Modal
-      title="联动设置"
-      open={open}
-      onCancel={onCancel}
-      width={900}
-      footer={null}
-      className="linkage-modal"
-    >
+    <Modal title="联动设置" open={open} onCancel={onCancel} width={900} footer={null} className="linkage-modal">
       <div className="linkage-modal-content">
         <Space direction="vertical" style={{ width: '100%' }} size="middle">
-          {rules.map((rule, index) => {
-            console.log(`渲染规则 ${index + 1}:`, rule);
-            return (
+          {rules.map((rule, index) => (
             <Card
               key={rule.id}
               size="small"
               title={`规则 ${index + 1}`}
               extra={
-                <Button
-                  type="text"
-                  danger
-                  size="small"
-                  icon={<DeleteOutlined />}
-                  onClick={() => handleDeleteRule(rule.id)}
-                >
+                <Button type="text" danger size="small" icon={<DeleteOutlined />}
+                  onClick={() => handleDeleteRule(rule.id)}>
                   删除
                 </Button>
               }
             >
               <Space direction="vertical" style={{ width: '100%' }} size="small">
-                {/* 触发条件 */}
                 <div className="condition-row">
                   <span className="label">触发条件</span>
                   <Space wrap>
@@ -192,26 +130,12 @@ const LinkageModal: React.FC<LinkageModalProps> = ({ open, value, fields, onOk, 
                     <Select
                       style={{ width: 200 }}
                       placeholder="选择字段"
-                      value={rule.condition.field ? rule.condition.field : undefined}
-                      onChange={value => {
-                        console.log('Select onChange - 选择字段:', value, '规则ID:', rule.id);
-                        console.log('Select onChange - 当前rule:', rule);
-                        // 一次性更新 field 和 value，避免两次调用导致状态覆盖
-                        setRules(prevRules =>
-                          prevRules.map(r =>
-                            r.id === rule.id
-                              ? {
-                                  ...r,
-                                  condition: {
-                                    ...r.condition,
-                                    field: value,
-                                    value: '', // 清空条件值
-                                  },
-                                }
-                              : r
-                          )
-                        );
-                      }}
+                      value={rule.condition.field || undefined}
+                      onChange={val => setRules(prev => prev.map(r =>
+                        r.id === rule.id
+                          ? { ...r, condition: { ...r.condition, field: val, value: '' } }
+                          : r
+                      ))}
                       options={fieldOptions}
                       showSearch
                       optionFilterProp="label"
@@ -220,155 +144,72 @@ const LinkageModal: React.FC<LinkageModalProps> = ({ open, value, fields, onOk, 
                     <Select
                       style={{ width: 120 }}
                       value={rule.condition.operator}
-                      onChange={value => handleUpdateCondition(rule.id, 'operator', value)}
+                      onChange={val => handleUpdateCondition(rule.id, 'operator', val)}
                       options={CONDITION_OPERATORS}
                     />
-                    {needsValue(rule.condition.operator) && (
-                      <>
-                        {isDataSourceField(rule.condition.field) ? (
-                          <Select
-                            style={{ width: 150 }}
-                            placeholder="选择条件值"
-                            value={rule.condition.value || undefined}
-                            onChange={value => handleUpdateCondition(rule.id, 'value', value)}
-                            options={getFieldValueOptions(rule.condition.field)}
-                            allowClear
-                          />
-                        ) : (
-                          <Input
-                            style={{ width: 150 }}
-                            placeholder="输入条件值"
-                            value={rule.condition.value}
-                            onChange={e => handleUpdateCondition(rule.id, 'value', e.target.value)}
-                          />
-                        )}
-                      </>
-                    )}
+                    {needsValue(rule.condition.operator) && (() => {
+                      const dsCode = getFieldDatasourceCode(rule.condition.field);
+                      const dsOptions = dsCode ? datasourceOptionsMap[dsCode] : undefined;
+                      return dsOptions ? (
+                        <Select
+                          style={{ width: 150 }}
+                          placeholder="选择条件值"
+                          value={rule.condition.value || undefined}
+                          onChange={val => handleUpdateCondition(rule.id, 'value', val)}
+                          options={dsOptions}
+                          allowClear
+                        />
+                      ) : (
+                        <Input
+                          style={{ width: 150 }}
+                          placeholder="输入条件值"
+                          value={rule.condition.value}
+                          onChange={e => handleUpdateCondition(rule.id, 'value', e.target.value)}
+                        />
+                      );
+                    })()}
                   </Space>
                 </div>
 
-                {/* 执行动作 */}
                 <div className="actions-section">
                   <div className="label">执行动作</div>
                   <div className="actions-grid">
-                    {/* 显示字段 */}
-                    <div className="action-row">
-                      <span className="action-label">显示字段</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择要显示的字段"
-                        value={rule.actions.show || []}
-                        onChange={value => handleUpdateActions(rule.id, 'show', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 隐藏字段 */}
-                    <div className="action-row">
-                      <span className="action-label">隐藏字段</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择要隐藏的字段"
-                        value={rule.actions.hide || []}
-                        onChange={value => handleUpdateActions(rule.id, 'hide', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 必填字段 */}
-                    <div className="action-row">
-                      <span className="action-label">必填字段</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择必填字段"
-                        value={rule.actions.require || []}
-                        onChange={value => handleUpdateActions(rule.id, 'require', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 非必填字段 */}
-                    <div className="action-row">
-                      <span className="action-label">非必填</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择非必填字段"
-                        value={rule.actions.unrequire || []}
-                        onChange={value => handleUpdateActions(rule.id, 'unrequire', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 只读字段 */}
-                    <div className="action-row">
-                      <span className="action-label">只读字段</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择只读字段"
-                        value={rule.actions.readonly || []}
-                        onChange={value => handleUpdateActions(rule.id, 'readonly', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 可编辑字段 */}
-                    <div className="action-row">
-                      <span className="action-label">可编辑</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择可编辑字段"
-                        value={rule.actions.editable || []}
-                        onChange={value => handleUpdateActions(rule.id, 'editable', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
-
-                    {/* 清空字段 */}
-                    <div className="action-row">
-                      <span className="action-label">清空字段</span>
-                      <Select
-                        mode="multiple"
-                        className="action-select"
-                        placeholder="选择要清空的字段"
-                        value={rule.actions.clear || []}
-                        onChange={value => handleUpdateActions(rule.id, 'clear', value)}
-                        options={fieldOptions}
-                        maxTagCount="responsive"
-                      />
-                    </div>
+                    {[
+                      { key: 'show', label: '显示字段', placeholder: '选择要显示的字段' },
+                      { key: 'hide', label: '隐藏字段', placeholder: '选择要隐藏的字段' },
+                      { key: 'require', label: '必填字段', placeholder: '选择必填字段' },
+                      { key: 'unrequire', label: '非必填', placeholder: '选择非必填字段' },
+                      { key: 'readonly', label: '只读字段', placeholder: '选择只读字段' },
+                      { key: 'editable', label: '可编辑', placeholder: '选择可编辑字段' },
+                      { key: 'clear', label: '清空字段', placeholder: '选择要清空的字段' },
+                    ].map(({ key, label, placeholder }) => (
+                      <div key={key} className="action-row">
+                        <span className="action-label">{label}</span>
+                        <Select
+                          mode="multiple"
+                          className="action-select"
+                          placeholder={placeholder}
+                          value={(rule.actions as any)[key] || []}
+                          onChange={val => handleUpdateActions(rule.id, key as keyof LinkageRule['actions'], val)}
+                          options={fieldOptions}
+                          maxTagCount="responsive"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </Space>
             </Card>
-            );
-          })}
-
-          {/* 新建规则按钮 */}
+          ))}
           <Button type="dashed" block icon={<PlusOutlined />} onClick={handleAddRule}>
             新建规则
           </Button>
         </Space>
       </div>
-
-      {/* 底部按钮 */}
       <div className="linkage-modal-footer">
         <Space>
           <Button onClick={onCancel}>取消</Button>
-          <Button type="default" onClick={handleSave}>
-            保存
-          </Button>
+          <Button type="default" onClick={() => onOk(rules)}>保存</Button>
         </Space>
       </div>
     </Modal>

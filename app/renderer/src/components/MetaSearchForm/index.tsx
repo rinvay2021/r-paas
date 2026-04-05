@@ -7,6 +7,7 @@ import {
 } from 'antd';
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { SearchFormData, SearchFormField } from '@/api/renderer/interface';
+import { FieldType } from '@r-paas/meta';
 
 interface MetaSearchFormProps {
   searchFormData: SearchFormData;
@@ -45,24 +46,24 @@ function renderSearchControl(sf: SearchFormField): React.ReactNode {
 
   const popupContainer = (trigger: HTMLElement) => trigger.parentElement!;
 
-  if (fieldType === 'DatePicker') {
+  if (fieldType === FieldType.DatePicker) {
     if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
     return <DatePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
   }
-  if (fieldType === 'MonthPicker') {
+  if (fieldType === FieldType.MonthPicker) {
     if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
     return <DatePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
   }
-  if (fieldType === 'YearPicker') {
+  if (fieldType === FieldType.YearPicker) {
     if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
     return <DatePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
   }
-  if (fieldType === 'TimePicker') {
+  if (fieldType === FieldType.TimePicker) {
     if (isRange(condition)) return <TimePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
     return <TimePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
   }
 
-  if (fieldType === 'Text_Number') {
+  if (fieldType === FieldType.Text_Number) {
     if (isRange(condition)) {
       return (
         <Input.Group compact style={{ display: 'flex' }}>
@@ -75,29 +76,29 @@ function renderSearchControl(sf: SearchFormField): React.ReactNode {
     return <InputNumber style={{ width: '100%' }} placeholder={placeholder} />;
   }
 
-  if (fieldType === 'SingleSelect' || fieldType === 'SingleRadio') {
+  if (fieldType === FieldType.SingleSelect || fieldType === FieldType.SingleRadio) {
     if (isMulti(condition)) {
       return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
     }
     return <Select style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
   }
 
-  if (fieldType === 'MultipleSelect' || fieldType === 'MultipleCheckbox') {
+  if (fieldType === FieldType.MultipleSelect || fieldType === FieldType.MultipleCheckbox) {
     return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
   }
 
-  if (fieldType === 'TreeSelect') {
+  if (fieldType === FieldType.TreeSelect) {
     const treeData = sf.fieldInfo?.config?.treeData || [];
     return <TreeSelect style={{ width: '100%' }} placeholder={placeholder} treeData={treeData} allowClear />;
   }
-  if (fieldType === 'Cascader') {
+  if (fieldType === FieldType.Cascader) {
     return <Cascader style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
   }
 
   return <Input placeholder={placeholder} allowClear />;
 }
 
-const DATE_FIELD_TYPES = ['DatePicker', 'MonthPicker', 'YearPicker', 'TimePicker'];
+const DATE_FIELD_TYPES = [FieldType.DatePicker, FieldType.MonthPicker, FieldType.YearPicker, FieldType.TimePicker];
 
 function parseDateValue(value: any, fieldType: string, condition: string): any {
   if (!value || !DATE_FIELD_TYPES.includes(fieldType)) return value;

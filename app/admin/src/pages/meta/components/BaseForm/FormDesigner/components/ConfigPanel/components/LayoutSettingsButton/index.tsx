@@ -72,7 +72,6 @@ const LayoutSettingsButton: React.FC<LayoutSettingsButtonProps> = ({ value, onCh
             options={[
               { label: '水平', value: 'horizontal' },
               { label: '垂直', value: 'vertical' },
-              { label: '行内', value: 'inline' },
             ]}
           />
 

@@ -2,82 +2,62 @@
  * 表单联动规则类型定义
  */
 
-/**
- * 条件操作符
- */
+/** 条件操作符（统一使用 eq/neq 格式） */
 export type ConditionOperator =
-  | '==' // 等于
-  | '!=' // 不等于
-  | '>' // 大于
-  | '<' // 小于
-  | '>=' // 大于等于
-  | '<=' // 小于等于
+  | 'eq'       // 等于
+  | 'neq'      // 不等于
+  | 'gt'       // 大于
+  | 'lt'       // 小于
+  | 'gte'      // 大于等于
+  | 'lte'      // 小于等于
   | 'contains' // 包含（字符串）
-  | 'isEmpty' // 为空
-  | 'isNotEmpty'; // 不为空
+  | 'empty'    // 为空
+  | 'notEmpty'; // 不为空
 
-/**
- * 条件操作符显示文本映射
- */
 export const OPERATOR_LABELS: Record<ConditionOperator, string> = {
-  '==': '等于',
-  '!=': '不等于',
-  '>': '大于',
-  '<': '小于',
-  '>=': '大于等于',
-  '<=': '小于等于',
+  eq: '等于',
+  neq: '不等于',
+  gt: '大于',
+  lt: '小于',
+  gte: '大于等于',
+  lte: '小于等于',
   contains: '包含',
-  isEmpty: '为空',
-  isNotEmpty: '不为空',
+  empty: '为空',
+  notEmpty: '不为空',
 };
 
-/**
- * 条件操作符选项
- */
 export const CONDITION_OPERATORS = [
-  { label: '等于', value: '==' },
-  { label: '不等于', value: '!=' },
-  { label: '大于', value: '>' },
-  { label: '小于', value: '<' },
-  { label: '大于等于', value: '>=' },
-  { label: '小于等于', value: '<=' },
-  { label: '包含', value: 'contains' },
-  { label: '为空', value: 'isEmpty' },
-  { label: '不为空', value: 'isNotEmpty' },
+  { label: '等于', value: 'eq' as ConditionOperator },
+  { label: '不等于', value: 'neq' as ConditionOperator },
+  { label: '大于', value: 'gt' as ConditionOperator },
+  { label: '小于', value: 'lt' as ConditionOperator },
+  { label: '大于等于', value: 'gte' as ConditionOperator },
+  { label: '小于等于', value: 'lte' as ConditionOperator },
+  { label: '包含', value: 'contains' as ConditionOperator },
+  { label: '为空', value: 'empty' as ConditionOperator },
+  { label: '不为空', value: 'notEmpty' as ConditionOperator },
 ] as const;
 
-/**
- * 联动规则触发条件
- */
 export interface LinkageCondition {
-  field: string; // 字段编码
-  operator: ConditionOperator; // 操作符
-  value: any; // 条件值（isEmpty/isNotEmpty 不需要值）
+  field: string;
+  operator: ConditionOperator;
+  value: any;
 }
 
-/**
- * 联动规则执行动作
- */
 export interface LinkageActions {
-  show?: string[]; // 显示的字段列表
-  hide?: string[]; // 隐藏的字段列表
-  require?: string[]; // 必填的字段列表
-  unrequire?: string[]; // 非必填的字段列表
-  readonly?: string[]; // 只读的字段列表
-  editable?: string[]; // 可编辑的字段列表
-  clear?: string[]; // 清空的字段列表
+  show?: string[];
+  hide?: string[];
+  require?: string[];
+  unrequire?: string[];
+  readonly?: string[];
+  editable?: string[];
+  clear?: string[];
 }
 
-/**
- * 联动规则
- */
 export interface LinkageRule {
-  id: string; // 规则ID
-  condition: LinkageCondition; // 触发条件
-  actions: LinkageActions; // 执行动作
+  id: string;
+  condition: LinkageCondition;
+  actions: LinkageActions;
 }
 
-/**
- * 联动规则配置（直接是数组）
- */
 export type LinkageSettings = LinkageRule[];

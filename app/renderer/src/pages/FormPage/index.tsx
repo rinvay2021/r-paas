@@ -1,12 +1,22 @@
 import React from 'react';
-import { Skeleton, Result, Button, Space, Typography, message, Form } from 'antd';
+import { Skeleton, Result, Button, Space, Typography, message, Form, Alert } from 'antd';
+import type { FormHelpSettings, FormLayoutSettings } from '@r-paas/meta';
 import { useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 import { rendererApi } from '@/api/renderer';
 import { dataApi } from '@/api/data';
+import { datasourceApi } from '@/api/datasource';
 import MetaForm from '@/components/MetaForm';
+import { FieldType } from '@r-paas/meta';
 
-const DATE_FIELD_TYPES = ['DatePicker', 'MonthPicker', 'YearPicker', 'TimePicker'];
+const DATE_FIELD_TYPES = [FieldType.DatePicker, FieldType.MonthPicker, FieldType.YearPicker, FieldType.TimePicker];
+
+// 需要数据源的字段类型
+const DATASOURCE_FIELD_TYPES = [
+  FieldType.SingleSelect, FieldType.MultipleSelect,
+  FieldType.SingleRadio, FieldType.MultipleCheckbox,
+  FieldType.TreeSelect, FieldType.Cascader,
+];
 
 /** 将记录数据中的日期字段按表单字段类型转换为 dayjs */
 function transformRecordValues(
@@ -64,6 +74,22 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
   const formData = formMeta?.data?.form;
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = React.useState(false);
+  const [optionsMap, setOptionsMap] = React.useState<Record<string, { label: string; value: string }[]>>({});
+
+  // formData 加载后批量请求有数据源的字段选项（一次请求）
+  React.useEffect(() => {
+    if (!formData || !appCode) return;
+    const allFields = (formData.containers || []).flatMap((c: any) => c.fields || []);
+    const datasourceCodes = [...new Set(
+      allFields
+        .filter((f: any) => DATASOURCE_FIELD_TYPES.includes(f.fieldType) && f.config?.datasourceCode)
+        .map((f: any) => f.config.datasourceCode as string)
+    )];
+    if (datasourceCodes.length === 0) return;
+    datasourceApi.batchOptions({ appCode, datasourceCodes }).then(res => {
+      if (res?.data) setOptionsMap(res.data);
+    }).catch(() => {});
+  }, [formData, appCode]);
 
   // 编辑模式：加载记录数据
   const { data: recordData, loading: recordLoading } = useRequest(
@@ -198,7 +224,12 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
           }}
         >
           <Typography.Text style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>
-            {isEdit ? `编辑 - ${formData?.formName || ''}` : (formData?.formName || '表单')}
+            {(() => {
+              const layoutTitle = (formData?.formConfig?.layoutSettings as FormLayoutSettings)?.title;
+              const formName = formData?.formName || '表单';
+              const displayName = layoutTitle || formName;
+              return isEdit ? `编辑 - ${displayName}` : displayName;
+            })()}
           </Typography.Text>
         </div>
 
@@ -207,7 +238,37 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
           {loading ? (
             <Skeleton active paragraph={{ rows: 8 }} />
           ) : formData ? (
-            <MetaForm formData={formData} mode={isEdit ? 'edit' : 'create'} form={form} />
+            <>
+              {/* 帮助设置 Alert */}
+              {(() => {
+                const h = formData.formConfig?.helpSettings as FormHelpSettings | undefined;
+                if (!h) return null;
+                const { type = 'info', tipType = [], tooltip, linkUrl, linkText } = h;
+                const showTooltip = tipType.includes('tooltip') && tooltip;
+                const showLink = tipType.includes('link') && linkUrl;
+                if (!showTooltip && !showLink) return null;
+                const content = (
+                  <span>
+                    {showTooltip && <span>{tooltip}</span>}
+                    {showTooltip && showLink && <span style={{ margin: '0 6px' }}>·</span>}
+                    {showLink && (
+                      <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+                        {linkText || '查看帮助'}
+                      </a>
+                    )}
+                  </span>
+                );
+                return (
+                  <Alert
+                    type={type}
+                    showIcon
+                    message={content}
+                    style={{ marginBottom: 16 }}
+                  />
+                );
+              })()}
+              <MetaForm formData={formData} mode={isEdit ? 'edit' : 'create'} form={form} optionsMap={optionsMap} />
+            </>
           ) : null}
         </div>
 

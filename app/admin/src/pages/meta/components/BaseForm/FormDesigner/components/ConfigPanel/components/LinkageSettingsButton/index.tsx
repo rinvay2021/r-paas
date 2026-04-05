@@ -54,6 +54,7 @@ const LinkageSettingsButton: React.FC<LinkageSettingsButtonProps> = ({
         fieldCode: field.fieldCode || '',
         fieldName: field.fieldName || '',
         fieldType: field.fieldType || '',
+        datasourceCode: field.config?.datasourceCode,
       }));
   }, [allFields, formFieldCodes]);
 
