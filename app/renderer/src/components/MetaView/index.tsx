@@ -2,6 +2,7 @@ import React from 'react';
 import { theme, Typography } from 'antd';
 import type { ViewData, ListData, SearchFormData, ActionButton } from '@r-paas/meta';
 import { ButtonLevel, ButtonEvent } from '@r-paas/meta';
+import { portalBus } from '@/utils/portalBus';
 import MetaSearchForm from '@/components/MetaSearchForm';
 import MetaList from '@/components/MetaList';
 import MetaActionButtons from '@/components/MetaActionButtons';
@@ -18,40 +19,13 @@ interface MetaViewProps {
   metaObjectCode: string;
 }
 
-// 表格 thead 行高 + pagination 区域高度
-const TABLE_HEADER_HEIGHT = 47;
-const TABLE_PAGINATION_HEIGHT = 100;
-
 const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }) => {
   const { token } = theme.useToken();
   const { view, list, searchForm } = viewData;
 
-  const tableWrapRef = React.useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = React.useState<number | undefined>(undefined);
-
-  // View 级按钮（标题右侧）
   const viewButtons: ActionButton[] = (view?.buttons || []).filter(
     btn => btn.buttonLevel === ButtonLevel.View
   );
-
-  const calcScrollY = React.useCallback(() => {
-    if (!tableWrapRef.current) return;
-    const top = tableWrapRef.current.getBoundingClientRect().top;
-    const available = window.innerHeight - top - TABLE_HEADER_HEIGHT - TABLE_PAGINATION_HEIGHT;
-    setScrollY(available > 100 ? available : undefined);
-  }, []);
-
-  React.useEffect(() => {
-    const timer = requestAnimationFrame(calcScrollY);
-    window.addEventListener('resize', calcScrollY);
-    const observer = new ResizeObserver(calcScrollY);
-    if (tableWrapRef.current) observer.observe(tableWrapRef.current);
-    return () => {
-      cancelAnimationFrame(timer);
-      window.removeEventListener('resize', calcScrollY);
-      observer.disconnect();
-    };
-  }, [calcScrollY, list]);
 
   const buildSearchParams = React.useCallback(
     (values: Record<string, any>) => {
@@ -64,8 +38,8 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
   );
 
   const [searchParams, setSearchParams] = React.useState<Array<{ fieldCode: string; condition: string; value: any }>>([]);
-  const [listKey, setListKey] = React.useState(0);
 
+  // 搜索表单默认值初始化
   React.useEffect(() => {
     if (!searchForm) return;
     const defaultValues: Record<string, any> = {};
@@ -77,32 +51,15 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
     setSearchParams(buildSearchParams(defaultValues));
   }, [searchForm]);
 
-  React.useEffect(() => {
-    (window as any).__notifyListRefresh = () => setListKey(k => k + 1);
-    return () => { delete (window as any).__notifyListRefresh; };
-  }, []);
-
-  // View 级按钮事件（Create 等），提交后刷新列表
   const handleViewButtonClick = (btn: ActionButton) => {
     if (btn.buttonEvent === ButtonEvent.Create && btn.buttonConfig?.formCode) {
-      const openForm = (window as any).__openFormModal;
-      if (openForm) openForm({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode });
-    }
-  };
-
-  // App.tsx 的 onClose(submitted=true) 会调 __notifyListRefresh，已在 useEffect 里监听
-
-  // 行级按钮中 Update 事件由 MetaView 处理（需要打开表单弹窗）
-  const handleRowButtonClick = (btn: ActionButton, record: any) => {
-    if (btn.buttonEvent === ButtonEvent.Update && btn.buttonConfig?.formCode && record?._id) {
-      const openForm = (window as any).__openFormModal;
-      if (openForm) openForm({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode, recordId: record._id });
+      portalBus.openFormModal({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode });
     }
   };
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* 标题 + View 级按钮左右布局，与搜索表单/列表对齐 */}
+      {/* 标题 + View 级按钮 */}
       {(view?.viewName || viewButtons.length > 0) && (
         <div style={{
           display: 'flex',
@@ -129,34 +86,27 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
         <div style={{ flexShrink: 0 }}>
           <MetaSearchForm
             searchFormData={searchForm}
-            onSearch={values => {
-              setSearchParams(buildSearchParams(values));
-              setListKey(k => k + 1);
-            }}
+            onSearch={values => setSearchParams(buildSearchParams(values))}
           />
         </div>
       )}
 
-      {/* 列表区域（含 List 级按钮、操作列、批量操作） */}
+      {/* 列表：MetaList 内部自己处理所有按钮、刷新、scrollY */}
       {list && (
         <div
-          ref={tableWrapRef}
           style={{
             flex: 1,
             background: token.colorBgContainer,
             borderRadius: token.borderRadius,
             padding: '8px 12px',
             overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <MetaList
             listData={list}
-            appCode={appCode}
-            metaObjectCode={metaObjectCode}
-            refreshKey={listKey}
             searchParams={searchParams}
-            scrollY={scrollY}
-            onButtonClick={handleRowButtonClick}
           />
         </div>
       )}

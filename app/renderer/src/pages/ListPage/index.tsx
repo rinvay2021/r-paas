@@ -23,11 +23,7 @@ const ListPage: React.FC = () => {
 
   return (
     <div style={{ padding: '8px 12px' }}>
-      <MetaList
-        listData={listData}
-        appCode={appCode}
-        metaObjectCode={metaObjectCode}
-      />
+      <MetaList listData={listData} />
     </div>
   );
 };

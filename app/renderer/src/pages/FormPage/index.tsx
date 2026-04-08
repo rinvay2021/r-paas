@@ -8,6 +8,7 @@ import { dataApi } from '@/api/data';
 import { datasourceApi } from '@/api/datasource';
 import MetaForm from '@/components/MetaForm';
 import { FieldType } from '@r-paas/meta';
+import { portalBus } from '@/utils/portalBus';
 
 const DATE_FIELD_TYPES = [FieldType.DatePicker, FieldType.MonthPicker, FieldType.YearPicker, FieldType.TimePicker];
 
@@ -145,7 +146,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
     if (onClose) {
       onClose();
     } else {
-      try { window.parent.postMessage({ type: 'form:cancel' }, '*'); } catch {}
+      portalBus.closeFormModal(false);
     }
   };
 
@@ -168,7 +169,8 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
       if (onClose) {
         onClose(true);
       } else {
-        try { window.parent.postMessage({ type: 'form:submit' }, '*'); } catch {}
+        // submitted=true 通知 portal 关闭弹窗并刷新列表
+        portalBus.closeFormModal(true);
       }
     } catch (err: any) {
       message.error(err?.message || '操作失败');

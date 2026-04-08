@@ -79,14 +79,15 @@ function getModeConfig(
 }
 
 
-const MetaForm = React.forwardRef<MetaFormRef, MetaFormProps>(({
-  formData,
-  mode = 'create',
-  initialValues,
-  onValuesChange,
-  form: externalForm,
-  optionsMap,
-}, ref) => {
+const MetaForm = React.forwardRef((props: MetaFormProps, ref: React.Ref<MetaFormRef>) => {
+  const {
+    formData,
+    mode = 'create',
+    initialValues,
+    onValuesChange,
+    form: externalForm,
+    optionsMap,
+  } = props;
   const [_form] = Form.useForm();
   const form = externalForm ?? _form;
 

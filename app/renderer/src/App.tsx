@@ -7,7 +7,6 @@ const ViewPage = React.lazy(() => import('@/pages/ViewPage'));
 const ListPage = React.lazy(() => import('@/pages/ListPage'));
 const SearchFormPage = React.lazy(() => import('@/pages/SearchFormPage'));
 
-// 错误边界
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: Error | null }
@@ -16,20 +15,14 @@ class ErrorBoundary extends React.Component<
     super(props);
     this.state = { hasError: false, error: null };
   }
-
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
-
   render() {
     if (this.state.hasError) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-          <Result
-            status="error"
-            title="渲染失败"
-            subTitle={this.state.error?.message || '元数据配置有误，请检查后重试'}
-          />
+          <Result status="error" title="渲染失败" subTitle={this.state.error?.message} />
         </div>
       );
     }
@@ -37,8 +30,8 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-function getPageType() {
-  const params = new URLSearchParams(window.location.search);
+function getPageTypeFromSearch(search: string) {
+  const params = new URLSearchParams(search);
   if (params.get('formCode')) return 'form';
   if (params.get('detailPageCode')) return 'detail';
   if (params.get('viewCode')) return 'view';
@@ -48,30 +41,15 @@ function getPageType() {
 }
 
 function App() {
-  // 在组件内计算，确保 wujie 环境下 location 已正确初始化
-  const pageType = React.useMemo(() => getPageType(), []);
+  // null = 尚未初始化（避免闪烁错误提示），string = 已读取
+  const [search, setSearch] = React.useState<string | null>(null);
 
-  // 顶层表单弹窗状态（供 ViewPage 通过全局函数触发）
-  const [modalFormParams, setModalFormParams] = React.useState<{
-    appCode: string;
-    metaObjectCode: string;
-    formCode: string;
-    recordId?: string;
-  } | null>(null);
-
-  // 挂载全局函数，ViewPage 调用此函数打开表单
   React.useEffect(() => {
-    (window as any).__openFormModal = (params: { appCode: string; metaObjectCode: string; formCode: string }) => {
-      setModalFormParams(params);
-    };
-    (window as any).__closeFormModal = () => {
-      setModalFormParams(null);
-    };
-    return () => {
-      delete (window as any).__openFormModal;
-      delete (window as any).__closeFormModal;
-    };
+    // 挂载后读取真实 search（wujie proxyLocation 已就绪）
+    setSearch(window.location.search);
   }, []);
+
+  const pageType = search === null ? null : getPageTypeFromSearch(search);
 
   return (
     <ConfigProvider
@@ -84,14 +62,8 @@ function App() {
           colorLinkActive: '#000',
         },
         components: {
-          Button: {
-            colorPrimary: '#1a1a1a',
-            colorPrimaryHover: '#333',
-            colorPrimaryActive: '#000',
-          },
-          Table: {
-            colorPrimary: '#1a1a1a',
-          },
+          Button: { colorPrimary: '#1a1a1a', colorPrimaryHover: '#333', colorPrimaryActive: '#000' },
+          Table: { colorPrimary: '#1a1a1a' },
         },
       }}
     >
@@ -103,38 +75,22 @@ function App() {
             </div>
           }
         >
+          {search === null && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+              <Spin size="large" />
+            </div>
+          )}
           {pageType === 'form' && <FormPage />}
           {pageType === 'detail' && <DetailPage />}
           {pageType === 'view' && <ViewPage />}
           {pageType === 'list' && <ListPage />}
           {pageType === 'searchForm' && <SearchFormPage />}
-          {!pageType && (
+          {search !== null && !pageType && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-              <Result
-                status="warning"
-                title="缺少必要参数"
-                subTitle="URL 需要包含 formCode、detailPageCode 或 viewCode 参数"
-              />
+              <Result status="warning" title="缺少必要参数" subTitle="URL 需要包含 viewCode、detailPageCode、formCode 等参数" />
             </div>
           )}
         </React.Suspense>
-
-        {modalFormParams && pageType === 'view' && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 9999 }}>
-            <React.Suspense fallback={null}>
-              <FormPage
-                overrideParams={modalFormParams}
-                onClose={(submitted) => {
-                  setModalFormParams(null);
-                  if (submitted) {
-                    const notify = (window as any).__notifyListRefresh;
-                    if (notify) notify();
-                  }
-                }}
-              />
-            </React.Suspense>
-          </div>
-        )}
       </ErrorBoundary>
     </ConfigProvider>
   );

@@ -8,6 +8,7 @@ import { DeleteOutlined, HolderOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input, InputNumber, Select, Table } from 'antd';
 import { ListFieldDto, FieldDto } from '@/api/meta/interface';
 import { FieldSelector } from '@/pages/meta/biz-components/FieldSelector';
+import ListFieldSettingsButton from '../ListFieldSettingsButton';
 
 import { DRAG_TYPE, ALIGN_OPTIONS } from '../../constant';
 import { DraggableRowProps, DragItem, ListFieldEditorRef } from '../../types';
@@ -93,6 +94,7 @@ const ListFieldEditor: React.ForwardRefRenderFunction<
       width: 120,
       align: 'left',
       field: field,
+      fieldConfig: {},
     }));
 
     const updatedFields = [...currentFields, ...newFields];
@@ -193,16 +195,19 @@ const ListFieldEditor: React.ForwardRefRenderFunction<
               },
               {
                 title: '操作',
-                width: 80,
+                width: 100,
                 fixed: 'right',
                 render: (_, field) => (
-                  <Button
-                    type="text"
-                    icon={<DeleteOutlined />}
-                    onClick={() => {
-                      remove(field.name);
-                    }}
-                  />
+                  <>
+                    <Form.Item name={[field.name, 'fieldConfig']} noStyle>
+                      <ListFieldSettingsButton />
+                    </Form.Item>
+                    <Button
+                      type="text"
+                      icon={<DeleteOutlined />}
+                      onClick={() => remove(field.name)}
+                    />
+                  </>
                 ),
               },
             ];

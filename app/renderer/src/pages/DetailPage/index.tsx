@@ -183,11 +183,7 @@ const SubObjectRenderer: React.FC<{
             />
           </div>
         )}
-        <MetaList
-          listData={listData}
-          appCode={appCode}
-          metaObjectCode={metaObjectCode}
-        />
+        <MetaList listData={listData} />
       </div>
     );
   }

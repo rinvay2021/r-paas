@@ -31,7 +31,10 @@ const ObjectsOverviewWidget: React.FC<WidgetProps> = () => {
       width: 200,
       ellipsis: true,
       render: (text: string, record: any) => (
-        <Link onClick={() => navigate(`/app/${record.appCode}/meta/${record.metaObjectCode}/field`)}>
+        <Link
+          onClick={() => navigate(`/app/${record.appCode}/meta?metaObjectCode=${record.metaObjectCode}`)}
+          style={{ color: '#1a1a1a' }}
+        >
           {text}
         </Link>
       ),

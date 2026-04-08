@@ -45,16 +45,14 @@ const HealthCheckWidget: React.FC<WidgetProps> = () => {
       <div style={{ marginBottom: 16 }}>
         {!hasIssues ? (
           <Alert
-            message="配置健康"
-            description="所有配置项检查通过，未发现问题"
+            message="配置健康，所有配置项检查通过，未发现问题"
             type="success"
             icon={<CheckCircleOutlined />}
             showIcon
           />
         ) : (
           <Alert
-            message={`发现 ${totalIssues} 个问题`}
-            description="建议及时处理以下配置问题"
+            message={`发现 ${totalIssues} 个问题，建议及时处理以下配置问题`}
             type="warning"
             showIcon
           />

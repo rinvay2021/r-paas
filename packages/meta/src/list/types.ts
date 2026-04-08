@@ -28,6 +28,8 @@ export interface ListData {
   _id?: string;
   listCode: string;
   listName: string;
+  appCode: string;
+  metaObjectCode: string;
   listFields: ListFieldItem[];
   listConfig?: ListConfig;
 }

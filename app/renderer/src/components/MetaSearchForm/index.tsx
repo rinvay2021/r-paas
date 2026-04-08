@@ -7,27 +7,12 @@ import {
 } from 'antd';
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { SearchFormData, SearchFormField } from '@/api/renderer/interface';
-import { FieldType } from '@r-paas/meta';
+import { FieldType, SqlConditionOperator as Cond } from '@r-paas/meta';
 
 interface MetaSearchFormProps {
   searchFormData: SearchFormData;
   onSearch?: (values: Record<string, any>) => void;
 }
-
-const Cond = {
-  EQUAL: '=',
-  NOT_EQUAL: '!=',
-  LIKE: 'like',
-  GT: '>',
-  GTE: '>=',
-  LT: '<',
-  LTE: '<=',
-  BETWEEN: 'between',
-  IN: 'in',
-  NOT_IN: 'not_in',
-  IS_NULL: 'is_null',
-  IS_NOT_NULL: 'is_not_null',
-} as const;
 
 const isRange = (c: string) => c === Cond.BETWEEN;
 const isMulti = (c: string) => c === Cond.IN || c === Cond.NOT_IN;
