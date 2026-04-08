@@ -32,8 +32,4 @@ export interface RenderViewResponse {
   searchForm: import('@r-paas/meta').SearchFormData | null;
 }
 
-export interface RenderDetailResponse {
-  detailPage: import('@r-paas/meta').DetailPageData;
-  mainForm: import('@r-paas/meta').FormData | null;
-  buttons: import('@r-paas/meta').ActionButton[];
-}
+export interface RenderDetailResponse extends import('@r-paas/meta').DetailPageData {}

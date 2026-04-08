@@ -34,6 +34,8 @@ export interface ActionButton {
   buttonEvent: string;
   buttonHelpTip?: string;
   buttonConfig?: Record<string, any>;
+  appCode?: string;
+  metaObjectCode?: string;
 }
 
 /** 功能按钮基础字段 */

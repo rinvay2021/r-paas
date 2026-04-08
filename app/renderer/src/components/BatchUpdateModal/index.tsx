@@ -10,8 +10,6 @@ interface BatchUpdateModalProps {
   open: boolean;
   listData: ListData;
   selectedRows: any[];
-  appCode: string;
-  metaObjectCode: string;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -25,11 +23,10 @@ const BatchUpdateModal: React.FC<BatchUpdateModalProps> = ({
   open,
   listData,
   selectedRows,
-  appCode,
-  metaObjectCode,
   onSuccess,
   onCancel,
 }) => {
+  const { appCode, metaObjectCode } = listData;
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = React.useState(false);
   const [entries, setEntries] = React.useState<FieldEntry[]>([{ id: Date.now(), fieldCode: '' }]);

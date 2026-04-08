@@ -1,8 +1,7 @@
 import React from 'react';
 import { theme, Typography } from 'antd';
 import type { ViewData, ListData, SearchFormData, ActionButton } from '@r-paas/meta';
-import { ButtonLevel, ButtonEvent } from '@r-paas/meta';
-import { portalBus } from '@/utils/portalBus';
+import { ButtonLevel } from '@r-paas/meta';
 import MetaSearchForm from '@/components/MetaSearchForm';
 import MetaList from '@/components/MetaList';
 import MetaActionButtons from '@/components/MetaActionButtons';
@@ -15,17 +14,26 @@ export interface MetaViewData {
 
 interface MetaViewProps {
   viewData: MetaViewData;
-  appCode: string;
-  metaObjectCode: string;
+  overrideButtons?: ActionButton[];
+  fixedHeight?: number;
 }
 
-const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }) => {
+const MetaView: React.FC<MetaViewProps> = ({ viewData, overrideButtons, fixedHeight }) => {
   const { token } = theme.useToken();
   const { view, list, searchForm } = viewData;
 
-  const viewButtons: ActionButton[] = (view?.buttons || []).filter(
-    btn => btn.buttonLevel === ButtonLevel.View
-  );
+  // appCode/metaObjectCode 从 list 元数据取
+  const appCode = list?.appCode || '';
+  const metaObjectCode = list?.metaObjectCode || '';
+
+  const effectiveViewButtons: ActionButton[] = (overrideButtons ?? (view?.buttons || []))
+    .filter(btn => btn.buttonLevel === ButtonLevel.View);
+
+  // 列表级 override：有配置则覆盖，没有则 undefined（MetaList 用自身配置）
+  const listOverride = overrideButtons
+    ? overrideButtons.filter(btn => btn.buttonLevel === ButtonLevel.List || btn.buttonLevel === ButtonLevel.ListRow)
+    : undefined;
+  const effectiveListOverride = listOverride?.length ? listOverride : undefined;
 
   const buildSearchParams = React.useCallback(
     (values: Record<string, any>) => {
@@ -39,7 +47,6 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
 
   const [searchParams, setSearchParams] = React.useState<Array<{ fieldCode: string; condition: string; value: any }>>([]);
 
-  // 搜索表单默认值初始化
   React.useEffect(() => {
     if (!searchForm) return;
     const defaultValues: Record<string, any> = {};
@@ -51,37 +58,33 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
     setSearchParams(buildSearchParams(defaultValues));
   }, [searchForm]);
 
-  const handleViewButtonClick = (btn: ActionButton) => {
-    if (btn.buttonEvent === ButtonEvent.Create && btn.buttonConfig?.formCode) {
-      portalBus.openFormModal({ appCode, metaObjectCode, formCode: btn.buttonConfig.formCode });
-    }
-  };
+  // 列表刷新函数，供 view 级按钮的 afterAction 使用
+  const listRefreshRef = React.useRef<(() => void) | null>(null);
+  const afterAction = React.useCallback(() => {
+    listRefreshRef.current?.();
+  }, []);
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* 标题 + View 级按钮 */}
-      {(view?.viewName || viewButtons.length > 0) && (
+      {(view?.viewName || effectiveViewButtons.length > 0) && (
         <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 14px',
-          flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 14px', flexShrink: 0,
         }}>
           <Typography.Text style={{ fontSize: 16, fontWeight: 600, color: '#1a1a1a' }}>
             {view?.viewName}
           </Typography.Text>
-          {viewButtons.length > 0 && (
+          {effectiveViewButtons.length > 0 && (
             <MetaActionButtons
-              buttons={viewButtons}
-              level="page"
-              onButtonClick={handleViewButtonClick}
+              buttons={effectiveViewButtons}
+              variant="block"
+              mode="view"
+              afterAction={afterAction}
             />
           )}
         </div>
       )}
 
-      {/* 搜索表单 */}
       {searchForm && (
         <div style={{ flexShrink: 0 }}>
           <MetaSearchForm
@@ -91,27 +94,38 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, appCode, metaObjectCode }
         </div>
       )}
 
-      {/* 列表：MetaList 内部自己处理所有按钮、刷新、scrollY */}
       {list && (
-        <div
-          style={{
-            flex: 1,
-            background: token.colorBgContainer,
-            borderRadius: token.borderRadius,
-            padding: '8px 12px',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <MetaList
+        <div style={{
+          flex: 1,
+          background: token.colorBgContainer,
+          borderRadius: token.borderRadius,
+          padding: '8px 12px',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <MetaListWithRef
             listData={list}
             searchParams={searchParams}
+            overrideButtons={effectiveListOverride}
+            fixedHeight={fixedHeight}
+            onRefreshReady={(fn) => { listRefreshRef.current = fn; }}
           />
         </div>
       )}
     </div>
   );
+};
+
+// MetaList 包装，暴露 refresh 给父组件
+const MetaListWithRef: React.FC<{
+  listData: ListData;
+  searchParams?: Array<{ fieldCode: string; condition: string; value: any }>;
+  overrideButtons?: ActionButton[];
+  fixedHeight?: number;
+  onRefreshReady: (fn: () => void) => void;
+}> = ({ onRefreshReady, ...props }) => {
+  return <MetaList {...props} onRefreshReady={onRefreshReady} />;
 };
 
 export default MetaView;

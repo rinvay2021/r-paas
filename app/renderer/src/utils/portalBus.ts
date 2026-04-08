@@ -8,13 +8,20 @@ function emit(event: string, payload?: any) {
     const wujie = (window as any).__WUJIE;
     if (wujie?.bus) {
       wujie.bus.$emit(event, payload);
-      return;
     }
   } catch {}
 }
 
+function getWujieBus() {
+  try {
+    return (window as any).__WUJIE?.bus ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export const portalBus = {
-  openFormModal(params: { appCode: string; metaObjectCode: string; formCode: string; recordId?: string }) {
+  openFormModal(params: { appCode: string; metaObjectCode: string; formCode: string; recordId?: string; actionId?: string }) {
     emit('renderer:openFormModal', params);
   },
   overlayNavigate(url: string) {
@@ -26,13 +33,15 @@ export const portalBus = {
   openNewPage(url: string) {
     emit('renderer:openNewPage', url);
   },
-  /** 关闭表单弹窗，submitted=true 表示提交成功（需要刷新列表） */
   closeFormModal(submitted?: boolean) {
     emit('renderer:closeFormModal', submitted);
   },
-  /** 刷新列表 - 只在 renderer 内部调用（非跨实例） */
-  notifyListRefresh() {
-    const fn = (window as any).__notifyListRefresh;
-    if (typeof fn === 'function') fn();
+
+  /** 监听 portal:formClosed，带 actionId */
+  onFormClosed(handler: (payload: { actionId?: string }) => void) {
+    const bus = getWujieBus();
+    if (!bus) return () => {};
+    bus.$on('portal:formClosed', handler);
+    return () => bus.$off('portal:formClosed', handler);
   },
 };

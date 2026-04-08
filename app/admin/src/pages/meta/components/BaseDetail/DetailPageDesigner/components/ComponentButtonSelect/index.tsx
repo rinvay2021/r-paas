@@ -46,16 +46,17 @@ const ComponentButtonSelect: React.FC<ComponentButtonSelectProps> = ({
 
   const buttons = get(buttonData, 'data.list', []) as ActionButtonDto[];
 
-  // 转换为 Transfer 的数据源
+  // 转换为 Transfer 的数据源，列表类型同时支持 List 和 ListRow 级别
   const dataSource = React.useMemo(() => {
-    const level = componentType === ComponentType.List ? ButtonLevel.List : ButtonLevel.View;
+    const allowedLevels = componentType === ComponentType.List
+      ? [ButtonLevel.List, ButtonLevel.ListRow]
+      : [ButtonLevel.View];
 
     return map(buttons, (button: ActionButtonDto) => {
       return {
         key: button._id,
-        /** 按钮等级过滤 */
-        disabled: button.buttonLevel !== level,
-        title: button.buttonName,
+        disabled: !allowedLevels.includes(button.buttonLevel as ButtonLevel),
+        title: `${button.buttonName}（${button.buttonLevel}）`,
       };
     });
   }, [buttons, componentType]);

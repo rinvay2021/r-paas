@@ -27,13 +27,7 @@ const ViewPage: React.FC<ViewPageProps> = (props) => {
   const viewData = data?.data;
   if (!viewData) return null;
 
-  return (
-    <MetaView
-      viewData={viewData}
-      appCode={appCode}
-      metaObjectCode={metaObjectCode}
-    />
-  );
+  return <MetaView viewData={viewData} />;
 };
 
 export default ViewPage;

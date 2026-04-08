@@ -160,16 +160,20 @@ const AppMenu: React.FC = () => {
       window.open(portalUrl, '_blank');
     };
 
+    let currentActionId: string | undefined;
+
     const onOpenFormModal = (params: {
-      appCode: string; metaObjectCode: string; formCode: string; recordId?: string;
+      appCode: string; metaObjectCode: string; formCode: string; recordId?: string; actionId?: string;
     }) => {
+      currentActionId = params.actionId;
       const url = `${RENDERER_ORIGIN}/?appCode=${params.appCode}&metaObjectCode=${params.metaObjectCode}&formCode=${params.formCode}${params.recordId ? `&recordId=${params.recordId}` : ''}`;
       setFormRendererUrl(url);
     };
 
     const onCloseFormModal = (submitted?: boolean) => {
       setFormRendererUrl(null);
-      if (submitted) notifyRefreshRef.current?.();
+      if (submitted) bus.$emit('portal:formClosed', { actionId: currentActionId });
+      currentActionId = undefined;
     };
 
     bus.$on('renderer:overlayNavigate', onOverlayNavigate);

@@ -49,7 +49,10 @@ const DetailPageDesigner: React.ForwardRefRenderFunction<
       const detailPageData = {
         _id: activeDetail?._id || '',
         formCode: restParams?.formCode,
-        containers: [restParams, ...containers],
+        containers: [
+          { ...restParams, type: 'MAIN_OBJECT' },
+          ...(containers || []).map((c: any) => ({ ...c, type: 'SUB_OBJECT' })),
+        ],
         detailPageConfig,
       } as any;
 
