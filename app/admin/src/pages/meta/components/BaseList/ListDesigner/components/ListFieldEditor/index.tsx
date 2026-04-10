@@ -194,6 +194,16 @@ const ListFieldEditor: React.ForwardRefRenderFunction<
                 ),
               },
               {
+                title: '唯一键',
+                dataIndex: 'isUniqueKey',
+                width: 80,
+                render: (_, field) => (
+                  <Form.Item name={[field.name, 'isUniqueKey']} valuePropName="checked" noStyle>
+                    <Checkbox />
+                  </Form.Item>
+                ),
+              },
+              {
                 title: '操作',
                 width: 100,
                 fixed: 'right',

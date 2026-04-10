@@ -1,12 +1,12 @@
 /** SQL 查询条件操作符 */
 export enum SqlConditionOperator {
-  EQUAL = '=',
-  NOT_EQUAL = '!=',
+  EQUAL = 'eq',
+  NOT_EQUAL = 'neq',
   LIKE = 'like',
-  GREATER_THAN = '>',
-  GREATER_THAN_OR_EQUAL = '>=',
-  LESS_THAN = '<',
-  LESS_THAN_OR_EQUAL = '<=',
+  GREATER_THAN = 'gt',
+  GREATER_THAN_OR_EQUAL = 'gte',
+  LESS_THAN = 'lt',
+  LESS_THAN_OR_EQUAL = 'lte',
   BETWEEN = 'between',
   IN = 'in',
   NOT_IN = 'not_in',

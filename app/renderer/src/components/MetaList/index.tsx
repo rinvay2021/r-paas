@@ -4,10 +4,18 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { ListData, ActionButton } from '@/api/renderer/interface';
-import { ButtonLevel } from '@r-paas/meta';
+import { ButtonLevel, FieldType } from '@r-paas/meta';
 import { dataApi } from '@/api/data';
 import { portalBus } from '@/utils/portalBus';
 import MetaActionButtons from '@/components/MetaActionButtons';
+import { extractDisplayText } from '@/utils/selectValue';
+
+const SELECT_FIELD_TYPES = [
+  FieldType.SingleSelect, FieldType.MultipleSelect,
+  FieldType.SingleRadio, FieldType.MultipleCheckbox,
+  FieldType.TreeSelect,
+];
+const CASCADER_FIELD_TYPES = [FieldType.Cascader, FieldType.LocationSelect];
 
 const RENDERER_ORIGIN = 'http://localhost:3005';
 const TABLE_HEADER_HEIGHT = 46 + 48;
@@ -128,23 +136,38 @@ const MetaList: React.FC<MetaListProps> = ({ listData, searchParams, overrideBut
       const fieldConfig = (lf as any).fieldConfig as ListFieldConfig | undefined;
       const isLinkable = fieldConfig?.linkable && fieldConfig?.detailPageCode;
       const dataKey = lf.field?.fieldCode || lf.name;
+      const fieldType = lf.field?.fieldType as FieldType | undefined;
+      const isSelectType = fieldType && SELECT_FIELD_TYPES.includes(fieldType);
+      const isCascaderType = fieldType && CASCADER_FIELD_TYPES.includes(fieldType);
+
+      const displayName = lf.displayName || lf.name;
       const col: ColumnType<any> = {
-        title: renderTitle(lf.displayName || lf.name, lf.showHelp, lf.helpTip),
+        title: renderTitle(displayName, lf.showHelp, lf.helpTip),
         dataIndex: dataKey,
         key: dataKey,
         width: lf.width || undefined,
         align: (lf.align as any) || 'left',
-        ellipsis: true,
-        ...(isLinkable ? {
-          render: (val: any, record: any) => (
+        ellipsis: { showTitle: false },
+        render: (val: any, record: any) => {
+          const displayVal = (isSelectType || isCascaderType)
+            ? extractDisplayText(val, isCascaderType)
+            : (val ?? '—');
+          const inner = isLinkable ? (
             <Typography.Link
               onClick={() => handleFieldLink(fieldConfig!, record, appCode, metaObjectCode)}
               style={{ color: '#1a1a1a' }}
             >
-              {val ?? '—'}
+              {displayVal}
             </Typography.Link>
-          ),
-        } : {}),
+          ) : (
+            <span>{displayVal}</span>
+          );
+          return (
+            <Tooltip title={displayVal} placement="topLeft">
+              {inner}
+            </Tooltip>
+          );
+        },
       };
       if (frozenColumnNum > 0 && idx < frozenColumnNum) col.fixed = 'left';
       return col;
@@ -175,6 +198,7 @@ const MetaList: React.FC<MetaListProps> = ({ listData, searchParams, overrideBut
             mode="list"
             listData={listData}
             selectedRows={selectedRows}
+            searchParams={searchParams}
             afterAction={refreshList}
           />
         </div>

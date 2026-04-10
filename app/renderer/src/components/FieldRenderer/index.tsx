@@ -16,6 +16,7 @@ import {
 import { UploadOutlined } from '@ant-design/icons';
 import type { FieldInfo } from '@/api/renderer/interface';
 import { FieldType } from '@r-paas/meta';
+import { CHINA_REGIONS } from '@/utils/chinaRegions';
 
 interface FieldRendererProps {
   field: FieldInfo;
@@ -128,59 +129,129 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({ field, disabled, v
       );
 
     case FieldType.SingleRadio:
-      return <Radio.Group value={value} onChange={e => onChange?.(e.target.value)} disabled={disabled} options={options} />;
+      // 存 {label, value}
+      return (
+        <Radio.Group
+          value={value?.value ?? value}
+          onChange={e => {
+            const opt = options.find((o: any) => o.value === e.target.value);
+            onChange?.(opt ? { label: opt.label, value: opt.value } : { label: String(e.target.value), value: e.target.value });
+          }}
+          disabled={disabled}
+          options={options}
+        />
+      );
 
     case FieldType.MultipleCheckbox:
-      return <Checkbox.Group value={value} onChange={onChange} disabled={disabled} options={options} />;
+      // 存 [{label, value}]
+      return (
+        <Checkbox.Group
+          value={(value || []).map((v: any) => v?.value ?? v)}
+          onChange={vals => {
+            onChange?.(vals.map(v => {
+              const opt = options.find((o: any) => o.value === v);
+              return opt ? { label: opt.label, value: opt.value } : { label: String(v), value: v };
+            }));
+          }}
+          disabled={disabled}
+          options={options}
+        />
+      );
 
     case FieldType.SingleSelect:
+      // labelInValue：存 {label, value}
       return (
         <Select
           style={{ width: '100%' }}
+          labelInValue
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           options={options}
           disabled={disabled}
+          getPopupContainer={trigger => trigger.parentElement!}
         />
       );
 
     case FieldType.MultipleSelect:
+      // labelInValue：存 [{label, value}]
       return (
         <Select
           style={{ width: '100%' }}
           mode="multiple"
+          labelInValue
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           options={options}
           disabled={disabled}
+          getPopupContainer={trigger => trigger.parentElement!}
         />
       );
 
     case FieldType.TreeSelect:
+      // labelInValue：单选存 {label,value}，多选存 [{label,value}]
       return (
         <TreeSelect
           style={{ width: '100%' }}
+          labelInValue
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           treeData={config?.treeData || []}
+          multiple={!!config?.multiple}
           disabled={disabled}
+          getPopupContainer={trigger => trigger.parentElement!}
         />
       );
 
-    case FieldType.Cascader:
+    case FieldType.Cascader: {
+      // 存路径数组 [{label,value}, ...]，showSearch 支持搜索
+      const cascaderValue = Array.isArray(value) ? value.map((v: any) => v?.value ?? v) : value;
       return (
         <Cascader
           style={{ width: '100%' }}
-          value={value}
-          onChange={onChange}
+          value={cascaderValue}
+          onChange={(vals, selectedOptions) => {
+            // 转换为 [{label,value}] 路径数组
+            const result = (selectedOptions as any[] || []).map((opt: any) => ({
+              label: opt.label,
+              value: opt.value,
+            }));
+            onChange?.(result.length > 0 ? result : undefined);
+          }}
           placeholder={placeholder}
           options={options}
           disabled={disabled}
+          showSearch
+          getPopupContainer={trigger => trigger.parentElement!}
         />
       );
+    }
+
+    case FieldType.LocationSelect: {
+      // 省市两级，存路径数组 [{label,value}, ...]
+      const locationValue = Array.isArray(value) ? value.map((v: any) => v?.value ?? v) : value;
+      return (
+        <Cascader
+          style={{ width: '100%' }}
+          value={locationValue}
+          onChange={(vals, selectedOptions) => {
+            const result = (selectedOptions as any[] || []).map((opt: any) => ({
+              label: opt.label,
+              value: opt.value,
+            }));
+            onChange?.(result.length > 0 ? result : undefined);
+          }}
+          placeholder={placeholder || '请选择省/市'}
+          options={CHINA_REGIONS}
+          disabled={disabled}
+          showSearch
+          multiple={!!config?.multiple}
+          getPopupContainer={trigger => trigger.parentElement!}
+        />
+      );
+    }
 
     case FieldType.ColorSelect:
       return <ColorPicker value={value} onChange={onChange} disabled={disabled} />;

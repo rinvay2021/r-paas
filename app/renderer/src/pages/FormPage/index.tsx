@@ -76,6 +76,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = React.useState(false);
   const [optionsMap, setOptionsMap] = React.useState<Record<string, { label: string; value: string }[]>>({});
+  const [editInitialValues, setEditInitialValues] = React.useState<Record<string, any> | undefined>(undefined);
 
   // formData 加载后批量请求有数据源的字段选项（一次请求）
   React.useEffect(() => {
@@ -98,11 +99,12 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
     { ready: isEdit && !!(appCode && metaObjectCode && recordId) },
   );
 
-  // formData 和 recordData 都就绪后，转换日期字段并预填表单
+  // formData 和 recordData 都就绪后，转换日期字段并预填表单，同步联动初始值
   React.useEffect(() => {
     if (!isEdit || !formData || !recordData?.data) return;
     const values = transformRecordValues(recordData.data, formData.containers || []);
     form.setFieldsValue(values);
+    setEditInitialValues(values); // 驱动 MetaForm 联动引擎
   }, [formData, recordData]);
 
   const loading = formLoading || recordLoading;
@@ -269,7 +271,13 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
                   />
                 );
               })()}
-              <MetaForm formData={formData} mode={isEdit ? 'edit' : 'create'} form={form} optionsMap={optionsMap} />
+              <MetaForm
+                formData={formData}
+                mode={isEdit ? 'edit' : 'create'}
+                form={form}
+                optionsMap={optionsMap}
+                initialValues={editInitialValues}
+              />
             </>
           ) : null}
         </div>

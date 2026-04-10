@@ -1,10 +1,13 @@
 import React from 'react';
 import { theme, Typography } from 'antd';
 import type { ViewData, ListData, SearchFormData, ActionButton } from '@r-paas/meta';
-import { ButtonLevel } from '@r-paas/meta';
+import { ButtonLevel, FieldType } from '@r-paas/meta';
 import MetaSearchForm from '@/components/MetaSearchForm';
 import MetaList from '@/components/MetaList';
 import MetaActionButtons from '@/components/MetaActionButtons';
+import { extractQueryValue } from '@/utils/selectValue';
+
+const CASCADER_TYPES = [FieldType.Cascader, FieldType.LocationSelect] as string[];
 
 export interface MetaViewData {
   view: ViewData;
@@ -26,12 +29,15 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, overrideButtons, fixedHei
   const appCode = list?.appCode || '';
   const metaObjectCode = list?.metaObjectCode || '';
 
-  const effectiveViewButtons: ActionButton[] = (overrideButtons ?? (view?.buttons || []))
-    .filter(btn => btn.buttonLevel === ButtonLevel.View);
+  const effectiveViewButtons: ActionButton[] = (overrideButtons ?? (view?.buttons || [])).filter(
+    btn => btn.buttonLevel === ButtonLevel.View
+  );
 
   // 列表级 override：有配置则覆盖，没有则 undefined（MetaList 用自身配置）
   const listOverride = overrideButtons
-    ? overrideButtons.filter(btn => btn.buttonLevel === ButtonLevel.List || btn.buttonLevel === ButtonLevel.ListRow)
+    ? overrideButtons.filter(
+        btn => btn.buttonLevel === ButtonLevel.List || btn.buttonLevel === ButtonLevel.ListRow
+      )
     : undefined;
   const effectiveListOverride = listOverride?.length ? listOverride : undefined;
 
@@ -39,19 +45,34 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, overrideButtons, fixedHei
     (values: Record<string, any>) => {
       const fields = searchForm?.searchFormFields || [];
       return fields
-        .filter(f => values[f.fieldName] !== undefined && values[f.fieldName] !== '' && values[f.fieldName] !== null)
-        .map(f => ({ fieldCode: f.fieldName, condition: f.condition, value: values[f.fieldName] }));
+        .filter(f => {
+          const v = values[f.fieldName];
+          return v !== undefined && v !== '' && v !== null && !(Array.isArray(v) && v.length === 0);
+        })
+        .map(f => {
+          const raw = values[f.fieldName];
+          const fieldType = f.fieldInfo?.fieldType as string | undefined;
+          const isCascader = !!fieldType && CASCADER_TYPES.includes(fieldType);
+          const value = extractQueryValue(raw, isCascader);
+          return { fieldCode: f.fieldName, condition: f.condition, value };
+        });
     },
     [searchForm]
   );
 
-  const [searchParams, setSearchParams] = React.useState<Array<{ fieldCode: string; condition: string; value: any }>>([]);
+  const [searchParams, setSearchParams] = React.useState<
+    Array<{ fieldCode: string; condition: string; value: any }>
+  >([]);
 
   React.useEffect(() => {
     if (!searchForm) return;
     const defaultValues: Record<string, any> = {};
     (searchForm.searchFormFields || []).forEach(f => {
-      if (f.defaultValueType === 'custom' && f.defaultValue !== undefined && f.defaultValue !== '') {
+      if (
+        f.defaultValueType === 'custom' &&
+        f.defaultValue !== undefined &&
+        f.defaultValue !== ''
+      ) {
         defaultValues[f.fieldName] = f.defaultValue;
       }
     });
@@ -67,10 +88,15 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, overrideButtons, fixedHei
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {(view?.viewName || effectiveViewButtons.length > 0) && (
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '12px 14px', flexShrink: 0,
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '12px 14px',
+            flexShrink: 0,
+          }}
+        >
           <Typography.Text style={{ fontSize: 16, fontWeight: 600, color: '#1a1a1a' }}>
             {view?.viewName}
           </Typography.Text>
@@ -86,30 +112,35 @@ const MetaView: React.FC<MetaViewProps> = ({ viewData, overrideButtons, fixedHei
       )}
 
       {searchForm && (
-        <div style={{ flexShrink: 0 }}>
+        <div style={{ flexShrink: 0, padding: '0 0 0 14px' }}>
           <MetaSearchForm
             searchFormData={searchForm}
             onSearch={values => setSearchParams(buildSearchParams(values))}
+            appCode={appCode}
           />
         </div>
       )}
 
       {list && (
-        <div style={{
-          flex: 1,
-          background: token.colorBgContainer,
-          borderRadius: token.borderRadius,
-          padding: '8px 12px',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
+        <div
+          style={{
+            flex: 1,
+            background: token.colorBgContainer,
+            borderRadius: token.borderRadius,
+            padding: '8px 12px',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <MetaListWithRef
             listData={list}
             searchParams={searchParams}
             overrideButtons={effectiveListOverride}
             fixedHeight={fixedHeight}
-            onRefreshReady={(fn) => { listRefreshRef.current = fn; }}
+            onRefreshReady={fn => {
+              listRefreshRef.current = fn;
+            }}
           />
         </div>
       )}

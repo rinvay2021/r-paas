@@ -80,6 +80,9 @@ importers:
       wujie-react:
         specifier: ^1.0.29
         version: 1.0.29(react@18.2.0)
+      xlsx:
+        specifier: ^0.18.5
+        version: 0.18.5
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.2
@@ -1644,6 +1647,10 @@ packages:
   add-dom-event-listener@1.1.0:
     resolution: {integrity: sha1-apLbOg3Qq8JU4JXA8dwUrLuq4xA=, tarball: http://r.npm.sankuai.com/add-dom-event-listener/download/add-dom-event-listener-1.1.0.tgz}
 
+  adler-32@1.3.1:
+    resolution: {integrity: sha1-Hb8LNt2gASGJoys2eQYZMt8YIeI=, tarball: http://r.npm.sankuai.com/adler-32/download/adler-32-1.3.1.tgz}
+    engines: {node: '>=0.8'}
+
   agent-base@6.0.2:
     resolution: {integrity: sha1-Sf/1hXfP7j83F2/qtMIuAPhtf3c=, tarball: http://r.npm.sankuai.com/agent-base/download/agent-base-6.0.2.tgz}
     engines: {node: '>= 6.0.0'}
@@ -1922,6 +1929,10 @@ packages:
   caniuse-lite@1.0.30001690:
     resolution: {integrity: sha1-8tFeOq+OGPdrK4wUgaveBjuBBMg=, tarball: http://r.npm.sankuai.com/caniuse-lite/download/caniuse-lite-1.0.30001690.tgz}
 
+  cfb@1.2.2:
+    resolution: {integrity: sha1-lOaHYoxwDlFVQ22sBfdOCN8jvEQ=, tarball: http://r.npm.sankuai.com/cfb/download/cfb-1.2.2.tgz}
+    engines: {node: '>=0.8'}
+
   chalk@2.4.2:
     resolution: {integrity: sha1-zUJUFnelQzPPVBpJEIwUMrRMlCQ=, tarball: http://r.npm.sankuai.com/chalk/download/chalk-2.4.2.tgz}
     engines: {node: '>=4'}
@@ -1998,6 +2009,10 @@ packages:
   co@4.6.0:
     resolution: {integrity: sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=, tarball: http://r.npm.sankuai.com/co/download/co-4.6.0.tgz}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
+  codepage@1.15.0:
+    resolution: {integrity: sha1-LgBRkCSzlCTsZu6z7AcifmkmGKs=, tarball: http://r.npm.sankuai.com/codepage/download/codepage-1.15.0.tgz}
+    engines: {node: '>=0.8'}
 
   collect-v8-coverage@1.0.2:
     resolution: {integrity: sha1-wLKbzTO80HeaE0TCE2BR5q/T2ek=, tarball: http://r.npm.sankuai.com/collect-v8-coverage/download/collect-v8-coverage-1.0.2.tgz}
@@ -2109,6 +2124,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  crc-32@1.2.2:
+    resolution: {integrity: sha1-PK01qTS4v3HyXKUkttpR+36s4v8=, tarball: http://r.npm.sankuai.com/crc-32/download/crc-32-1.2.2.tgz}
+    engines: {node: '>=0.8'}
+    hasBin: true
 
   create-jest@29.7.0:
     resolution: {integrity: sha1-o1XFs8seGvAroXf+ev1/7uSaUyA=, tarball: http://r.npm.sankuai.com/create-jest/download/create-jest-29.7.0.tgz}
@@ -2695,6 +2715,10 @@ packages:
   form-data@4.0.1:
     resolution: {integrity: sha1-uhB22qqlv9fpnBpssCqgpc/5DUg=, tarball: http://r.npm.sankuai.com/form-data/download/form-data-4.0.1.tgz}
     engines: {node: '>= 6'}
+
+  frac@1.1.2:
+    resolution: {integrity: sha1-PXT39keMiKG1AgMG10fcYxPHTQs=, tarball: http://r.npm.sankuai.com/frac/download/frac-1.1.2.tgz}
+    engines: {node: '>=0.8'}
 
   fs-extra@11.2.0:
     resolution: {integrity: sha1-5w4X361kIyKH0BkpOZ4Op8hrDls=, tarball: http://r.npm.sankuai.com/fs-extra/download/fs-extra-11.2.0.tgz}
@@ -4686,6 +4710,10 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=, tarball: http://r.npm.sankuai.com/sprintf-js/download/sprintf-js-1.0.3.tgz}
 
+  ssf@0.11.2:
+    resolution: {integrity: sha1-C5lpiyN1SNCI/EPN8rcMGnUSwGw=, tarball: http://r.npm.sankuai.com/ssf/download/ssf-0.11.2.tgz}
+    engines: {node: '>=0.8'}
+
   stack-utils@2.0.6:
     resolution: {integrity: sha1-qvB0gWnAL8M8gjKrzPkz9Uocw08=, tarball: http://r.npm.sankuai.com/stack-utils/download/stack-utils-2.0.6.tgz}
     engines: {node: '>=10'}
@@ -5197,9 +5225,17 @@ packages:
     engines: {node: '>= 8'}
     hasBin: true
 
+  wmf@1.0.2:
+    resolution: {integrity: sha1-fRnWIQcaCMK9xrfmiKnENSmMwto=, tarball: http://r.npm.sankuai.com/wmf/download/wmf-1.0.2.tgz}
+    engines: {node: '>=0.8'}
+
   word-wrap@1.2.5:
     resolution: {integrity: sha1-0sRcbdT7zmIaZvE2y+Mor9BBCzQ=, tarball: http://r.npm.sankuai.com/word-wrap/download/word-wrap-1.2.5.tgz}
     engines: {node: '>=0.10.0'}
+
+  word@0.3.0:
+    resolution: {integrity: sha1-hUIVfk+OhJ9KNjooiZLUdhLbmWE=, tarball: http://r.npm.sankuai.com/word/download/word-0.3.0.tgz}
+    engines: {node: '>=0.8'}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha1-Z+FFz/UQpqaYS98RUpEdadLrnkM=, tarball: http://r.npm.sankuai.com/wrap-ansi/download/wrap-ansi-7.0.0.tgz}
@@ -5239,6 +5275,11 @@ packages:
 
   wujie@1.0.29:
     resolution: {integrity: sha1-rybJzik3Q911+69RyHBUn5UHEsg=, tarball: http://r.npm.sankuai.com/wujie/download/wujie-1.0.29.tgz}
+
+  xlsx@0.18.5:
+    resolution: {integrity: sha1-FnEbkRPISAdrihdwInma01brp9A=, tarball: http://r.npm.sankuai.com/xlsx/download/xlsx-0.18.5.tgz}
+    engines: {node: '>=0.8'}
+    hasBin: true
 
   xml-name-validator@4.0.0:
     resolution: {integrity: sha1-eaAG4uYxSahgDxVDDwpHJdFSSDU=, tarball: http://r.npm.sankuai.com/xml-name-validator/download/xml-name-validator-4.0.0.tgz}
@@ -6954,6 +6995,8 @@ snapshots:
     dependencies:
       object-assign: 4.1.1
 
+  adler-32@1.3.1: {}
+
   agent-base@6.0.2:
     dependencies:
       debug: 4.4.0
@@ -7343,6 +7386,11 @@ snapshots:
 
   caniuse-lite@1.0.30001690: {}
 
+  cfb@1.2.2:
+    dependencies:
+      adler-32: 1.3.1
+      crc-32: 1.2.2
+
   chalk@2.4.2:
     dependencies:
       ansi-styles: 3.2.1
@@ -7414,6 +7462,8 @@ snapshots:
   clsx@2.1.1: {}
 
   co@4.6.0: {}
+
+  codepage@1.15.0: {}
 
   collect-v8-coverage@1.0.2: {}
 
@@ -7532,6 +7582,8 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.2
     optional: true
+
+  crc-32@1.2.2: {}
 
   create-jest@29.7.0(@types/node@18.19.68)(ts-node@10.9.2(@types/node@18.19.68)(typescript@5.7.2)):
     dependencies:
@@ -8309,6 +8361,8 @@ snapshots:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+
+  frac@1.1.2: {}
 
   fs-extra@11.2.0:
     dependencies:
@@ -10612,6 +10666,10 @@ snapshots:
 
   sprintf-js@1.0.3: {}
 
+  ssf@0.11.2:
+    dependencies:
+      frac: 1.1.2
+
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
@@ -11188,7 +11246,11 @@ snapshots:
     dependencies:
       isexe: 2.0.0
 
+  wmf@1.0.2: {}
+
   word-wrap@1.2.5: {}
+
+  word@0.3.0: {}
 
   wrap-ansi@7.0.0:
     dependencies:
@@ -11225,6 +11287,16 @@ snapshots:
   wujie@1.0.29:
     dependencies:
       '@babel/runtime': 7.26.0
+
+  xlsx@0.18.5:
+    dependencies:
+      adler-32: 1.3.1
+      cfb: 1.2.2
+      codepage: 1.15.0
+      crc-32: 1.2.2
+      ssf: 0.11.2
+      wmf: 1.0.2
+      word: 0.3.0
 
   xml-name-validator@4.0.0: {}
 

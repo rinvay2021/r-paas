@@ -5,23 +5,29 @@ import type {
   RawAxiosRequestHeaders,
 } from 'axios';
 
+/** 每次请求的可选参数 */
 export interface RequestOptions {
+  /** 是否附加 Authorization header，默认跟随实例配置 */
   token?: boolean;
+  /** 是否由拦截器统一弹出错误提示，默认 true */
   errorTip?: boolean;
 }
 
+/** 业务/网络错误统一格式 */
 export interface RequestError extends Error {
+  /** HTTP 状态码或业务 code */
   code?: number;
   config?: AxiosRequestConfig;
   response?: AxiosResponse;
 }
 
+/** 扩展 axios config，携带自定义请求选项 */
 export interface CustomAxiosRequestConfig extends Omit<InternalAxiosRequestConfig, 'headers'> {
   headers?: RawAxiosRequestHeaders;
   requestOptions?: RequestOptions;
 }
 
-// Token 相关类型定义
+/** Token 信息 */
 export interface TokenInfo {
   accessToken: string;
   refreshToken?: string;
@@ -29,6 +35,7 @@ export interface TokenInfo {
   tokenType?: string;
 }
 
+/** Token 管理服务接口 */
 export interface TokenService {
   getToken: () => TokenInfo | null;
   setToken: (token: TokenInfo) => void;
@@ -36,23 +43,19 @@ export interface TokenService {
   refreshToken?: () => Promise<TokenInfo>;
 }
 
-// 新增 HTTP 配置类型
-export interface HttpConfig extends AxiosRequestConfig {
-  requestOptions?: RequestOptions;
-}
-
-// 新增拦截器配置类型
+/** 拦截器处理器 */
 export interface InterceptorHandler<T = any> {
   onFulfilled?: (value: T) => T | Promise<T>;
   onRejected?: (error: any) => any;
 }
 
+/** 拦截器配置 */
 export interface HttpInterceptors {
   request?: InterceptorHandler<InternalAxiosRequestConfig>[];
   response?: InterceptorHandler<AxiosResponse>[];
 }
 
-// 新增默认配置类型
+/** 创建 HTTP 实例的配置 */
 export interface CreateHttpOptions {
   baseURL?: string;
   timeout?: number;
@@ -62,11 +65,12 @@ export interface CreateHttpOptions {
   interceptors?: HttpInterceptors;
 }
 
-export interface IResponse<T = any> extends AxiosResponse<T> {
+/** 统一业务响应格式（拦截器处理后） */
+export interface IResponse<T = any> {
   code: number;
   data: T;
   message: string;
-  success?: boolean;
+  success: boolean;
 }
 
 export type {

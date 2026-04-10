@@ -81,8 +81,6 @@
     "dayjs": "^1.11.13",
     "jotai": "^2.16.0",
     "lodash": "^4.17.21",
-    "wujie": "^1.0.29",
-    "wujie-react": "^1.0.29",
     "nanoid": "^5.1.7",
     "react": "18.2.0",
     "react-dnd": "^16.0.1",
@@ -93,6 +91,9 @@
     "react-router-dom": "6.10.0",
     "sortablejs": "^1.15.6",
     "use-query-params": "^2.1.1",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "wujie": "^1.0.29",
+    "wujie-react": "^1.0.29",
+    "xlsx": "^0.18.5"
   }
 }

@@ -6,6 +6,7 @@ const DetailPage = React.lazy(() => import('@/pages/DetailPage'));
 const ViewPage = React.lazy(() => import('@/pages/ViewPage'));
 const ListPage = React.lazy(() => import('@/pages/ListPage'));
 const SearchFormPage = React.lazy(() => import('@/pages/SearchFormPage'));
+const TaskListPage = React.lazy(() => import('@/pages/TaskListPage'));
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -32,6 +33,7 @@ class ErrorBoundary extends React.Component<
 
 function getPageTypeFromSearch(search: string) {
   const params = new URLSearchParams(search);
+  if (params.get('taskList') === '1') return 'taskList';
   if (params.get('formCode')) return 'form';
   if (params.get('detailPageCode')) return 'detail';
   if (params.get('viewCode')) return 'view';
@@ -80,6 +82,7 @@ function App() {
               <Spin size="large" />
             </div>
           )}
+          {pageType === 'taskList' && <TaskListPage />}
           {pageType === 'form' && <FormPage />}
           {pageType === 'detail' && <DetailPage />}
           {pageType === 'view' && <ViewPage />}

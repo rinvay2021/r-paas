@@ -1,12 +1,11 @@
 import React from 'react';
-import { Empty, Spin, Drawer } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Empty, Spin, Drawer, Badge } from 'antd';
+import { ArrowLeftOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
 import WujieReact from 'wujie-react';
 import { bus } from 'wujie';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
-import { useAuth } from '@/contexts/AuthContext';
 import { portalService } from '@/api/portal';
 import { prefix, LOGO, TITLE } from '@/constant';
 import type { PortalMenu } from '@/api/portal/interface';
@@ -99,7 +98,6 @@ const AppMenu: React.FC = () => {
   const menuCodeFromUrl = parsed?.menuCode || '';
   const mainRendererUrl = parsed?.url || null;
 
-  const { user } = useAuth();
 
   const [drawerRendererUrl, setDrawerRendererUrl] = React.useState<string | null>(null);
   const [drawerTitle, setDrawerTitle] = React.useState<string | undefined>(undefined);
@@ -176,11 +174,19 @@ const AppMenu: React.FC = () => {
       currentActionId = undefined;
     };
 
+    const taskListUrl = `${RENDERER_ORIGIN}/?taskList=1&appCode=${appCode}`;
+    const onOpenTaskList = () => setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('urlParams', setUrlParams({ menuCode: menuCodeFromUrl, url: taskListUrl }));
+      return next;
+    }, { replace: false });
+
     bus.$on('renderer:overlayNavigate', onOverlayNavigate);
     bus.$on('renderer:pushDrawer', onPushDrawer);
     bus.$on('renderer:openNewPage', onOpenNewPage);
     bus.$on('renderer:openFormModal', onOpenFormModal);
     bus.$on('renderer:closeFormModal', onCloseFormModal);
+    bus.$on('renderer:openTaskList', onOpenTaskList);
 
     return () => {
       bus.$off('renderer:overlayNavigate', onOverlayNavigate);
@@ -188,6 +194,7 @@ const AppMenu: React.FC = () => {
       bus.$off('renderer:openNewPage', onOpenNewPage);
       bus.$off('renderer:openFormModal', onOpenFormModal);
       bus.$off('renderer:closeFormModal', onCloseFormModal);
+      bus.$off('renderer:openTaskList', onOpenTaskList);
     };
   }, [menuCodeFromUrl]);
 
@@ -205,7 +212,10 @@ const AppMenu: React.FC = () => {
     ? `/app/${selectedMenu.appCode}/menu/${selectedMenu.menuCode}`
     : undefined;
 
-  const mainWujieName = menuCodeFromUrl ? `renderer-${menuCodeFromUrl}` : (selectedMenu ? `renderer-${selectedMenu.menuCode}` : '');
+  const isTaskList = mainRendererUrl?.includes('taskList=1') ?? false;
+  const mainWujieName = isTaskList
+    ? `renderer-tasks-${appCode}`
+    : (menuCodeFromUrl ? `renderer-${menuCodeFromUrl}` : (selectedMenu ? `renderer-${selectedMenu.menuCode}` : ''));
   const drawerWujieName = 'renderer-drawer';
   const formWujieName = 'renderer-form';
 
@@ -235,11 +245,26 @@ const AppMenu: React.FC = () => {
           <div onClick={() => item.menuData && handleMenuSelect(item.menuData)}>{dom}</div>
         )}
         actionsRender={() => [
-          <span key="back" className={`${prefix}-portal-app-menu-back`} onClick={() => navigate('/home')}>
-            <ArrowLeftOutlined />返回
+          <span
+            key="tasks"
+            className={`${prefix}-portal-app-menu-action`}
+            onClick={() => {
+              const taskListUrl = `${RENDERER_ORIGIN}/?taskList=1&appCode=${appCode}`;
+              setSearchParams(prev => {
+                const next = new URLSearchParams(prev);
+                next.set('urlParams', setUrlParams({ menuCode: menuCodeFromUrl, url: taskListUrl }));
+                return next;
+              }, { replace: false });
+            }}
+          >
+            <UnorderedListOutlined />
+            <span>任务</span>
+          </span>,
+          <span key="back" className={`${prefix}-portal-app-menu-action`} onClick={() => navigate('/home')}>
+            <ArrowLeftOutlined />
+            <span>返回</span>
           </span>,
         ]}
-        avatarProps={{ title: user?.username || '用户', size: 'small' }}
       >
         <div className={`${prefix}-portal-app-menu-content`}>
           {mainRendererUrl && mainWujieName ? (

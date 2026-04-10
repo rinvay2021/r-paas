@@ -3,15 +3,17 @@ import dayjs from 'dayjs';
 import {
   Form, Row, Col, Button, Input, InputNumber,
   DatePicker, TimePicker, Select, TreeSelect, Cascader,
-  Space, theme,
+  Space, theme, Tooltip,
 } from 'antd';
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { SearchFormData, SearchFormField } from '@/api/renderer/interface';
 import { FieldType, SqlConditionOperator as Cond } from '@r-paas/meta';
+import { datasourceApi } from '@/api/datasource';
 
 interface MetaSearchFormProps {
   searchFormData: SearchFormData;
   onSearch?: (values: Record<string, any>) => void;
+  appCode?: string;
 }
 
 const isRange = (c: string) => c === Cond.BETWEEN;
@@ -19,11 +21,12 @@ const isMulti = (c: string) => c === Cond.IN || c === Cond.NOT_IN;
 const isNoInput = (c: string) => c === Cond.IS_NULL || c === Cond.IS_NOT_NULL;
 
 /** 渲染搜索控件，范围控件也只占 1 列 */
-function renderSearchControl(sf: SearchFormField): React.ReactNode {
+function renderSearchControl(sf: SearchFormField, optionsMap: Record<string, { label: string; value: string }[]>): React.ReactNode {
   const fieldType = sf.fieldInfo?.fieldType || 'Text';
   const condition = sf.condition || Cond.EQUAL;
   const placeholder = sf.placeholder || `请输入${sf.displayName || sf.fieldName}`;
-  const options = sf.fieldInfo?.config?.options || [];
+  const dsCode = sf.fieldInfo?.config?.datasourceCode;
+  const options = (dsCode ? optionsMap[dsCode] : null) || sf.fieldInfo?.config?.options || [];
 
   if (isNoInput(condition)) {
     return <Input disabled placeholder="无需输入" style={{ width: '100%' }} />;
@@ -104,7 +107,13 @@ function buildInitialValues(fields: SearchFormField[]): Record<string, any> {
   return values;
 }
 
-const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearch }) => {
+const DATASOURCE_FIELD_TYPES = [
+  FieldType.SingleSelect, FieldType.MultipleSelect,
+  FieldType.SingleRadio, FieldType.MultipleCheckbox,
+  FieldType.TreeSelect, FieldType.Cascader,
+];
+
+const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearch, appCode }) => {
   const { token } = theme.useToken();
   const config = searchFormData.searchFormConfig || {};
   const collapseRows = config.collapseRows || 1;
@@ -116,6 +125,21 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
   const visibleFields = (searchFormData.searchFormFields || []).filter(
     (sf) => sf.isVisible !== false,
   );
+
+  // 批量请求 datasource 字段选项
+  const [optionsMap, setOptionsMap] = React.useState<Record<string, { label: string; value: string }[]>>({});
+  React.useEffect(() => {
+    if (!appCode) return;
+    const codes = [...new Set(
+      visibleFields
+        .filter(sf => DATASOURCE_FIELD_TYPES.includes(sf.fieldInfo?.fieldType as FieldType) && sf.fieldInfo?.config?.datasourceCode)
+        .map(sf => sf.fieldInfo!.config!.datasourceCode as string)
+    )];
+    if (!codes.length) return;
+    datasourceApi.batchOptions({ appCode, datasourceCodes: codes })
+      .then(res => { if (res?.data) setOptionsMap(res.data); })
+      .catch(() => {});
+  }, [appCode, searchFormData.searchFormCode]);
 
   const initialValues = React.useMemo(
     () => buildInitialValues(visibleFields),
@@ -151,19 +175,28 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
     <div style={{ background: token.colorBgContainer, borderRadius: token.borderRadius, marginBottom: 8 }}>
       <Form form={form} layout="inline" initialValues={initialValues}>
         <Row gutter={[16, 0]} style={{ width: '100%' }}>
-          {displayFields.map((sf) => (
-            <Col key={sf.fieldName} span={colSpan}>
-              <Form.Item
-                name={sf.fieldName}
-                label={sf.displayName || sf.fieldName}
-                style={{ marginBottom: 12, width: '100%' }}
-                labelCol={{ style: { whiteSpace: 'nowrap', width: 72, flexShrink: 0 } }}
-                wrapperCol={{ style: { flex: 1, minWidth: 0 } }}
-              >
-                {renderSearchControl(sf)}
-              </Form.Item>
-            </Col>
-          ))}
+          {displayFields.map((sf) => {
+            const labelText = sf.displayName || sf.fieldName;
+            return (
+              <Col key={sf.fieldName} span={colSpan}>
+                <Form.Item
+                  name={sf.fieldName}
+                  label={
+                    <Tooltip title={labelText}>
+                      <span style={{ maxWidth: 72, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block' }}>
+                        {labelText}
+                      </span>
+                    </Tooltip>
+                  }
+                  style={{ marginBottom: 12, width: '100%' }}
+                  labelCol={{ style: { width: 72, flexShrink: 0 } }}
+                  wrapperCol={{ style: { flex: 1, minWidth: 0 } }}
+                >
+                  {renderSearchControl(sf, optionsMap)}
+                </Form.Item>
+              </Col>
+            );
+          })}
 
           <Col
             span={colSpan}

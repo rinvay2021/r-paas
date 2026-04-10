@@ -36,6 +36,9 @@ export const portalBus = {
   closeFormModal(submitted?: boolean) {
     emit('renderer:closeFormModal', submitted);
   },
+  openTaskList() {
+    emit('renderer:openTaskList');
+  },
 
   /** 监听 portal:formClosed，带 actionId */
   onFormClosed(handler: (payload: { actionId?: string }) => void) {

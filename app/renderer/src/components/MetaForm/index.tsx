@@ -10,6 +10,7 @@ import type {
   FormLayoutSettings,
 } from '@r-paas/meta';
 import { FormFieldItem } from '@/components/FieldRenderer';
+import { extractLinkageValue } from '@/utils/selectValue';
 
 export interface MetaFormRef {
   validateFields: () => Promise<Record<string, any>>;
@@ -23,6 +24,8 @@ interface MetaFormProps {
   onValuesChange?: (values: Record<string, any>) => void;
   form?: any;
   optionsMap?: Record<string, { label: string; value: string }[]>;
+  /** 外部通过 setFieldsValue 设置值后，调用此方法同步联动状态 */
+  onSyncValues?: (setter: (values: Record<string, any>) => void) => void;
 }
 
 // ── 联动规则引擎（统一使用 eq/neq/gt/lt/gte/lte/contains/empty/notEmpty）
@@ -37,19 +40,28 @@ function applyLinkage(
 
   linkageSettings.forEach((rule) => {
     const { condition, actions } = rule;
-    const fieldVal = values[condition.field];
+    // 提取原始 value（兼容 {label,value} 存储格式）
+    const fieldVal = extractLinkageValue(values[condition.field]);
     let matched = false;
 
     switch (condition.operator) {
-      case 'eq': matched = fieldVal == condition.value; break;
-      case 'neq': matched = fieldVal != condition.value; break;
+      case 'eq':
+        matched = Array.isArray(fieldVal)
+          ? fieldVal.includes(condition.value)
+          : fieldVal == condition.value;
+        break;
+      case 'neq':
+        matched = Array.isArray(fieldVal)
+          ? !fieldVal.includes(condition.value)
+          : fieldVal != condition.value;
+        break;
       case 'gt': matched = Number(fieldVal) > Number(condition.value); break;
       case 'lt': matched = Number(fieldVal) < Number(condition.value); break;
       case 'gte': matched = Number(fieldVal) >= Number(condition.value); break;
       case 'lte': matched = Number(fieldVal) <= Number(condition.value); break;
       case 'contains': matched = String(fieldVal || '').includes(String(condition.value)); break;
-      case 'empty': matched = fieldVal === undefined || fieldVal === null || fieldVal === ''; break;
-      case 'notEmpty': matched = fieldVal !== undefined && fieldVal !== null && fieldVal !== ''; break;
+      case 'empty': matched = fieldVal === undefined || fieldVal === null || fieldVal === '' || (Array.isArray(fieldVal) && fieldVal.length === 0); break;
+      case 'notEmpty': matched = fieldVal !== undefined && fieldVal !== null && fieldVal !== '' && !(Array.isArray(fieldVal) && fieldVal.length === 0); break;
       default: matched = false;
     }
 
@@ -87,6 +99,7 @@ const MetaForm = React.forwardRef((props: MetaFormProps, ref: React.Ref<MetaForm
     onValuesChange,
     form: externalForm,
     optionsMap,
+    onSyncValues,
   } = props;
   const [_form] = Form.useForm();
   const form = externalForm ?? _form;
@@ -97,6 +110,15 @@ const MetaForm = React.forwardRef((props: MetaFormProps, ref: React.Ref<MetaForm
   }), [form]);
 
   const [formValues, setFormValues] = React.useState<Record<string, any>>(initialValues || {});
+
+  // 编辑模式：initialValues 由外部异步设置（form.setFieldsValue），需同步到 formValues 驱动联动
+  const prevInitialRef = React.useRef<Record<string, any> | undefined>(undefined);
+  React.useEffect(() => {
+    if (!initialValues || initialValues === prevInitialRef.current) return;
+    if (Object.keys(initialValues).length === 0) return;
+    prevInitialRef.current = initialValues;
+    setFormValues(initialValues);
+  }, [initialValues]);
 
   const linkageSettings = formData.formConfig?.linkageSettings || [];
   const { hidden, required, readonly, cleared } = applyLinkage(linkageSettings, formValues);

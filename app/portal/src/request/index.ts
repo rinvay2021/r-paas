@@ -1,43 +1,29 @@
 import { message } from 'antd';
 import { createHttp, tokenService } from '@r-paas/shared/http';
 
-const baseURL = 'http://localhost:8080/api/v1';
+const BASE_URL = 'http://localhost:8080/api/v1';
 
-const baseConfig = {
-  baseURL,
-  requestOptions: {
-    token: true,
-  },
-  interceptors: {
-    response: [
-      {
-        onFulfilled: (response: any) => {
-          const { code, message: msg } = response.data;
-
-          if (code !== 200) {
-            message.error(msg || '系统异常，请稍后重试');
-          }
-
-          return response;
-        },
-        onRejected: (error: any) => {
-          const msg = error.response?.data?.message || error.message || '系统异常，请稍后重试';
-          message.error(msg);
-
-          return Promise.reject(error);
-        },
-      },
-    ],
+/** 统一错误提示拦截器（只提示，不吞掉 reject） */
+const errorInterceptor = {
+  onRejected: (error: any) => {
+    const msg: string = error?.message || '系统异常，请稍后重试';
+    message.error(msg);
+    return Promise.reject(error);
   },
 };
 
-const authHttp = createHttp({
-  ...baseConfig,
-  requestOptions: {
-    token: false,
-  },
+/** 需要认证的 http 实例（业务接口） */
+const http = createHttp({
+  baseURL: BASE_URL,
+  requestOptions: { token: true },
+  interceptors: { response: [errorInterceptor] },
 });
 
-const http = createHttp(baseConfig);
+/** 不需要认证的 http 实例（登录等） */
+const authHttp = createHttp({
+  baseURL: BASE_URL,
+  requestOptions: { token: false },
+  interceptors: { response: [errorInterceptor] },
+});
 
-export { authHttp, http, tokenService };
+export { http, authHttp, tokenService };
