@@ -1,7 +1,7 @@
 import React from 'react';
 import { map, forEach } from 'lodash';
 import { useRequest } from 'ahooks';
-import { CrownFilled } from '@ant-design/icons';
+import { CrownFilled, SettingOutlined } from '@ant-design/icons';
 import { metaService } from '@/api/meta';
 import { SUB_MENU_TYPES } from '@/constant';
 import { AppDto } from '@/api/meta/interface';
@@ -39,6 +39,11 @@ function generateRoutes(appList: AppDto[]): RouteItem[] {
 
       return parentRoute;
     }),
+    {
+      path: '/settings',
+      name: '系统配置',
+      icon: <SettingOutlined />,
+    },
   ];
 }
 

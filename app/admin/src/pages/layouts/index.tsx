@@ -7,6 +7,7 @@ import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { prefix, LAYOUT_SETTING, TITLE, LOGO } from '@/constant';
 import { useMenus } from './menus';
+import AiAssistant from './AiAssistant';
 import './index.less';
 
 const Layout: React.FC = () => {
@@ -102,6 +103,7 @@ const Layout: React.FC = () => {
       >
         <Outlet />
       </ProLayout>
+      <AiAssistant />
     </Spin>
   );
 };

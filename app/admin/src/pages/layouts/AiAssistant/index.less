@@ -1,0 +1,53 @@
+// ── Drawer 样式 ──────────────────────────────────────────────────────────────
+.ai-assistant-drawer {
+  .ant-drawer-content {
+    border-radius: 0;
+  }
+
+  .ant-drawer-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+// ── 流式输出光标 ─────────────────────────────────────────────────────────────
+.ai-typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: #1a1a1a;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: ai-cursor-blink 0.7s step-end infinite;
+}
+
+@keyframes ai-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+// ── 工具调用点脉冲动画 ───────────────────────────────────────────────────────
+@keyframes ai-dot-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+// ── Markdown 内容样式 ────────────────────────────────────────────────────────
+// 确保 p 标签之间有合适的间距
+.ai-assistant-drawer {
+  p + p {
+    margin-top: 6px;
+  }
+
+  // 代码块滚动条
+  pre::-webkit-scrollbar {
+    height: 4px;
+  }
+  pre::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 2px;
+  }
+}

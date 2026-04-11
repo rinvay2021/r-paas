@@ -14,6 +14,8 @@ const Meta = React.lazy(() => import('@/pages/meta'));
 const Menu = React.lazy(() => import('@/pages/menu'));
 // 数据源配置
 const Datasource = React.lazy(() => import('@/pages/datasource'));
+// 系统配置
+const Settings = React.lazy(() => import('@/pages/settings'));
 
 // 添加类型定义
 interface PrivateRouteProps {
@@ -54,6 +56,10 @@ const RenderRouter: React.FC = () => {
         {
           path: 'dashboard',
           element: <Dashboard />,
+        },
+        {
+          path: 'settings',
+          element: <Settings />,
         },
         {
           path: 'app/:appCode',

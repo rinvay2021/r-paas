@@ -58,6 +58,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['antd'],
+    include: ['antd', 'react-markdown', 'remark-gfm'],
   },
 });
