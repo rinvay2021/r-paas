@@ -17,7 +17,9 @@ RUN pnpm install --no-frozen-lockfile
 RUN pnpm build:shared && pnpm build:meta
 
 # 构建三个应用
-RUN pnpm build:admin && pnpm build:portal && pnpm build:renderer
+RUN pnpm build:renderer
+RUN pnpm build:admin
+RUN pnpm build:portal
 
 # ── 运行阶段（Nginx 静态服务） ────────────────────────────────────────────────
 FROM nginx:1.25-alpine AS runner
