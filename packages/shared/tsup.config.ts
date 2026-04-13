@@ -10,7 +10,7 @@ export default defineConfig({
   dts: true,
   clean: true,
   outDir: 'dist',
-  noExternal: ['axios', 'qs'],
+  // noExternal: ['axios', 'qs'],
   sourcemap: true,
   treeshake: true,
   splitting: false,
