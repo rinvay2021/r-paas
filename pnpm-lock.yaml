@@ -29,11 +29,14 @@ importers:
       antd:
         specifier: 5.22.5
         version: 5.22.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      axios:
+        specifier: 1.6.2
+        version: 1.6.2
       classnames:
         specifier: ^2.3.2
         version: 2.5.1
       dayjs:
-        specifier: ^1.11.13
+        specifier: ^1.11.20
         version: 1.11.20
       jotai:
         specifier: ^2.16.0
@@ -44,6 +47,9 @@ importers:
       nanoid:
         specifier: ^5.1.7
         version: 5.1.7
+      qs:
+        specifier: 6.11.2
+        version: 6.11.2
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -111,6 +117,9 @@ importers:
       '@types/node':
         specifier: ^18.0.0
         version: 18.19.130
+      '@types/qs':
+        specifier: ^6.9.0
+        version: 6.15.0
       '@types/react':
         specifier: 18.0.0
         version: 18.0.0
@@ -264,25 +273,9 @@ importers:
       tsup:
         specifier: ^7.2.0
         version: 7.3.0(postcss@8.5.9)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))(typescript@5.9.3)
-      typescript:
-        specifier: ^5.0.0
-        version: 5.9.3
 
   packages/shared:
-    dependencies:
-      axios:
-        specifier: 1.6.2
-        version: 1.6.2
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.20
-      qs:
-        specifier: 6.11.2
-        version: 6.11.2
     devDependencies:
-      '@types/qs':
-        specifier: ^6.9.0
-        version: 6.15.0
       tsup:
         specifier: ^7.2.0
         version: 7.3.0(postcss@8.5.9)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))(typescript@5.9.3)

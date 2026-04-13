@@ -33,13 +33,7 @@
     "build": "tsup",
     "dev": "tsup --watch"
   },
-  "dependencies": {
-    "axios": "1.6.2",
-    "dayjs": "^1.11.13",
-    "qs": "6.11.2"
-  },
   "devDependencies": {
-    "@types/qs": "^6.9.0",
     "tsup": "^7.2.0"
   }
 }
