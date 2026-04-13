@@ -1,6 +1,7 @@
 {
   "name": "r-paas",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "prepare": "husky install",
     "dev:admin": "pnpm --filter @r-paas/admin dev",
