@@ -7,7 +7,7 @@ export default defineConfig({
     'storage/index': 'src/storage/index.ts',
   },
   format: ['cjs', 'esm'],
-  dts: true,
+  dts: false,
   clean: true,
   outDir: 'dist',
   sourcemap: true,

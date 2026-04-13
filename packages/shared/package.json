@@ -6,22 +6,18 @@
   "types": "./dist/http/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/http/index.d.ts",
       "import": "./dist/http/index.mjs",
       "require": "./dist/http/index.js"
     },
     "./http": {
-      "types": "./dist/http/index.d.ts",
       "import": "./dist/http/index.mjs",
       "require": "./dist/http/index.js"
     },
     "./storage": {
-      "types": "./dist/storage/index.d.ts",
       "import": "./dist/storage/index.mjs",
       "require": "./dist/storage/index.js"
     },
     "./moment": {
-      "types": "./dist/moment/index.d.ts",
       "import": "./dist/moment/index.mjs",
       "require": "./dist/moment/index.js"
     }
