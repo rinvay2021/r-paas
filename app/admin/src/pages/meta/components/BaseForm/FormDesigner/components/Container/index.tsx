@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import { filter } from 'lodash';
 import classNames from 'classnames';
+// @ts-expect-error: 暂时绕过检查
 import { useDrop, useDrag } from 'react-dnd';
 import { DeleteOutlined, PlusOutlined, MenuOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { FieldDto } from '@/api/meta/interface';

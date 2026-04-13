@@ -1,5 +1,5 @@
 import { Form } from 'antd';
-import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { ButtonLevel } from '@r-paas/meta';
 
 /** ==================== common start ==================== */
 /** 分页查询DTO */
@@ -255,10 +255,10 @@ export type DetailPageConfig = {
 export type DetailPageContainerType = 'MAIN_OBJECT' | 'SUB_OBJECT';
 
 /** 详情页页面显示类型 - 使用 @r-paas/meta 的枚举 */
-export { DetailPageType as DetailPagePageType } from '@r-paas/meta';
+import { DetailPageType as DetailPagePageType } from '@r-paas/meta';
 
 /** 详情页关联组件类型 - 使用 @r-paas/meta 的枚举 */
-export { DetailComponentType as DetailPageComponentType } from '@r-paas/meta';
+import { DetailComponentType as DetailPageComponentType } from '@r-paas/meta';
 
 /** 详情页主对象容器 */
 export type DetailPageMainObjectContainer = {

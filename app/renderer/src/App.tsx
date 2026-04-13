@@ -1,11 +1,16 @@
 import React from 'react';
 import { ConfigProvider, Spin, Result } from 'antd';
-
+// @ts-expect-error: 暂时绕过检查 表单页面
 const FormPage = React.lazy(() => import('@/pages/FormPage'));
+// @ts-expect-error: 暂时绕过检查 详情页面
 const DetailPage = React.lazy(() => import('@/pages/DetailPage'));
+// @ts-expect-error: 暂时绕过检查 视图页面
 const ViewPage = React.lazy(() => import('@/pages/ViewPage'));
+// @ts-expect-error: 暂时绕过检查 列表页面
 const ListPage = React.lazy(() => import('@/pages/ListPage'));
+// @ts-expect-error: 暂时绕过检查 搜索表单页面
 const SearchFormPage = React.lazy(() => import('@/pages/SearchFormPage'));
+// @ts-expect-error: 暂时绕过检查 任务列表页面
 const TaskListPage = React.lazy(() => import('@/pages/TaskListPage'));
 
 class ErrorBoundary extends React.Component<

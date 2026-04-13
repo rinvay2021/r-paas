@@ -23,7 +23,7 @@ export const useMenuList = () => useAtomValue(menuListAtom);
 export const useCurrentMenu = () => useAtomValue(currentMenuAtom);
 
 /** 设置当前菜单 */
-export const useSetCurrentMenu = () => useSetAtom(currentMenuAtom);
+export const useSetCurrentMenu = () => useSetAtom(currentMenuAtom as any);
 
 /** 使用加载状态 */
 export const useLoadingMenus = () => useAtomValue(loadingMenusAtom);

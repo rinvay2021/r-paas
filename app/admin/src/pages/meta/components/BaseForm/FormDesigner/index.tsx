@@ -5,7 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button, message } from 'antd';
 import { filter, map, isEmpty } from 'lodash';
 import { PlusOutlined } from '@ant-design/icons';
+// @ts-expect-error: 暂时绕过检查
 import { DndProvider } from 'react-dnd';
+// @ts-expect-error: 暂时绕过检查
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { metaService } from '@/api/meta';

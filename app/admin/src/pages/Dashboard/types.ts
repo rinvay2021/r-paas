@@ -30,6 +30,7 @@ export interface WidgetInstance {
 export interface WidgetProps {
   id: string;
   config?: Record<string, any>;
+  appCode?: string;
   onConfigChange?: (config: Record<string, any>) => void;
 }
 

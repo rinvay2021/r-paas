@@ -1,6 +1,11 @@
 import React from 'react';
 import { Alert, List, Badge, Empty, Typography } from 'antd';
-import { SafetyOutlined, CheckCircleOutlined, WarningOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import {
+  SafetyOutlined,
+  CheckCircleOutlined,
+  WarningOutlined,
+  InfoCircleOutlined,
+} from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import BaseWidget from './BaseWidget';
 import type { WidgetProps, HealthCheckResult, HealthIssue } from '../types';
@@ -15,15 +20,12 @@ const ICON_MAP = {
 };
 
 const HealthCheckWidget: React.FC<WidgetProps> = () => {
-  const { data, loading } = useRequest(
-    () => dashboardService.getHealthCheck({}),
-    {
-      cacheKey: 'dashboard-health-check',
-      staleTime: 30 * 60 * 1000, // 30分钟缓存
-    }
-  );
+  const { data, loading } = useRequest(() => dashboardService.getHealthCheck({}), {
+    cacheKey: 'dashboard-health-check',
+    staleTime: 30 * 60 * 1000, // 30分钟缓存
+  });
 
-  const healthCheck: HealthCheckResult = data?.data || {
+  const healthCheck: HealthCheckResult = (data?.data as any) || {
     disabledFields: 0,
     emptyForms: 0,
     viewsWithoutSearch: 0,
@@ -36,12 +38,7 @@ const HealthCheckWidget: React.FC<WidgetProps> = () => {
   const hasIssues = totalIssues > 0;
 
   return (
-    <BaseWidget
-      title="健康检查"
-      icon={<SafetyOutlined />}
-      loading={loading}
-      id=""
-    >
+    <BaseWidget title="健康检查" icon={<SafetyOutlined />} loading={loading} id="">
       <div style={{ marginBottom: 16 }}>
         {!hasIssues ? (
           <Alert
@@ -68,8 +65,11 @@ const HealthCheckWidget: React.FC<WidgetProps> = () => {
                 avatar={
                   <Badge
                     status={
-                      item.type === 'error' ? 'error' :
-                      item.type === 'warning' ? 'warning' : 'processing'
+                      item.type === 'error'
+                        ? 'error'
+                        : item.type === 'warning'
+                        ? 'warning'
+                        : 'processing'
                     }
                   />
                 }
@@ -91,10 +91,7 @@ const HealthCheckWidget: React.FC<WidgetProps> = () => {
           )}
         />
       ) : (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="暂无问题"
-        />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无问题" />
       )}
     </BaseWidget>
   );

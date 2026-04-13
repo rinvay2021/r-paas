@@ -7,7 +7,7 @@
       "@r-paas/*": ["packages/*"]
     },
     "noImplicitAny": false,
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0" 
   },
   "include": ["src"]
 }

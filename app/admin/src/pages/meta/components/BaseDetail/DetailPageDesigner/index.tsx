@@ -8,7 +8,7 @@ import { DetailPageConfig, DetailPageDto } from '@/api/meta/interface';
 import { useMetaFroms } from '@/store/metaFormAtom';
 import { useMetaObjectListAtom } from '@/store/metaAtom';
 import { ButtonSelector } from '@/pages/meta/biz-components/MetaButton';
-import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { ButtonLevel } from '@r-paas/meta';
 import { COMPONENT_TYPE_OPTIONS, DETAIL_PAGE_OPTIONS } from '../constant';
 
 import ConfigPanel from './components/ConfigPanel';

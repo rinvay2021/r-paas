@@ -5,7 +5,7 @@ import { Transfer } from 'antd';
 import { metaService } from '@/api/meta';
 import { useMeta } from '@/store/metaAtom';
 import { ActionButtonDto } from '@/api/meta/interface';
-import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { ButtonLevel } from '@r-paas/meta';
 import { ComponentType } from '../../../types';
 
 import './index.less';

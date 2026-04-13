@@ -2,7 +2,6 @@ import { http } from '@/request';
 import type {
   RenderFormResponse,
   RenderViewResponse,
-  RenderDetailResponse,
 } from './interface';
 
 export const rendererApi = {
@@ -13,7 +12,7 @@ export const rendererApi = {
     return http.post<RenderViewResponse>('/renderer/view', params);
   },
   getDetail(params: { appCode: string; metaObjectCode: string; detailPageCode: string }) {
-    return http.post<RenderDetailResponse>('/renderer/detail', params);
+    return http.post<import('@r-paas/meta').DetailPageData>('/renderer/detail', params);
   },
   getList(params: { appCode: string; metaObjectCode: string; listCode: string }) {
     return http.post<{ list: import('@r-paas/meta').ListData }>('/renderer/list', params);

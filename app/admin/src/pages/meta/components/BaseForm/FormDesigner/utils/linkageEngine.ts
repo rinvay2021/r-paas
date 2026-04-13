@@ -41,23 +41,23 @@ function checkCondition(condition: LinkageCondition, formValues: Record<string, 
   const fieldValue = formValues[field];
 
   switch (operator) {
-    case '==':
+    case 'eq':
       return fieldValue == conditionValue;
-    case '!=':
+    case 'neq':
       return fieldValue != conditionValue;
-    case '>':
+    case 'gt':
       return Number(fieldValue) > Number(conditionValue);
-    case '<':
+    case 'lt':
       return Number(fieldValue) < Number(conditionValue);
-    case '>=':
+    case 'gte':
       return Number(fieldValue) >= Number(conditionValue);
-    case '<=':
+    case 'lte':
       return Number(fieldValue) <= Number(conditionValue);
     case 'contains':
       return String(fieldValue).includes(String(conditionValue));
-    case 'isEmpty':
+    case 'empty':
       return fieldValue === undefined || fieldValue === null || fieldValue === '';
-    case 'isNotEmpty':
+    case 'notEmpty':
       return fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
     default:
       return false;

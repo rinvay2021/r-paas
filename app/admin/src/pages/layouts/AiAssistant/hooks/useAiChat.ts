@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error: nanoid 是纯 ESM 包，但在 CommonJS 环境下通过 require 引入会有类型冲突，但运行时通常没问题
 import { nanoid } from 'nanoid';
 import { aiApi } from '@/api/ai';
 import { useAiConfig } from './useAiConfig';

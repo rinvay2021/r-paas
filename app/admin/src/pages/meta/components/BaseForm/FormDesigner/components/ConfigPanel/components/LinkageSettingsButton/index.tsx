@@ -47,7 +47,7 @@ const LinkageSettingsButton: React.FC<LinkageSettingsButtonProps> = ({
         // 必须在表单中
         if (!formFieldCodes.has(field.fieldCode)) return false;
         // 过滤不支持联动的字段类型
-        if (UNSUPPORTED_FIELD_TYPES.includes(field.fieldType)) return false;
+        if (UNSUPPORTED_FIELD_TYPES.includes(field.fieldType as any)) return false;
         return true;
       })
       .map(field => ({

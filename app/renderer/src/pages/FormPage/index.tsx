@@ -10,19 +10,27 @@ import MetaForm from '@/components/MetaForm';
 import { FieldType } from '@r-paas/meta';
 import { portalBus } from '@/utils/portalBus';
 
-const DATE_FIELD_TYPES = [FieldType.DatePicker, FieldType.MonthPicker, FieldType.YearPicker, FieldType.TimePicker];
+const DATE_FIELD_TYPES = [
+  FieldType.DatePicker,
+  FieldType.MonthPicker,
+  FieldType.YearPicker,
+  FieldType.TimePicker,
+];
 
 // 需要数据源的字段类型
 const DATASOURCE_FIELD_TYPES = [
-  FieldType.SingleSelect, FieldType.MultipleSelect,
-  FieldType.SingleRadio, FieldType.MultipleCheckbox,
-  FieldType.TreeSelect, FieldType.Cascader,
+  FieldType.SingleSelect,
+  FieldType.MultipleSelect,
+  FieldType.SingleRadio,
+  FieldType.MultipleCheckbox,
+  FieldType.TreeSelect,
+  FieldType.Cascader,
 ];
 
 /** 将记录数据中的日期字段按表单字段类型转换为 dayjs */
 function transformRecordValues(
   record: Record<string, any>,
-  containers: any[],
+  containers: any[]
 ): Record<string, any> {
   // 构建 fieldCode -> fieldType 的映射
   const typeMap: Record<string, string> = {};
@@ -39,7 +47,7 @@ function transformRecordValues(
     if (key.startsWith('_')) return; // 跳过系统字段
     const val = record[key];
     const fieldType = typeMap[key];
-    if (fieldType && DATE_FIELD_TYPES.includes(fieldType) && val) {
+    if (fieldType && DATE_FIELD_TYPES.includes(fieldType as any) && val) {
       values[key] = dayjs(val);
     } else {
       values[key] = val;
@@ -67,36 +75,50 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
   const isEdit = !!recordId;
 
   // 加载表单元数据
-  const { data: formMeta, loading: formLoading, error } = useRequest(
-    () => rendererApi.getForm({ appCode, metaObjectCode, formCode }),
-    { ready: !!(appCode && metaObjectCode && formCode) },
-  );
+  const {
+    data: formMeta,
+    loading: formLoading,
+    error,
+  } = useRequest(() => rendererApi.getForm({ appCode, metaObjectCode, formCode }), {
+    ready: !!(appCode && metaObjectCode && formCode),
+  });
 
   const formData = formMeta?.data?.form;
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = React.useState(false);
-  const [optionsMap, setOptionsMap] = React.useState<Record<string, { label: string; value: string }[]>>({});
-  const [editInitialValues, setEditInitialValues] = React.useState<Record<string, any> | undefined>(undefined);
+  const [optionsMap, setOptionsMap] = React.useState<
+    Record<string, { label: string; value: string }[]>
+  >({});
+  const [editInitialValues, setEditInitialValues] = React.useState<Record<string, any> | undefined>(
+    undefined
+  );
 
   // formData 加载后批量请求有数据源的字段选项（一次请求）
   React.useEffect(() => {
     if (!formData || !appCode) return;
     const allFields = (formData.containers || []).flatMap((c: any) => c.fields || []);
-    const datasourceCodes = [...new Set(
-      allFields
-        .filter((f: any) => DATASOURCE_FIELD_TYPES.includes(f.fieldType) && f.config?.datasourceCode)
-        .map((f: any) => f.config.datasourceCode as string)
-    )];
+    const datasourceCodes = [
+      ...new Set(
+        allFields
+          .filter(
+            (f: any) => DATASOURCE_FIELD_TYPES.includes(f.fieldType) && f.config?.datasourceCode
+          )
+          .map((f: any) => f.config.datasourceCode as string)
+      ),
+    ];
     if (datasourceCodes.length === 0) return;
-    datasourceApi.batchOptions({ appCode, datasourceCodes }).then(res => {
-      if (res?.data) setOptionsMap(res.data);
-    }).catch(() => {});
+    datasourceApi
+      .batchOptions({ appCode, datasourceCodes })
+      .then(res => {
+        if (res?.data) setOptionsMap(res.data);
+      })
+      .catch(() => {});
   }, [formData, appCode]);
 
   // 编辑模式：加载记录数据
   const { data: recordData, loading: recordLoading } = useRequest(
     () => dataApi.detail({ appCode, metaObjectCode, id: recordId }),
-    { ready: isEdit && !!(appCode && metaObjectCode && recordId) },
+    { ready: isEdit && !!(appCode && metaObjectCode && recordId) }
   );
 
   // formData 和 recordData 都就绪后，转换日期字段并预填表单，同步联动初始值
@@ -130,11 +152,19 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
       if (!dragging.current || !cardRef.current) return;
       const cardW = cardRef.current.offsetWidth;
       const cardH = cardRef.current.offsetHeight;
-      const newX = Math.min(Math.max(0, e.clientX - dragOffset.current.x), window.innerWidth - cardW);
-      const newY = Math.min(Math.max(0, e.clientY - dragOffset.current.y), window.innerHeight - cardH);
+      const newX = Math.min(
+        Math.max(0, e.clientX - dragOffset.current.x),
+        window.innerWidth - cardW
+      );
+      const newY = Math.min(
+        Math.max(0, e.clientY - dragOffset.current.y),
+        window.innerHeight - cardH
+      );
       setPos({ x: newX, y: newY });
     };
-    const onUp = () => { dragging.current = false; };
+    const onUp = () => {
+      dragging.current = false;
+    };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     return () => {
@@ -229,7 +259,8 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
         >
           <Typography.Text style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>
             {(() => {
-              const layoutTitle = (formData?.formConfig?.layoutSettings as FormLayoutSettings)?.title;
+              const layoutTitle = (formData?.formConfig?.layoutSettings as FormLayoutSettings)
+                ?.title;
               const formName = formData?.formName || '表单';
               const displayName = layoutTitle || formName;
               return isEdit ? `编辑 - ${displayName}` : displayName;
@@ -263,12 +294,7 @@ const FormPage: React.FC<FormPageProps> = ({ overrideParams, onClose }) => {
                   </span>
                 );
                 return (
-                  <Alert
-                    type={type}
-                    showIcon
-                    message={content}
-                    style={{ marginBottom: 16 }}
-                  />
+                  <Alert type={type} showIcon message={content} style={{ marginBottom: 16 }} />
                 );
               })()}
               <MetaForm

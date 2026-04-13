@@ -20,7 +20,9 @@
  *    避免空占位消息的复杂管理。
  */
 import React from 'react';
+// @ts-expect-error: ReactMarkdown 的类型定义有问题，导致无法正确推断组件类型
 import ReactMarkdown from 'react-markdown';
+// @ts-expect-error: remark-gfm' 的类型定义有问题，导致无法正确推断组件类型
 import remarkGfm from 'remark-gfm';
 import { Button, Space } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';

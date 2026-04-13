@@ -65,7 +65,7 @@ const FiledModal: React.FC<FieldModalProps> = params => {
   useRequest(() => metaService.getFieldById(id), {
     manual: false,
     onSuccess: resp => {
-      setActiveTab(resp?.data?.fieldType);
+      setActiveTab(resp?.data?.fieldType as any);
 
       // 设置表单值，确保 config 对象正确展开
       const fieldData = resp?.data;

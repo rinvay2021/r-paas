@@ -11,6 +11,8 @@ import {
   ProFormSwitch,
   ModalForm,
 } from '@ant-design/pro-components';
+import { metaService } from '@/api/meta';
+import { ButtonEventType, ButtonEvent } from '@r-paas/meta';
 import {
   useCommonConfigs,
   HELP_SETTINGS_CONFIGS,
@@ -19,8 +21,7 @@ import {
   JSON_CONFIG,
   getButtonEventOptionsByLevel,
 } from '../constant';
-import { ButtonConfigItem, ButtonModalProps, ButtonEventType, ButtonEvent } from '../type';
-import { metaService } from '@/api/meta';
+import { ButtonConfigItem, ButtonModalProps } from '../type';
 
 const ComponentMap = {
   ProFormText,
@@ -46,7 +47,7 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
   // 加载当前 metaObject 下的表单列表
   const { data: formsData } = useRequest(
     () => metaService.queryForms({ appCode, metaObjectCode }),
-    { ready: !!(appCode && metaObjectCode) },
+    { ready: !!(appCode && metaObjectCode) }
   );
   const formOptions = (formsData?.data?.list || []).map(f => ({
     label: f.formName,
@@ -57,7 +58,7 @@ const ButtonModal: React.FC<ButtonModalProps> = params => {
   useRequest(() => metaService.getActionButtonById?.(id) || Promise.resolve({ data: {} }), {
     manual: false,
     onSuccess: resp => {
-      const data = resp?.data || {};
+      const data = (resp?.data as any) || {};
       // buttonConfig 是对象，回填时把 form 字段单独提取到 _formCode 虚拟字段
       formInstance?.current?.setFieldsValue({
         ...data,

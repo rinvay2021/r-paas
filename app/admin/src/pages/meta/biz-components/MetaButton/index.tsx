@@ -6,7 +6,7 @@ import { map, filter, includes } from 'lodash';
 import { useMeta } from '@/store/metaAtom';
 import { useMetaButtons, useLoadingButtons } from '@/store/metaButtons';
 import { ActionButtonDto } from '@/api/meta/interface';
-import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { ButtonLevel } from '@r-paas/meta';
 
 import './index.less';
 

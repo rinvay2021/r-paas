@@ -5,7 +5,7 @@ import { ViewDto } from '@/api/meta/interface';
 import { useMetaLists } from '@/store/metaListAtom';
 import { useMetaSearchForms } from '@/store/metaSearchFormAtom';
 import { ButtonSelector } from '@/pages/meta/biz-components/MetaButton';
-import { ButtonLevel } from '@/pages/meta/components/FunctionButton/type';
+import { ButtonLevel } from '@r-paas/meta';
 import { metaService } from '@/api/meta';
 import ViewConfigPanel from './components/ViewConfigPanel';
 import type { ViewDesignerProps, ViewDesignerRef } from './types';

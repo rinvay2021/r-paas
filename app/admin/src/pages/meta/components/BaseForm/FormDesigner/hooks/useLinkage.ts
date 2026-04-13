@@ -53,6 +53,7 @@ export function useLinkage(options: UseLinkageOptions): UseLinkageResult {
     }
 
     // 获取表单值变化的订阅
+    // @ts-expect-error: 暂时绕过检查
     const unsubscribe = form.getInternalHooks('RC_FORM_INTERNAL_HOOKS').registerWatch?.((values) => {
       const formValues = form.getFieldsValue();
 

@@ -1,9 +1,20 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  Form, Row, Col, Button, Input, InputNumber,
-  DatePicker, TimePicker, Select, TreeSelect, Cascader,
-  Space, theme, Tooltip,
+  Form,
+  Row,
+  Col,
+  Button,
+  Input,
+  InputNumber,
+  DatePicker,
+  TimePicker,
+  Select,
+  TreeSelect,
+  Cascader,
+  Space,
+  theme,
+  Tooltip,
 } from 'antd';
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { SearchFormData, SearchFormField } from '@/api/renderer/interface';
@@ -21,7 +32,10 @@ const isMulti = (c: string) => c === Cond.IN || c === Cond.NOT_IN;
 const isNoInput = (c: string) => c === Cond.IS_NULL || c === Cond.IS_NOT_NULL;
 
 /** 渲染搜索控件，范围控件也只占 1 列 */
-function renderSearchControl(sf: SearchFormField, optionsMap: Record<string, { label: string; value: string }[]>): React.ReactNode {
+function renderSearchControl(
+  sf: SearchFormField,
+  optionsMap: Record<string, { label: string; value: string }[]>
+): React.ReactNode {
   const fieldType = sf.fieldInfo?.fieldType || 'Text';
   const condition = sf.condition || Cond.EQUAL;
   const placeholder = sf.placeholder || `请输入${sf.displayName || sf.fieldName}`;
@@ -35,19 +49,43 @@ function renderSearchControl(sf: SearchFormField, optionsMap: Record<string, { l
   const popupContainer = (trigger: HTMLElement) => trigger.parentElement!;
 
   if (fieldType === FieldType.DatePicker) {
-    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+    if (isRange(condition))
+      return (
+        <DatePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />
+      );
     return <DatePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
   }
   if (fieldType === FieldType.MonthPicker) {
-    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
-    return <DatePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />;
+    if (isRange(condition))
+      return (
+        <DatePicker.RangePicker
+          style={{ width: '100%' }}
+          picker="month"
+          getPopupContainer={popupContainer}
+        />
+      );
+    return (
+      <DatePicker style={{ width: '100%' }} picker="month" getPopupContainer={popupContainer} />
+    );
   }
   if (fieldType === FieldType.YearPicker) {
-    if (isRange(condition)) return <DatePicker.RangePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
-    return <DatePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />;
+    if (isRange(condition))
+      return (
+        <DatePicker.RangePicker
+          style={{ width: '100%' }}
+          picker="year"
+          getPopupContainer={popupContainer}
+        />
+      );
+    return (
+      <DatePicker style={{ width: '100%' }} picker="year" getPopupContainer={popupContainer} />
+    );
   }
   if (fieldType === FieldType.TimePicker) {
-    if (isRange(condition)) return <TimePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
+    if (isRange(condition))
+      return (
+        <TimePicker.RangePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />
+      );
     return <TimePicker style={{ width: '100%' }} getPopupContainer={popupContainer} />;
   }
 
@@ -56,7 +94,11 @@ function renderSearchControl(sf: SearchFormField, optionsMap: Record<string, { l
       return (
         <Input.Group compact style={{ display: 'flex' }}>
           <InputNumber style={{ flex: 1, minWidth: 0 }} placeholder="最小" />
-          <Input style={{ width: 24, textAlign: 'center', pointerEvents: 'none', padding: '0 4px' }} placeholder="~" disabled />
+          <Input
+            style={{ width: 24, textAlign: 'center', pointerEvents: 'none', padding: '0 4px' }}
+            placeholder="~"
+            disabled
+          />
           <InputNumber style={{ flex: 1, minWidth: 0 }} placeholder="最大" />
         </Input.Group>
       );
@@ -66,40 +108,76 @@ function renderSearchControl(sf: SearchFormField, optionsMap: Record<string, { l
 
   if (fieldType === FieldType.SingleSelect || fieldType === FieldType.SingleRadio) {
     if (isMulti(condition)) {
-      return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
+      return (
+        <Select
+          style={{ width: '100%' }}
+          mode="multiple"
+          placeholder={placeholder}
+          options={options}
+          allowClear
+        />
+      );
     }
-    return <Select style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
+    return (
+      <Select style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />
+    );
   }
 
   if (fieldType === FieldType.MultipleSelect || fieldType === FieldType.MultipleCheckbox) {
-    return <Select style={{ width: '100%' }} mode="multiple" placeholder={placeholder} options={options} allowClear />;
+    return (
+      <Select
+        style={{ width: '100%' }}
+        mode="multiple"
+        placeholder={placeholder}
+        options={options}
+        allowClear
+      />
+    );
   }
 
   if (fieldType === FieldType.TreeSelect) {
     const treeData = sf.fieldInfo?.config?.treeData || [];
-    return <TreeSelect style={{ width: '100%' }} placeholder={placeholder} treeData={treeData} allowClear />;
+    return (
+      <TreeSelect
+        style={{ width: '100%' }}
+        placeholder={placeholder}
+        treeData={treeData}
+        allowClear
+      />
+    );
   }
   if (fieldType === FieldType.Cascader) {
-    return <Cascader style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />;
+    return (
+      <Cascader style={{ width: '100%' }} placeholder={placeholder} options={options} allowClear />
+    );
   }
 
   return <Input placeholder={placeholder} allowClear />;
 }
 
-const DATE_FIELD_TYPES = [FieldType.DatePicker, FieldType.MonthPicker, FieldType.YearPicker, FieldType.TimePicker];
+const DATE_FIELD_TYPES = [
+  FieldType.DatePicker,
+  FieldType.MonthPicker,
+  FieldType.YearPicker,
+  FieldType.TimePicker,
+];
 
 function parseDateValue(value: any, fieldType: string, condition: string): any {
-  if (!value || !DATE_FIELD_TYPES.includes(fieldType)) return value;
+  if (!value || !DATE_FIELD_TYPES.includes(fieldType as any)) return value;
   if (isRange(condition) && Array.isArray(value)) {
-    return value.map((v) => (v ? dayjs(v) : null));
+    return value.map(v => (v ? dayjs(v) : null));
   }
   return typeof value === 'string' && value ? dayjs(value) : value;
 }
 
 function buildInitialValues(fields: SearchFormField[]): Record<string, any> {
   const values: Record<string, any> = {};
-  fields.forEach((sf) => {
-    if (sf.defaultValueType === 'custom' && sf.defaultValue !== undefined && sf.defaultValue !== '') {
+  fields.forEach(sf => {
+    if (
+      sf.defaultValueType === 'custom' &&
+      sf.defaultValue !== undefined &&
+      sf.defaultValue !== ''
+    ) {
       const fieldType = sf.fieldInfo?.fieldType || 'Text';
       values[sf.fieldName] = parseDateValue(sf.defaultValue, fieldType, sf.condition);
     }
@@ -108,9 +186,12 @@ function buildInitialValues(fields: SearchFormField[]): Record<string, any> {
 }
 
 const DATASOURCE_FIELD_TYPES = [
-  FieldType.SingleSelect, FieldType.MultipleSelect,
-  FieldType.SingleRadio, FieldType.MultipleCheckbox,
-  FieldType.TreeSelect, FieldType.Cascader,
+  FieldType.SingleSelect,
+  FieldType.MultipleSelect,
+  FieldType.SingleRadio,
+  FieldType.MultipleCheckbox,
+  FieldType.TreeSelect,
+  FieldType.Cascader,
 ];
 
 const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearch, appCode }) => {
@@ -123,27 +204,38 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
   const colSpan = Math.floor(24 / colsPerRow);
 
   const visibleFields = (searchFormData.searchFormFields || []).filter(
-    (sf) => sf.isVisible !== false,
+    sf => sf.isVisible !== false
   );
 
   // 批量请求 datasource 字段选项
-  const [optionsMap, setOptionsMap] = React.useState<Record<string, { label: string; value: string }[]>>({});
+  const [optionsMap, setOptionsMap] = React.useState<
+    Record<string, { label: string; value: string }[]>
+  >({});
   React.useEffect(() => {
     if (!appCode) return;
-    const codes = [...new Set(
-      visibleFields
-        .filter(sf => DATASOURCE_FIELD_TYPES.includes(sf.fieldInfo?.fieldType as FieldType) && sf.fieldInfo?.config?.datasourceCode)
-        .map(sf => sf.fieldInfo!.config!.datasourceCode as string)
-    )];
+    const codes = [
+      ...new Set(
+        visibleFields
+          .filter(
+            sf =>
+              DATASOURCE_FIELD_TYPES.includes(sf.fieldInfo?.fieldType as FieldType) &&
+              sf.fieldInfo?.config?.datasourceCode
+          )
+          .map(sf => sf.fieldInfo!.config!.datasourceCode as string)
+      ),
+    ];
     if (!codes.length) return;
-    datasourceApi.batchOptions({ appCode, datasourceCodes: codes })
-      .then(res => { if (res?.data) setOptionsMap(res.data); })
+    datasourceApi
+      .batchOptions({ appCode, datasourceCodes: codes })
+      .then(res => {
+        if (res?.data) setOptionsMap(res.data);
+      })
       .catch(() => {});
   }, [appCode, searchFormData.searchFormCode]);
 
   const initialValues = React.useMemo(
     () => buildInitialValues(visibleFields),
-    [searchFormData.searchFormCode],
+    [searchFormData.searchFormCode]
   );
 
   const [form] = Form.useForm();
@@ -157,7 +249,7 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
   const displayFields = visibleFields.slice(0, maxVisible);
 
   const handleSearch = () => {
-    form.validateFields().then((values) => onSearch?.(values));
+    form.validateFields().then(values => onSearch?.(values));
   };
 
   const handleReset = () => {
@@ -172,10 +264,16 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
   const btnOffset = colsPerRow - usedInLastRow;
 
   return (
-    <div style={{ background: token.colorBgContainer, borderRadius: token.borderRadius, marginBottom: 8 }}>
+    <div
+      style={{
+        background: token.colorBgContainer,
+        borderRadius: token.borderRadius,
+        marginBottom: 8,
+      }}
+    >
       <Form form={form} layout="inline" initialValues={initialValues}>
         <Row gutter={[16, 0]} style={{ width: '100%' }}>
-          {displayFields.map((sf) => {
+          {displayFields.map(sf => {
             const labelText = sf.displayName || sf.fieldName;
             return (
               <Col key={sf.fieldName} span={colSpan}>
@@ -183,7 +281,15 @@ const MetaSearchForm: React.FC<MetaSearchFormProps> = ({ searchFormData, onSearc
                   name={sf.fieldName}
                   label={
                     <Tooltip title={labelText}>
-                      <span style={{ maxWidth: 72, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block' }}>
+                      <span
+                        style={{
+                          maxWidth: 72,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          display: 'inline-block',
+                        }}
+                      >
                         {labelText}
                       </span>
                     </Tooltip>

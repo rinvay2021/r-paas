@@ -31,12 +31,12 @@ export const dashboardService = {
   },
 
   /** 获取热门对象 */
-  getHotObjects: (params: { appCode?: string; limit?: number }) => {
+  getHotObjects: (params: { appCode?: string; limit?: number }): Promise<any> => {
     return http.get<BaseResponse<ListResponse<HotObject>>>('/dashboard/hot-objects', { params });
   },
 
   /** 获取最近操作 */
-  getRecentActivities: (params: { appCode?: string; limit?: number }) => {
+  getRecentActivities: (params: { appCode?: string; limit?: number }): Promise<any> => {
     return http.get<BaseResponse<ListResponse<RecentActivity>>>('/dashboard/recent-activities', {
       params,
     });
@@ -48,7 +48,7 @@ export const dashboardService = {
   },
 
   /** 获取对象概览 */
-  getObjectsOverview: (params: { appCode?: string }) => {
+  getObjectsOverview: (params: { appCode?: string }): Promise<any> => {
     return http.get<BaseResponse<ListResponse<ObjectOverview>>>('/dashboard/objects-overview', {
       params,
     });

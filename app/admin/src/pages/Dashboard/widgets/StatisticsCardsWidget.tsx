@@ -54,15 +54,12 @@ const STAT_CONFIGS = [
 ];
 
 const StatisticsCardsWidget: React.FC<WidgetProps> = () => {
-  const { data, loading } = useRequest(
-    () => dashboardService.getStatistics({}),
-    {
-      cacheKey: 'dashboard-statistics',
-      staleTime: 5 * 60 * 1000, // 5分钟缓存
-    }
-  );
+  const { data, loading } = useRequest(() => dashboardService.getStatistics({}), {
+    cacheKey: 'dashboard-statistics',
+    staleTime: 5 * 60 * 1000, // 5分钟缓存
+  });
 
-  const statistics: StatisticsData = data?.data || {
+  const statistics: StatisticsData = (data?.data as any) || {
     metaObjectCount: 0,
     fieldCount: 0,
     formCount: 0,
@@ -83,7 +80,9 @@ const StatisticsCardsWidget: React.FC<WidgetProps> = () => {
 
   if (loading) {
     return (
-      <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
         <Spin />
       </div>
     );
@@ -98,21 +97,23 @@ const StatisticsCardsWidget: React.FC<WidgetProps> = () => {
 
         return (
           <Col xs={24} sm={12} md={8} lg={6} xl={6} key={config.key}>
-            <Card
-              bordered
-              bodyStyle={{ padding: '16px' }}
-            >
+            <Card bordered bodyStyle={{ padding: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
                 {config.icon}
-                <span style={{ marginLeft: 8, fontSize: 14, color: '#595959' }}>{config.title}</span>
+                <span style={{ marginLeft: 8, fontSize: 14, color: '#595959' }}>
+                  {config.title}
+                </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: 24, fontWeight: 600, color: '#262626' }}>
-                  {value}
-                </div>
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              >
+                <div style={{ fontSize: 24, fontWeight: 600, color: '#262626' }}>{value}</div>
                 {growth !== 0 && (
-                  <div style={{ fontSize: 12, color: '#8c8c8c', whiteSpace: 'nowrap', marginLeft: 8 }}>
-                    较上周 {growth > 0 ? (
+                  <div
+                    style={{ fontSize: 12, color: '#8c8c8c', whiteSpace: 'nowrap', marginLeft: 8 }}
+                  >
+                    较上周{' '}
+                    {growth > 0 ? (
                       <>
                         <ArrowUpOutlined style={{ color: '#52c41a', fontSize: 12 }} />
                         <span style={{ color: '#52c41a', marginLeft: 4 }}>{growth}</span>

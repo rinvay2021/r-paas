@@ -2,7 +2,7 @@ import { Rule } from 'antd/es/form';
 import { DefaultOptionType } from 'antd/es/select';
 
 // 从 @r-paas/meta re-export，保持现有引用路径不变
-export { ButtonLevel, ButtonEventType, ButtonEvent, HelpType, BooleanEnum } from '@r-paas/meta';
+import { ButtonLevel, ButtonEventType, ButtonEvent, HelpType, BooleanEnum } from '@r-paas/meta';
 export type { ActionButton } from '@r-paas/meta';
 
 export interface ButtonConfigItem {

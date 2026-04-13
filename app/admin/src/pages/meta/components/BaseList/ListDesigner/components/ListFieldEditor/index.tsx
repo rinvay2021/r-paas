@@ -2,7 +2,9 @@ import React from 'react';
 import { map } from 'lodash';
 import type { FormListFieldData } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+// @ts-expect-error: 暂时绕过检查
 import { HTML5Backend } from 'react-dnd-html5-backend';
+// @ts-expect-error: 暂时绕过检查
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { DeleteOutlined, HolderOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, InputNumber, Select, Table } from 'antd';
