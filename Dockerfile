@@ -11,7 +11,7 @@ COPY packages/ ./packages/
 COPY app/ ./app/
 
 # 安装所有依赖
-RUN pnpm install --no--frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # 先构建共享包（apps 依赖它们）
 RUN pnpm build:shared && pnpm build:meta
