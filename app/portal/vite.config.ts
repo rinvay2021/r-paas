@@ -37,16 +37,10 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'es2015',
+    target: 'esnext',
     outDir: 'dist',
-    sourcemap: true,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -54,6 +48,10 @@ export default defineConfig({
           antd: ['antd'],
         },
       },
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      esmExternals: false,
     },
   },
   optimizeDeps: {

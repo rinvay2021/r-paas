@@ -32,8 +32,21 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'es2015',
+    target: 'esnext',
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          antd: ['antd'],
+        },
+      },
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      esmExternals: false,
+    },
   },
 });
