@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 
 RUN npm install -g pnpm
 
-WORKDIR /app
+WORKDIR /buld
 
 # 复制 workspace 配置和根依赖
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -28,9 +28,9 @@ FROM nginx:1.25-alpine AS runner
 RUN rm /etc/nginx/conf.d/default.conf
 
 # 复制三个应用的构建产物
-COPY --from=builder /app/app/admin/dist    /usr/share/nginx/html/admin
-COPY --from=builder /app/app/portal/dist   /usr/share/nginx/html/portal
-COPY --from=builder /app/app/renderer/dist /usr/share/nginx/html/renderer
+COPY --from=builder /build/app/admin/dist    /usr/share/nginx/html/admin
+COPY --from=builder /build/app/portal/dist   /usr/share/nginx/html/portal
+COPY --from=builder /build/app/renderer/dist /usr/share/nginx/html/renderer
 
 EXPOSE 80 8081 8082
 # 80=portal  8081=admin  8082=renderer
