@@ -10,6 +10,7 @@ export default defineConfig({
   dts: false,
   clean: true,
   outDir: 'dist',
+  external: ['axios', 'qs', 'dayjs'],
   sourcemap: true,
   treeshake: true,
   splitting: false,
