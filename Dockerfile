@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 
 RUN npm install -g pnpm
 
-WORKDIR /buld
+WORKDIR /build
 
 # 复制 workspace 配置和根依赖
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
