@@ -25,6 +25,6 @@ export const taskApi = {
     return http.get<DataTask>(`/data/tasks/${taskId}`);
   },
   getDownloadUrl(fileUrl: string) {
-    return `http://localhost:8080/api/v1${fileUrl}`;
+    return `/api/v1${fileUrl}`;
   },
 };

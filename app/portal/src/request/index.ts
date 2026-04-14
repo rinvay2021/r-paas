@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createHttp, tokenService } from '@r-paas/shared/http';
 
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = '/api/v1';
 
 /** 统一错误提示拦截器（只提示，不吞掉 reject） */
 const errorInterceptor = {

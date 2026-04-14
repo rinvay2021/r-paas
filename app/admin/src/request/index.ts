@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { createHttp, tokenService } from '@r-paas/shared/http';
 
-const baseURL = 'http://localhost:8080/api/v1';
+const baseURL = '/api/v1';
 
 // 基础配置
 const baseConfig = {

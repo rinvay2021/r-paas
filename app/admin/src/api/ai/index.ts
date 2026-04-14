@@ -1,7 +1,7 @@
 import { http, tokenService } from '@/request';
 import type { AiConfig, AiConfigSaveParams } from './interface';
 
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = '/api/v1';
 
 export const aiApi = {
   getConfig() {

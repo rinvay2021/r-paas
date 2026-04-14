@@ -39,7 +39,7 @@ interface DataTask {
   errorDetails?: Array<{ row: number; field?: string; message: string }>;
 }
 
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = '/api/v1';
 
 const TaskListPage: React.FC = () => {
   const { token } = theme.useToken();
