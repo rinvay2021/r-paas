@@ -7,12 +7,10 @@ import { bus } from 'wujie';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
 import { portalService } from '@/api/portal';
-import { prefix, LOGO, TITLE } from '@/constant';
+import { prefix, LOGO, TITLE, RENDERER_ORIGIN } from '@/constant';
 import type { PortalMenu } from '@/api/portal/interface';
 
 import './index.less';
-
-const RENDERER_ORIGIN = 'http://localhost:3005';
 
 interface UrlParams {
   menuCode: string;
