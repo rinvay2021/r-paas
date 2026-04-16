@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
-import { prefix } from '@/constant';
+import { prefix, RENDERER_ORIGIN } from '@/constant';
 import './index.less';
-
-const RENDERER_ORIGIN = 'http://localhost:3005';
 
 interface SearchFormPreviewProps {
   height: number;

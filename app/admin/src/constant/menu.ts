@@ -29,3 +29,5 @@ export const LOGO =
   'https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*1NHAQYduQiQAAAAAAAAAAABkARQnAQ';
 
 export const prefix = 'rpaas';
+
+export const RENDERER_ORIGIN = 'http://47.95.196.175:8082'
